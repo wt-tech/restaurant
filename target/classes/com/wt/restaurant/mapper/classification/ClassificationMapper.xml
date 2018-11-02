@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace指向mapper接口 -->
+<mapper
+	namespace="com.wt.restaurant.dao.classification.IClassificationMapper">
+	<select id="listClassification" resultType="Classification">
+		SELECT id,name,sort
+		FROM
+		classification
+		order by sort
+	</select>
+
+	<select id="getClassification" parameterType="Integer"
+		resultType="Classification">
+		SELECT
+		id,
+		name,
+		sort
+		FROM classification
+		where
+		id=#{id};
+	</select>
+
+	<update id="updateClassification" parameterType="Classification">
+		UPDATE
+		classification
+		SET
+		name=#{name},
+		sort=#{sort}
+		WHERE id = #{id};
+	</update>
+
+	<insert id="saveClassification" parameterType="Classification">
+		insert into
+		classification
+		(name,sort)
+		values(#{name},#{sort});
+	</insert>
+
+	<delete id="removeClassification" parameterType="Integer">
+		delete from
+		classification where
+		id=#{id};
+	</delete>
+
+</mapper>

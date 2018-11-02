@@ -3,9 +3,8 @@ package com.wt.restaurant.entity;
 public class Customer {
 
 	private int id;
-	
 	private String openid;
-	private String userName;
+	private String nickname;
 	private String tel;
 	private String firstVistTime;
 	private String registerTime;
@@ -26,12 +25,12 @@ public class Customer {
 		this.openid = openid;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getNickname() {
+		return nickname;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 	public String getTel() {

@@ -1,10 +1,11 @@
-package com.wt.restaurant.tool.http;
+package com.wt.restaurant.tool.http.responsehandler;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 import com.wt.restaurant.tool.BusinessUtils;
+import com.wt.restaurant.tool.http.inface.ResponseHanlder;
 
 /**
  * 处理二进制数据.如文件,图片,视频等.

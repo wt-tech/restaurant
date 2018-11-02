@@ -1,9 +1,10 @@
-package com.wt.restaurant.tool.http;
+package com.wt.restaurant.tool.http.responsehandler;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 import com.wt.restaurant.tool.BusinessUtils;
+import com.wt.restaurant.tool.http.inface.ResponseHanlder;
 
 /**
  * 默认的处理请求的类

@@ -12,6 +12,8 @@ public class Constants {
 	public final static String STATUS = "status";
 	public final static String FAIL = "fail";
 	public final static int HTTP_STATUS_302 = 302;
+	public final static int HTTP_STATUS_200 = 200;
+	
 	
 	
 	//异常同一处理相关

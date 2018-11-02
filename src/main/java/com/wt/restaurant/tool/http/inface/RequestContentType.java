@@ -1,4 +1,4 @@
-package com.wt.restaurant.tool.http;
+package com.wt.restaurant.tool.http.inface;
 
 public interface RequestContentType {
 	String getContentType();

@@ -11,6 +11,9 @@ import java.util.Map.Entry;
 
 import com.wt.restaurant.tool.BusinessUtils;
 import com.wt.restaurant.tool.MapUtils;
+import com.wt.restaurant.tool.http.inface.RequestContentType;
+import com.wt.restaurant.tool.http.inface.ResponseHanlder;
+import com.wt.restaurant.tool.http.responsehandler.DefaultResponseHandler;
 
 /**
  * 1.实例化对象(实例化过程中会自动openConnection,打开连接)<br>

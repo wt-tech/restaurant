@@ -1,4 +1,4 @@
-package com.wt.restaurant.tool.http;
+package com.wt.restaurant.tool.http.inface;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;

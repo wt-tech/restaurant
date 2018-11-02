@@ -1,6 +1,7 @@
-package com.wt.restaurant.tool.http;
+package com.wt.restaurant.tool.http.requestcontenttype;
 
 import com.alibaba.fastjson.JSON;
+import com.wt.restaurant.tool.http.inface.RequestContentType;
 
 public class ApplicationJsonContentType implements RequestContentType{
 
@@ -9,6 +10,9 @@ public class ApplicationJsonContentType implements RequestContentType{
 		this.params = params;
 	}
 
+	public ApplicationJsonContentType() {
+
+	}
 	
 	@Override
 	public String assembleParams() {

@@ -5,10 +5,11 @@ public class Customer {
 	private int id;
 	private String openid;
 	private String nickname;
+	private String gender;
 	private String tel;
 	private String firstVistTime;
 	private String registerTime;
-	
+
 	public int getId() {
 		return id;
 	}
@@ -31,6 +32,13 @@ public class Customer {
 
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
+	}
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 
 	public String getTel() {
@@ -59,5 +67,5 @@ public class Customer {
 
 	public Customer() {
 	}
-	
+
 }

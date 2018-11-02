@@ -4,15 +4,7 @@ public class Constants {
 	
 	//session相关
 	public final static String USER_SESSION = "userSession";
-	public final static String USER_PERMISSIONS = "userPermissions";
-	public final static String USER_MENUS = "userMenus";
-	public final static String VOLUNTEER_REN_SEEKS = "volunteerSeeks";
-	public final static String VOLUNTEER_QIN_SEEKS = "volunteerSeeks";
-	public final static String VOL_AUTHENTICATION = "volAuthentication";
-	public static final String VOLUNTEER__REN_SEEKS_LENGTH = "totalLength";
-	public static final String VOLUNTEER__QIN_SEEKS_LENGTH = "totalLength";
-	public static final String VOLUNTEER_AUTHENTICATION_LENGTH = "autotallength";
-	public final static String ALL_PERMISSIONS = "allPermissions";
+
 	
 	//状态相关
 	public final static String SYS_MESSAGE = "message";
@@ -31,21 +23,10 @@ public class Constants {
 	public final static String BUSINESS_DESCRIPTION = "业务逻辑错误";
 	public final static String ARGUMENT_ILLEGAL = "参数不合法";
 	public final static String DEFAULT_ERROR_INFO = "服务器错误,请联系后台管理员";
-	//权限相关
-	public final static String PERMISSIONS_TO_ADD = "等待添加至权限表";
-	public final static String VOLUNTEER_APPROVED = "审核通过";
+
 	
 	
-	//申请的腾讯地图的KEY
-	public final static String KEY1 = "D6SBZ-XVRCQ-46E5A-GWHL4-4V7P2-A5FOS";
-	public final static String KEY2 = "ABRBZ-6M4LO-UP3WX-SIMTN-OTAK5-O4FVL";
-	public final static String KEY3 = "76MBZ-N4HL3-ZOX3X-YEWOR-YKTOQ-HNFIP";
-	public final static String KEY4 = "2WVBZ-ZF2HQ-Z6X5L-GFCRI-JI4P7-THFTW";
-	public final static String KEY5 = "J6VBZ-DBCRD-7YV4R-HQ7H5-ZEYN5-MJFSS";
-	//腾讯地图提供的逆地址解析协议接口
-	public final static String BASERarpURL = "http://apis.map.qq.com/ws/geocoder/v1/";
-	public final static int KEYNUMBERS = 5;
-	
+
 	//小程序APPID
 	private final static String APPID = "wx28e3c37b96cf1939";
 	//小程序SECRET
@@ -81,7 +62,7 @@ public class Constants {
 	public static final String BOX_IMG = "box-img";
 	
 	public static final String COMBO_IMG = "combo-img";
-	public static final String DETAIL_IMG = "banner-detail-img";
+
 	
 	//存放小程序码的路径
 	public static final String MINIQRCODE = "mini-program-code";
@@ -98,9 +79,8 @@ public class Constants {
       public static final String imgServerDomain = "http://192.168.0.109:8080/statics/";
     //public static final String imgServerDomain = "http://192.168.0.177:8888/statics/";
 
-	//用于生成订单的orderNumber
+
 	public static final String ORDER_NUMBER_PREFIX = "MATCHU";
-	
-	
+
 	
 }

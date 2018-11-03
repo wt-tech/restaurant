@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace指向mapper接口 -->
+<mapper namespace="com.wt.restaurant.dao.combo.IComboMapper">
+	<resultMap type="Combo" id="combo">
+		<id column="id" property="id" />
+		<result column="combo_name" property="comboName" />
+		<result column="combo_price" property="comboPrice" />
+		<result column="combo_introduction" property="comboIntroduction" />
+		<result column="combo_classification" property="comboClassification" />
+		<result column="combo_sort" property="comboSort" />
+
+		<collection property="comboimage" ofType="ComboImage"
+			column="id">
+			<id column="comboimage_id" property="id" />
+			<result column="url" property="url" />
+			<result column="name" property="name" />
+		</collection>
+
+	</resultMap>
+
+	<select id="listCombo" resultMap="combo">
+		SELECT
+		combo.id,
+		combo_name,
+		combo_price,
+		combo_introduction,
+		combo_classification,
+		combo_sort,
+		combo_image.id AS comboimage_id,
+		url,
+		combo_image.name
+		FROM combo
+		LEFT JOIN
+		combo_image
+		ON combo_image.combo_id = combo.id
+		ORDER BY combo_sort
+		LIMIT
+		${(currentPageNo-1)*pageSize},${pageSize}
+	</select>
+
+	<update id="updateCombo" parameterType="Combo">
+		update combo
+		set
+		combo_name=#{comboName},
+		combo_price=#{comboPrice},
+		combo_introduction=#{comboIntroduction},
+		combo_classification=#{comboClassification},
+		combo_sort=#{comboSort}
+		where id=#{id};
+	</update>
+
+	<update id="updateComboImage" parameterType="ComboImage">
+		update combo_image
+		<set>
+			<if test="name != null">
+				name=#{name},
+			</if>
+			<if test="url != null">
+				url=#{url}
+			</if>
+		</set>
+		where id=#{id};
+	</update>
+
+	<insert id="saveCombo" parameterType="Combo" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into combo
+		(combo_name,
+		combo_price,
+		combo_introduction,
+		combo_classification,
+		combo_sort)
+		values(#{comboName},
+		#{comboPrice},
+		#{comboIntroduction},
+		#{comboClassification},#{comboSort});
+	</insert>
+
+	<insert id="saveComboImage">
+		insert into combo_image
+		(combo_id,name,url)
+		values(#{combo.id},#{name},#{url});
+	</insert>
+
+	<delete id="removeCombo" parameterType="Integer">
+		delete from combo
+		where
+		id=#{id}
+	</delete>
+
+	<select id="getCombo" resultMap="combo">
+		SELECT
+		combo.id,
+		combo_name,
+		combo_price,
+		combo_introduction,
+		combo_classification,
+		combo_sort,
+		combo_image.id AS comboimage_id,
+		url,
+		combo_image.name
+		FROM combo
+		LEFT JOIN
+		combo_image
+		ON combo_image.combo_id = combo.id
+		WHERE
+		combo.id=#{id}
+	</select>
+
+	<select id="countCombo" resultType="Integer">
+		SELECT COUNT(*) FROM
+		combo
+	</select>
+
+</mapper>

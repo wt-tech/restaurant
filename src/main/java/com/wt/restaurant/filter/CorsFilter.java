@@ -1,7 +1,6 @@
 package com.wt.restaurant.filter;
 
 import java.io.IOException;
-import java.util.Collection;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -24,7 +23,7 @@ public class CorsFilter implements Filter{
 		HttpServletResponse httpresponse = (HttpServletResponse)response;
 		httpresponse.setHeader("Access-Control-Allow-Origin","http://127.0.0.1:8020");
 		httpresponse.setHeader("Access-Control-Allow-Credentials","true"); 
-		Collection<String> headers = httpresponse.getHeaderNames();
+//		Collection<String> headers = httpresponse.getHeaderNames();
 		
 		chain.doFilter(request, httpresponse);
 //		Iterator<String> it = headers.iterator();

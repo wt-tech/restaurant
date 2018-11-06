@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.wt.restaurant.entity.DishOrder;
 import com.wt.restaurant.entity.DishOrderLine;
+import com.wt.restaurant.entity.Menu;
 import com.wt.restaurant.entity.TableReserve;
 
 public interface ITableReserveMapper {
@@ -39,18 +40,12 @@ public interface ITableReserveMapper {
 
 	/**
 	 * 保存点餐菜品
-	 * 
 	 * @param reserveId
-	 * @param menuId
-	 * @param specifications
-	 * @param choosePrice
-	 * @param menuCount
+	 * @param menuList
 	 * @return
 	 * @throws Exception
 	 */
-	Integer saveMenu(@Param("reserveId") int reserveId, @Param("menuId") int menuId,
-			@Param("specifications") String specifications, @Param("choosePrice") double choosePrice,
-			@Param("menuCount") int menuCount) throws Exception;
+	Integer saveMenu(@Param("menuList") List<Menu> menuList) throws Exception;
 
 	/**
 	 * 保存订单
@@ -68,7 +63,7 @@ public interface ITableReserveMapper {
 	 * @return
 	 * @throws Exception
 	 */
-	Integer saveDishOrderLine(DishOrderLine dishorderline) throws Exception;
+	Integer saveDishOrderLine(@Param("dishorderlinelist") List<DishOrderLine> dishorderlinelist) throws Exception;
 
 	/**
 	 * 删除点餐信息

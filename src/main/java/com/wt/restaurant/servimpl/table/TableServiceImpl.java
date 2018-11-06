@@ -16,13 +16,13 @@ public class TableServiceImpl implements ITableService {
 	@Override
 	public List<Table> listTable(Integer currentPageNo, Integer pageSize) {
 		// TODO Auto-generated method stub
-		return tablemapper.listTable(currentPageNo, pageSize);
+		return tablemapper.listTables(currentPageNo, pageSize);
 	}
 
 	@Override
 	public boolean updateTable(Table table) throws Exception {
 		// TODO Auto-generated method stub
-		return tablemapper.updateTable(table)>0;
+		return tablemapper.updateTables(table)>0;
 	}
 
 	@Override

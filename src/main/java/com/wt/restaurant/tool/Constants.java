@@ -82,7 +82,7 @@ public class Constants {
     //public static final String imgServerDomain = "http://192.168.0.177:8888/statics/";
 
 
-	public static final String ORDER_NUMBER_PREFIX = "MATCHU";
+	public static final String ORDER_NUMBER_PREFIX = "XTXZSMF";
 
 	
 }

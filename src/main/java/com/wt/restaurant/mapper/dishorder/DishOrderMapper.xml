@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace指向mapper接口 -->
+<mapper namespace="com.wt.restaurant.dao.table.ITableMapper">
+	<resultMap type="Reserve" id="reserve">
+		<id column="id" property="id" />
+		<result column="reservations_name" property="reservationsName" />
+		<result column="reservations_sex" property="reservationsSex" />
+		<result column="reservations_tel" property="reservationsTel" />
+		<result column="reservations_num" property="reservationsNum" />
+		<result column="reservations_start_time"
+			property="reservationsStartTime" />
+		<result column="reservation_type" property="reservationType" />
+		<result column="reserve_time" property="reserveTime" />
+		<result column="reservations_mode" property="reservationsMode" />
+		<result column="remarks" property="remarks" />
+
+		<collection property="box" ofType="Box" column="id">
+			<id column="box_id" property="id" />
+			<result column="room_number" property="roomNumber" />
+			<result column="room_size" property="roomSize" />
+			<result column="room_name" property="roomName" />
+		</collection>
+	</resultMap>
+	<select id="listTable" resultType="Table">
+		SELECT
+		id,
+		number,
+		image
+		FROM
+		table
+		ORDER BY number
+		LIMIT
+		${(currentPageNo-1)*pageSize},${pageSize}
+	</select>
+
+	<update id="updateTable" parameterType="Table">
+		update table
+		set
+		number=#{number},
+		image=#{image}
+		where
+		id=#{id};
+	</update>
+
+	<insert id="saveTable" parameterType="Table">
+		insert into table
+		(number,image)
+		values(#{number},
+		#{image});
+	</insert>
+
+	<delete id="removeTable" parameterType="Integer">
+		delete from table
+		where
+		id=#{id}
+	</delete>
+
+	<select id="getTable" resultType="Table">
+		SELECT
+		id,
+		number,
+		image
+		FROM table
+		WHERE
+		id=#{id}
+	</select>
+
+	<select id="countTable" resultType="Integer">
+		SELECT COUNT(*) FROM
+		table
+	</select>
+
+</mapper>

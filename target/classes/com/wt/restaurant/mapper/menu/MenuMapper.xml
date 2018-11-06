@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace指向mapper接口 -->
+<mapper namespace="com.wt.restaurant.dao.menu.IMenuMapper">
+	<resultMap type="Menu" id="menu">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="large_price" property="largePrice" />
+		<result column="medium_price" property="mediumPrice" />
+		<result column="small_price" property="smallPrice" />
+		<result column="sales_volume" property="salesVolume" />
+		<result column="discount" property="discount" />
+		<result column="discount_price" property="discountPrice" />
+		<result column="introduction" property="introduction" />
+		<result column="sort" property="sort" />
+
+		<collection property="menuimage" ofType="MenuImage"
+			column="id">
+			<id column="menuimage_id" property="id" />
+			<result column="url" property="url" />
+			<result column="menuimage_name" property="name" />
+		</collection>
+	</resultMap>
+
+	<select id="listMenu" resultMap="menu">
+		SELECT
+		menu.id,menu.name,sales_volume,large_price,medium_price,small_price,discount,discount_price,introduction,sort,
+		menu_image.id AS menuimage_id,url,menu_image.name AS menuimage_name
+		FROM menu
+		LEFT JOIN menu_image ON menu_image.menu_id=menu.id
+		WHERE
+		classification_id=#{classificationId}
+		ORDER BY sort
+	</select>
+
+	<update id="updateMenu" parameterType="Menu">
+		update menu
+		set
+		name=#{name},
+		classification_id=#{classification.id},
+		large_price=#{largePrice},
+		medium_price=#{mediumPrice},
+		small_price=#{smallPrice},
+		sales_volume=#{salesVolume},
+		discount=#{discount},
+		discount_price=#{discountPrice},
+		introduction=#{introduction},
+		sort=#{sort}
+		where id=#{id};
+	</update>
+
+	<update id="updateMenuImage" parameterType="MenuImage">
+		update menu_image
+		<set>
+			<if test="name != null">
+				name=#{name},
+			</if>
+			<if test="url != null">
+				url=#{url}
+			</if>
+		</set>
+		where id=#{id};
+	</update>
+
+	<insert id="saveMenu" parameterType="Menu"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into menu
+		(classification_id,name,
+		large_price,medium_price,small_price,sales_volume,discount,
+		discount_price,introduction,sort)
+		values(#{classification.id},#{name},
+		#{largePrice},#{mediumPrice},#{smallPrice},#{salesVolume},#{discount},
+		#{discountPrice},#{introduction},#{sort});
+	</insert>
+
+	<insert id="saveMenuImage" parameterType="MenuImage">
+		insert into menu_image
+		(menu_id,name,url)
+		values(#{menu.id},#{name},#{url});
+	</insert>
+
+	<delete id="removeMenu" parameterType="Integer">
+		delete from menu where
+		id=#{id}
+	</delete>
+
+	<select id="getMenu" resultType="Menu">
+		SELECT
+		menu.id,menu.name,sales_volume,large_price,medium_price,small_price,discount,discount_price,introduction,sort,
+		menu_image.id AS menuimage_id,url,menu_image.name AS menuimage_name
+		FROM menu
+		LEFT JOIN menu_image ON menu_image.menu_id=menu.id
+		WHERE
+		menu.id=#{id}
+	</select>
+
+	<select id="countMenu" resultType="Integer">
+		SELECT COUNT(*) FROM
+		menu WHERE
+		classification_id=#{classificationId};
+	</select>
+
+</mapper>

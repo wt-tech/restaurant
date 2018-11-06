@@ -4,9 +4,11 @@
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
 
 	<!--controller 控制器在springmvc-servlet.xml中扫描 -->
@@ -85,4 +87,16 @@
 		<mvc:resources location="/login/" mapping="/login/**"></mvc:resources> -->
 	<!-- 配置404错误页面 -->
 	<mvc:resources location="/" mapping="404.html"></mvc:resources>
+	
+	
+	<websocket:handlers allowed-origins="*">
+        <websocket:mapping path="/notifyHandler" handler="notifyHandler"/>
+        <websocket:handshake-interceptors>
+            <bean class="com.wt.restaurant.websocket.WebSocketHandlerInterceptor"/>
+        </websocket:handshake-interceptors>
+    </websocket:handlers>
+
+    <bean id="notifyHandler" class="com.wt.restaurant.websocket.NewReservationNotifyHandler"/>
+	
+	
 </beans>

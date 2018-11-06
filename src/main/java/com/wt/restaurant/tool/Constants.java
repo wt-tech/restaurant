@@ -4,6 +4,8 @@ public class Constants {
 	
 	//session相关
 	public final static String USER_SESSION = "userSession";
+	public final static String JSESSIONID = "JSESSIONID";
+	public final static String COOKIE = "COOKIE";
 
 	
 	//状态相关

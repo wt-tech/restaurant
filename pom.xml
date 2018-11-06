@@ -186,7 +186,20 @@
 		<groupId>com.thetransactioncompany</groupId>
 		<artifactId>cors-filter</artifactId>
 		<version>2.6</version>
-	</dependency>     
+	</dependency>  
+	
+	<!-- 引入spring websocket -->
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-websocket</artifactId>
+		<version>${spring.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-messaging</artifactId>
+		<version>${spring.version}</version>
+	</dependency>           
+	   
   </dependencies>
   <build>
     <finalName>restaurant</finalName>

@@ -3,6 +3,8 @@ package com.wt.restaurant.controller.tablereserve;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -70,7 +72,8 @@ public class TableReserveCtrl {
 	}
 
 	@RequestMapping(value = { "/listtablereservebycustomerid" }, method = RequestMethod.GET)
-	public Map<String, Object> listTableReserveByCustomerId(@RequestParam("customerId") Integer customerId)
+	public Map<String, Object> listTableReserveByCustomerId(HttpSession session,
+			@RequestParam("customerId") Integer customerId)
 			throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		List<TableReserve> tablereserve = tablereserveservice.listTableReserveByCustomerId(customerId);

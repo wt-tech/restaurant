@@ -11,7 +11,7 @@ public class DishOrder {
 	private Customer customer;// 客户
 	// private int discountId;// 优惠券
 	private String orderNumber;// 订单编号
-	private String reserveType;// 订单类型
+	private String reserveType;// 预订类型
 	private Date createTime;// 订单创建时间
 	private int totalCount;// 菜品总数量
 	private double totalAmount;// 总金额

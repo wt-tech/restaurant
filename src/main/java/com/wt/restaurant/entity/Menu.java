@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Menu {
 	private Integer id;
+	private Integer reserveId;//预订id
 	private Classification classification;// 菜品分类
 	private String name;// 菜品名字
 	private double largePrice;// 大份价格
@@ -25,6 +26,14 @@ public class Menu {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Integer getReserveId() {
+		return reserveId;
+	}
+
+	public void setReserveId(Integer reserveId) {
+		this.reserveId = reserveId;
 	}
 
 	public Classification getClassification() {

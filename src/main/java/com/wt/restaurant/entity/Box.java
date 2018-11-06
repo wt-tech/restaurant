@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Box {
 	private Integer id;
+	private Integer reserveId;//预订id 
 	private int roomNumber;// 包厢号
 	private int roomSize;// 包厢大小(可容纳人数)
 	private String roomName;// 包厢名称
@@ -17,6 +18,14 @@ public class Box {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Integer getReserveId() {
+		return reserveId;
+	}
+
+	public void setReserveId(Integer reserveId) {
+		this.reserveId = reserveId;
 	}
 
 	public int getRoomNumber() {

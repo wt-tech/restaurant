@@ -81,8 +81,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<insert id="saveMenu">
 		insert into table_reserve_menu
-		(menu_id,table_reserve_id,specifications,choose_price,menu_count)
-		values(#{menuId},#{reserveId},#{specifications},#{choosePrice},#{menuCount});
+		(table_reserve_id,menu_id,specifications,choose_price,menu_count)
+		values
+		<foreach collection="menuList" item="menu" separator=",">
+			(#{menu.reserveId},#{menu.id},#{menu.specifications},#{menu.choosePrice},#{menu.menuCount})
+		</foreach>
 	</insert>
 
 	<insert id="saveDishOrder" parameterType="DishOrder"
@@ -95,7 +98,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="saveDishOrderLine">
 		insert into dish_order_line
 		(dish_order_id,menu_id,dish_count,unit_price,specifications)
-		values(#{dishorder.id},#{menu.id},#{dishCount},#{unitPrice},#{specifications});
+		values
+		<foreach collection="dishorderlinelist" item="dishorderline"
+			separator=",">
+			(#{dishorderline.dishorder.id},#{dishorderline.menu.id},#{dishorderline.dishCount},#{dishorderline.unitPrice},#{dishorderline.specifications})
+		</foreach>
 	</insert>
 
 	<delete id="removeTableReserve" parameterType="Integer">

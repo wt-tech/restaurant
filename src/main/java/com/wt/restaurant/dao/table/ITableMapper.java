@@ -14,7 +14,7 @@ public interface ITableMapper {
 	 * @param pageSize
 	 * @return
 	 */
-	List<Table> listTable(@Param("currentPageNo") Integer currentPageNo, @Param("pageSize") Integer pageSize);
+	List<Table> listTables(@Param("currentPageNo") Integer currentPageNo, @Param("pageSize") Integer pageSize);
 
 	/**
 	 * 修改桌子信息
@@ -23,7 +23,7 @@ public interface ITableMapper {
 	 * @return
 	 * @throws Exception
 	 */
-	Integer updateTable(Table table) throws Exception;
+	Integer updateTables(Table table) throws Exception;
 
 	/**
 	 * 保存桌子信息

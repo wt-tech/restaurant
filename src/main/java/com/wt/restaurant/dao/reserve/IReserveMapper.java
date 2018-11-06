@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.wt.restaurant.entity.Box;
 import com.wt.restaurant.entity.DishOrder;
 import com.wt.restaurant.entity.DishOrderLine;
+import com.wt.restaurant.entity.Menu;
 import com.wt.restaurant.entity.Reserve;
 
 public interface IReserveMapper {
@@ -45,7 +47,7 @@ public interface IReserveMapper {
 	 * @return
 	 * @throws Exception
 	 */
-	Integer saveBox(@Param("reserveId") int reserveId, @Param("boxId") int boxId) throws Exception;
+	Integer saveBox(@Param("boxList") List<Box> boxList) throws Exception;
 
 	/**
 	 * 保存预订的菜品信息
@@ -55,9 +57,7 @@ public interface IReserveMapper {
 	 * @return
 	 * @throws Exception
 	 */
-	Integer saveMenu(@Param("reserveId") int reserveId, @Param("menuId") int menuId,
-			@Param("specifications") String specifications, @Param("choosePrice") double choosePrice,
-			@Param("menuCount") int menuCount) throws Exception;
+	Integer saveMenu(@Param("menuList") List<Menu> menuList) throws Exception;
 
 	/**
 	 * 保存订单
@@ -75,7 +75,7 @@ public interface IReserveMapper {
 	 * @return
 	 * @throws Exception
 	 */
-	Integer saveDishOrderLine(DishOrderLine dishorderline) throws Exception;
+	Integer saveDishOrderLine(@Param("dishorderlinelist") List<DishOrderLine> dishorderlinelist) throws Exception;
 
 	/**
 	 * 删除预订信息

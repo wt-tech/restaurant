@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,9 +23,16 @@ public class NewReservationNotifyHandler extends TextWebSocketHandler {
 
 	private static Map<String,WebSocketSession> users = null;
 	
+	private static Queue<TextMessage> messages = null; 
+	
 	@Override
-	public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-		super.handleTextMessage(session, message);
+	public void handleTextMessage(WebSocketSession session, TextMessage message){
+		System.out.println(message.getPayload());
+		try {
+			super.handleTextMessage(session, message);
+		} catch (Exception e) {
+			BusinessUtils.throwNewBusinessException("处理心跳包发生异常 : "+e.getMessage());
+		}
 	}
 
 	public NewReservationNotifyHandler() {
@@ -31,23 +40,31 @@ public class NewReservationNotifyHandler extends TextWebSocketHandler {
 	}
 	
 	@Override
-	public  void afterConnectionEstablished(WebSocketSession session) throws Exception {
-		super.afterConnectionEstablished(session);
-		synchronized(this){
-			if(null == NewReservationNotifyHandler.users) {
-				users = new HashMap<String,WebSocketSession>();
+	public  void afterConnectionEstablished(WebSocketSession session){
+		try {
+			super.afterConnectionEstablished(session);
+		} catch (Exception e) {
+			BusinessUtils.throwNewBusinessException("连接建立出现异常: "+e.getMessage());
+		}
+		if(null == NewReservationNotifyHandler.users) {
+			synchronized(this){
+				if(null == NewReservationNotifyHandler.users) {
+					users = new HashMap<String,WebSocketSession>();
+				}
 			}
 		}
 		users.put(this.getSessionKey(session), session);
-		System.err.println(this.getSessionKey(session) + "established");
+		this.sendAllMessagesToAllUsers();//后台管理人员接收离线信息
 	}
 
-	
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		System.err.println(this.getSessionKey(session) + "closed");
 		users.remove(this.getSessionKey(session));
-		super.afterConnectionClosed(session, status);
+		try {
+			super.afterConnectionClosed(session, status);
+		} catch (Exception e) {
+			BusinessUtils.throwNewBusinessException("连接关闭出现异常 : "+e.getMessage());
+		}
 	}
 	
 	private String getSessionKey(WebSocketSession session) {
@@ -74,18 +91,71 @@ public class NewReservationNotifyHandler extends TextWebSocketHandler {
 		return sessionId;
 	}
 	
-
-	public void sendMessageToAllUsers(TextMessage message) {
-		if(null == users)
+	/**
+	 * 向队列里添加新消息,并将消息发送给后台管理人员
+	 * @param message
+	 */
+	protected void addNewMessageAndNotifyManager(TextMessage message) {
+		this.messageInQueue(message);
+		this.sendAllMessagesToAllUsers();
+	}
+	
+	/**
+	 * 发送队列中所有信息给所有用户.
+	 */
+	private synchronized void sendAllMessagesToAllUsers() {
+		if(null == messages) {//没有新消息.此时先不发送.
 			return;
-		for(Entry<String,WebSocketSession> entry : users.entrySet()) {
-			if(entry.getValue().isOpen()) {
+		}
+		TextMessage notify = null;
+		while(true) {
+			if(null == users || users.size() == 0) {//后台管理未开启,没有管理员
+				break;
+			}
+			notify = NewReservationNotifyHandler.messages.poll();
+			if(notify == null) {//队列中已经没有更多消息了
+				break;
+			}else {//发送通知
+				this.sendMessageToAllUsers(notify);
 				try {
-					entry.getValue().sendMessage(message);
-				} catch (IOException e) {
-					BusinessUtils.throwNewBusinessException("向客户端发送信息失败,发送的消息为:" + message.getPayload());
+					Thread.sleep(1000);//每发送一条消息,间隔1秒钟
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
 		}
+		return;
+	}
+	
+	/**
+	 * 将notify发送给所有后台管理人员
+	 * @param notify
+	 */
+	private void sendMessageToAllUsers(TextMessage notify) {
+		for(Entry<String,WebSocketSession> entry : NewReservationNotifyHandler.users.entrySet()) {
+			if(entry.getValue().isOpen()) {
+				try {
+					entry.getValue().sendMessage(notify);
+				} catch (IOException e) {
+					BusinessUtils.throwNewBusinessException("向客户端发送信息失败,发送的消息为:" + notify.getPayload());
+				}
+			}
+		}
+	}
+	
+	
+	/**
+	 * 消息入队列
+	 * @param message
+	 */
+	private void messageInQueue(TextMessage message) {
+		if(null == NewReservationNotifyHandler.messages) {
+			synchronized(this){
+				if(null == NewReservationNotifyHandler.messages) {
+					NewReservationNotifyHandler.messages = new ConcurrentLinkedQueue<TextMessage>();
+				}
+			}
+		}
+		NewReservationNotifyHandler.messages.add(message);
 	}
 }

@@ -97,6 +97,6 @@
     </websocket:handlers>
 
     <bean id="notifyHandler" class="com.wt.restaurant.websocket.NewReservationNotifyHandler"/>
-	
+	<bean scope="prototype" class="com.wt.restaurant.websocket.ControllerHandlerBridge"></bean>
 	
 </beans>

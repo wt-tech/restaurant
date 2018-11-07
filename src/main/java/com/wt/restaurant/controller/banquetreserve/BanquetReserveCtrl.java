@@ -3,22 +3,29 @@ package com.wt.restaurant.controller.banquetreserve;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.wt.restaurant.entity.BanquetReserve;
 import com.wt.restaurant.service.banquetreserve.IBanquetReserveService;
 import com.wt.restaurant.tool.Constants;
 import com.wt.restaurant.tool.MapUtils;
 import com.wt.restaurant.tool.PageUtil;
+import com.wt.restaurant.websocket.ControllerHandlerBridge;
+import com.wt.restaurant.websocket.entity.Message;
+import com.wt.restaurant.websocket.entity.MessageType;
 
 @RestController("")
 @RequestMapping("/banquetreserve")
-public class BanquetReserveCtrl{
+public class BanquetReserveCtrl implements ApplicationContextAware{
 	@Autowired
 	private IBanquetReserveService banquetreserveservice;
 
@@ -48,7 +55,12 @@ public class BanquetReserveCtrl{
 	public Map<String, Object> saveBanquetReserve(@RequestBody() BanquetReserve banquetreserve) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		boolean flag = banquetreserveservice.saveBanquetReserve(banquetreserve);
-		resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);
+//		resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);
+		resultMap.put(Constants.STATUS,Constants.FAIL);
+		if(flag) {
+			resultMap.put(Constants.STATUS,Constants.SUCCESS);
+			context.getBean(ControllerHandlerBridge.class).notifyManager(new Message(MessageType.BANQUET_RESERVE));
+		}
 		return resultMap;
 	}
 
@@ -78,4 +90,10 @@ public class BanquetReserveCtrl{
 		resultMap.put("banquetreserves", banquetreserve);
 		return resultMap;
 	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.context = (WebApplicationContext)applicationContext;
+	}
+	private WebApplicationContext context;
 }

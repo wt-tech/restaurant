@@ -3,24 +3,33 @@ package com.wt.restaurant.controller.reserve;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.wt.restaurant.entity.Reserve;
 import com.wt.restaurant.service.reserve.IReserveService;
 import com.wt.restaurant.tool.Constants;
 import com.wt.restaurant.tool.MapUtils;
 import com.wt.restaurant.tool.PageUtil;
+import com.wt.restaurant.websocket.ControllerHandlerBridge;
+import com.wt.restaurant.websocket.entity.Message;
+import com.wt.restaurant.websocket.entity.MessageType;
 
 @RestController("")
 @RequestMapping("/reserve")
-public class ReserveCtrl {
+public class ReserveCtrl implements ApplicationContextAware {
 	@Autowired
 	private IReserveService reserveservice;
+	
+	
 
 	@RequestMapping(value = { "/back/listreserve" }, method = RequestMethod.GET)
 	public Map<String, Object> listReserve(@RequestParam("currentPageNo") Integer currentPageNo,
@@ -49,7 +58,12 @@ public class ReserveCtrl {
 	public Map<String, Object> saveReserve(@RequestBody() Reserve reserve) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		boolean flag = reserveservice.saveReserve(reserve);
-		resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);
+//		resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);
+		resultMap.put(Constants.STATUS,Constants.FAIL);
+		if(flag) {
+			resultMap.put(Constants.STATUS, Constants.SUCCESS);
+			context.getBean(ControllerHandlerBridge.class).notifyManager(new Message(MessageType.BOX_RESERVE));
+		}
 		return resultMap;
 	}
 
@@ -79,4 +93,11 @@ public class ReserveCtrl {
 		resultMap.put("reserves", reserve);
 		return resultMap;
 	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		context=(WebApplicationContext) applicationContext;
+	}
+	private WebApplicationContext context;
+	
 }

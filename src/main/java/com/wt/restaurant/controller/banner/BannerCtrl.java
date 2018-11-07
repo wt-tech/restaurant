@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,7 +35,7 @@ public class BannerCtrl {
 		return map;
 	}
 
-	@RequestMapping(value = { "/back/updatebanner" }, method = RequestMethod.PUT)
+	@RequestMapping(value = { "/back/updatebanner" }, method = RequestMethod.POST)
 	public Map<String, Object> updateBanner(HttpServletRequest request,
 			@RequestParam(value = "bannerImg", required = false) MultipartFile file, Banner banner) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
@@ -57,8 +58,8 @@ public class BannerCtrl {
 		return resultMap;
 	}
 
-	@RequestMapping(value = { "/back/removebanner" }, method = RequestMethod.DELETE)
-	public HashMap<String, String> removeBanner(@RequestParam("id") Integer id) throws Exception {
+	@RequestMapping(value = { "/back/removebanner/{id}" }, method = RequestMethod.DELETE)
+	public HashMap<String, String> removeBanner(@PathVariable Integer id) throws Exception {
 		HashMap<String, String> resultMap = new HashMap<String, String>();
 		boolean flag = bannerService.removeBanner(id);
 		resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);

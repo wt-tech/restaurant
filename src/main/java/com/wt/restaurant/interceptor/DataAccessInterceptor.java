@@ -19,10 +19,10 @@ public class DataAccessInterceptor extends HandlerInterceptorAdapter {
 			throws Exception {
 		HttpSession session = request.getSession();
 		Login user = (Login) session.getAttribute(Constants.USER_SESSION);
-		if (null == user) {//用户未登录 , 跳转到首页
-			response.sendRedirect(request.getContextPath() + "/authorization");
-			return false;
-		}
+//		if (null == user) {//用户未登录 , 跳转到首页
+//			response.sendRedirect(request.getContextPath() + "/authorization");
+//			return false;
+//		}
 		return true;
 	}
 }

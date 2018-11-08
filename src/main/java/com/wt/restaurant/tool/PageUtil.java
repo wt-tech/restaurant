@@ -1,9 +1,9 @@
 package com.wt.restaurant.tool;
 
 public class PageUtil {
-	public Integer Page(Integer totalCount, Integer currentPageNo,Integer pageSize) throws Exception {
+	public Integer Page(Integer totalCount, Integer currentPageNo, Integer pageSize) throws Exception {
 		// 设置页面容量
-		//int pageSize = Constants.pageSize;
+		// int pageSize = Constants.pageSize;
 		// 总数量（表）
 		// 总页数
 		PageSupport pages = new PageSupport();
@@ -16,10 +16,20 @@ public class PageUtil {
 			currentPageNo = 1;
 		} else if (currentPageNo > totalPageCount) {
 
-			currentPageNo = totalPageCount+1;
+			currentPageNo = totalPageCount + 1;
 
 		}
 		return currentPageNo;
+	}
+
+	public static Integer getPageNum(Integer newReserveNum) throws Exception {
+		Integer pagesizes = 0;
+		if (null != newReserveNum && newReserveNum > 0) {
+			pagesizes = newReserveNum;
+		} else {
+			pagesizes = Constants.pageSizes;
+		}
+		return pagesizes;
 	}
 
 }

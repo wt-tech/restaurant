@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,16 +25,18 @@ public class ReserveCtrl {
 
 	@RequestMapping(value = { "/back/listreserve" }, method = RequestMethod.GET)
 	public Map<String, Object> listReserve(@RequestParam("currentPageNo") Integer currentPageNo,
-			@RequestParam(value = "reserve", required = false) Reserve reserve) throws Exception {
+			@RequestParam(value = "reserve", required = false) Reserve reserve,
+			@RequestParam(value = "newReserveNum", required = false) Integer newReserveNum) throws Exception {
 		Map<String, Object> map = MapUtils.getHashMapInstance();
+		Integer pagesizes= PageUtil.getPageNum(newReserveNum);
 		// 总数量（表）
 		int totalCount = reserveservice.countReserve(reserve);
-		Integer currentPageNos = new PageUtil().Page(totalCount, currentPageNo, Constants.pageSizes);
-		List<Reserve> reserves = reserveservice.listReserve(currentPageNos, Constants.pageSizes, reserve);
+		Integer currentPageNos = new PageUtil().Page(totalCount, currentPageNo, pagesizes);
+		List<Reserve> reserves = reserveservice.listReserve(currentPageNos, pagesizes, reserve);
 		map.put(Constants.STATUS, Constants.SUCCESS);
 		map.put("reserves", reserves);
 		map.put("totalCount", totalCount);
-		map.put("pageSize", Constants.pageSizes);
+		map.put("pageSize", pagesizes);
 		return map;
 	}
 
@@ -61,8 +64,8 @@ public class ReserveCtrl {
 		return resultMap;
 	}
 
-	@RequestMapping(value = { "/back/getreserve" }, method = RequestMethod.GET)
-	public Map<String, Object> getReserve(@RequestParam("id") int id) throws Exception {
+	@RequestMapping(value = { "/back/getreserve/{id}" }, method = RequestMethod.GET)
+	public Map<String, Object> getReserve(@PathVariable Integer id) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		Reserve reserve = reserveservice.getReserve(id);
 		resultMap.put(Constants.STATUS, Constants.SUCCESS);

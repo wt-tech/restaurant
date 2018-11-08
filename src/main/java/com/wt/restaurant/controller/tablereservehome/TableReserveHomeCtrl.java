@@ -23,16 +23,19 @@ public class TableReserveHomeCtrl {
 	private ITableReserveHomeService tablereservehomeservice;
 
 	@RequestMapping(value = { "/back/listtablereservehome" }, method = RequestMethod.GET)
-	public Map<String, Object> listTableReserveHome(@RequestParam("currentPageNo") Integer currentPageNo) throws Exception {
+	public Map<String, Object> listTableReserveHome(@RequestParam("currentPageNo") Integer currentPageNo,
+			@RequestParam(value = "newReserveNum", required = false) Integer newReserveNum) throws Exception {
 		Map<String, Object> map = MapUtils.getHashMapInstance();
+		Integer pagesizes = PageUtil.getPageNum(newReserveNum);
 		// 总数量（表）
 		int totalCount = tablereservehomeservice.countTableReserveHome();
-		Integer currentPageNos = new PageUtil().Page(totalCount, currentPageNo, Constants.pageSizes);
-		List<TableReserveHome> tablereservehomes = tablereservehomeservice.listTableReserveHome(currentPageNos, Constants.pageSizes);
+		Integer currentPageNos = new PageUtil().Page(totalCount, currentPageNo, pagesizes);
+		List<TableReserveHome> tablereservehomes = tablereservehomeservice.listTableReserveHome(currentPageNos,
+				pagesizes);
 		map.put(Constants.STATUS, Constants.SUCCESS);
 		map.put("tablereservehomes", tablereservehomes);
 		map.put("totalCount", totalCount);
-		map.put("pageSize", Constants.pageSizes);
+		map.put("pageSize", pagesizes);
 		return map;
 	}
 

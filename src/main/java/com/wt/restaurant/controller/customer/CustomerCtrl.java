@@ -2,6 +2,8 @@ package com.wt.restaurant.controller.customer;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -80,5 +82,19 @@ public class CustomerCtrl {
 	@RequestMapping(value = "getcustomerbyid",method = RequestMethod.GET)
 	public Customer getCustomerById(@RequestParam("id") Integer id){
 		return customerServImpl.getCustomerById(id);
+	}
+	
+	/**
+	 * 这里注入session的目的是为了让Tomcat生成JSESSIONID,
+	 * 这也是小程序端和后端的入口
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value = "manager",method = RequestMethod.GET)
+	public Map<String,Object> listWeChatEndManager(HttpSession session){
+		Map<String,Object> map = MapUtils.getHashMapInstance();
+		map.put(Constants.STATUS, Constants.SUCCESS);
+		map.put("managerList", Constants.managerList);
+		return map;
 	}
 }

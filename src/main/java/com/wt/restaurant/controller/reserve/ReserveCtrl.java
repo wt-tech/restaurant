@@ -30,8 +30,6 @@ public class ReserveCtrl implements ApplicationContextAware {
 	@Autowired
 	private IReserveService reserveservice;
 	
-	
-
 	@RequestMapping(value = { "/back/listreserve" }, method = RequestMethod.GET)
 	public Map<String, Object> listReserve(@RequestParam("currentPageNo") Integer currentPageNo,
 			@RequestParam(value = "reserve", required = false) Reserve reserve,

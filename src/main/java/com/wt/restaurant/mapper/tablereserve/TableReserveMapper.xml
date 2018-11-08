@@ -48,9 +48,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		choose_price,
 		menu_count
 		FROM
-		table_reserve_menu
+		(SELECT * FROM table_reserve  ORDER BY reserve_time DESC LIMIT ${(currentPageNo-1)*pageSize},${pageSize} )
+		AS table_reserve 
 		LEFT JOIN
-		table_reserve ON table_reserve.id=table_reserve_menu.table_reserve_id
+		table_reserve_menu
+		ON table_reserve.id=table_reserve_menu.table_reserve_id
 		LEFT JOIN 
 		`table` ON table.id=table_reserve.table_id
 		LEFT JOIN

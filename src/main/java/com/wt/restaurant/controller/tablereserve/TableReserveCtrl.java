@@ -25,16 +25,18 @@ public class TableReserveCtrl {
 	private ITableReserveService tablereserveservice;
 
 	@RequestMapping(value = { "/back/listtablereserve" }, method = RequestMethod.GET)
-	public Map<String, Object> listTableReserve(@RequestParam("currentPageNo") Integer currentPageNo) throws Exception {
+	public Map<String, Object> listTableReserve(@RequestParam("currentPageNo") Integer currentPageNo,
+			@RequestParam(value = "newReserveNum", required = false) Integer newReserveNum) throws Exception {
 		Map<String, Object> map = MapUtils.getHashMapInstance();
+		Integer pagesizes= PageUtil.getPageNum(newReserveNum);
 		// 总数量（表）
 		int totalCount = tablereserveservice.countTableReserve();
-		Integer currentPageNos = new PageUtil().Page(totalCount, currentPageNo, Constants.pageSizes);
-		List<TableReserve> tablereserves = tablereserveservice.listTableReserve(currentPageNos, Constants.pageSizes);
+		Integer currentPageNos = new PageUtil().Page(totalCount, currentPageNo, pagesizes);
+		List<TableReserve> tablereserves = tablereserveservice.listTableReserve(currentPageNos,pagesizes);
 		map.put(Constants.STATUS, Constants.SUCCESS);
 		map.put("tablereserves", tablereserves);
 		map.put("totalCount", totalCount);
-		map.put("pageSize", Constants.pageSizes);
+		map.put("pageSize", pagesizes);
 		return map;
 	}
 
@@ -73,8 +75,7 @@ public class TableReserveCtrl {
 
 	@RequestMapping(value = { "/listtablereservebycustomerid" }, method = RequestMethod.GET)
 	public Map<String, Object> listTableReserveByCustomerId(HttpSession session,
-			@RequestParam("customerId") Integer customerId)
-			throws Exception {
+			@RequestParam("customerId") Integer customerId) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		List<TableReserve> tablereserve = tablereserveservice.listTableReserveByCustomerId(customerId);
 		resultMap.put(Constants.STATUS, Constants.SUCCESS);

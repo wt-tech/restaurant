@@ -30,16 +30,19 @@ public class BanquetReserveCtrl implements ApplicationContextAware{
 	private IBanquetReserveService banquetreserveservice;
 
 	@RequestMapping(value = { "/back/listbanquetreserve" }, method = RequestMethod.GET)
-	public Map<String, Object> listBanquetReserve(@RequestParam("currentPageNo") Integer currentPageNo) throws Exception {
+	public Map<String, Object> listBanquetReserve(@RequestParam("currentPageNo") Integer currentPageNo,
+			@RequestParam(value = "newReserveNum", required = false) Integer newReserveNum) throws Exception {
 		Map<String, Object> map = MapUtils.getHashMapInstance();
+		Integer pagesizes= PageUtil.getPageNum(newReserveNum);
 		// 总数量（表）
 		int totalCount = banquetreserveservice.countBanquetReserve();
-		Integer currentPageNos = new PageUtil().Page(totalCount, currentPageNo, Constants.pageSizes);
-		List<BanquetReserve> banquetreserves = banquetreserveservice.listBanquetReserve(currentPageNos, Constants.pageSizes);
+		Integer currentPageNos = new PageUtil().Page(totalCount, currentPageNo, pagesizes);
+		List<BanquetReserve> banquetreserves = banquetreserveservice.listBanquetReserve(currentPageNos,
+				pagesizes);
 		map.put(Constants.STATUS, Constants.SUCCESS);
 		map.put("banquetreserves", banquetreserves);
 		map.put("totalCount", totalCount);
-		map.put("pageSize", Constants.pageSizes);
+		map.put("pageSize", pagesizes);
 		return map;
 	}
 

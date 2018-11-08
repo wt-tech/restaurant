@@ -31,8 +31,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<result column="large_price" property="largePrice" />
 			<result column="medium_price" property="mediumPrice" />
 			<result column="small_price" property="smallPrice" />
-			<result column="discount" property="discount" />
+			<result column="specifications" property="specifications" />
+			<result column="choose_price" property="choosePrice" />
+			<result column="menu_count" property="menuCount" />
 			<result column="discount_price" property="discountPrice" />
+			<result column="discount" property="discount" />
 		</collection>
 	</resultMap>
 
@@ -48,6 +51,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		reserve_time,
 		reservations_mode,
 		remarks,
+		specifications,
+		choose_price,
+		menu_count,
 		box.id AS
 		box_id,room_number,room_size,room_name,
 		menu.id AS menu_id,menu.name AS
@@ -158,6 +164,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		reserve_time,
 		reservations_mode,
 		remarks,
+		specifications,
+		choose_price,
+		menu_count,
 		box.id AS
 		box_id,room_number,room_size,room_name,
 		menu.id AS menu_id,menu.name AS
@@ -189,6 +198,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		reserve_time,
 		reservations_mode,
 		remarks,
+		specifications,
+		choose_price,
+		menu_count,
 		box.id AS
 		box_id,room_number,room_size,room_name,
 		menu.id AS menu_id,menu.name AS

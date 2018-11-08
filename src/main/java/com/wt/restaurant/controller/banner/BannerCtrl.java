@@ -49,7 +49,6 @@ public class BannerCtrl {
 	public Map<String, Object> saveBanner(HttpServletRequest request,
 			@RequestParam(value = "imgName", required = false) String imgName,
 			@RequestParam(value = "file") MultipartFile[] file) throws Exception {
-
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		// 获取图片的公共存储路径（例如：D:\ApacheTomcat7\apache-tomcat-7.0.53\webapps\statics）
 		String staticsPath = ContextUtil.getStaticResourceAbsolutePath(request);

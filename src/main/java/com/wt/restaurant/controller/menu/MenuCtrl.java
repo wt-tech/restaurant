@@ -1,17 +1,21 @@
 package com.wt.restaurant.controller.menu;
 
+import java.net.URLDecoder;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.fastjson.JSON;
 import com.wt.restaurant.entity.Menu;
 import com.wt.restaurant.service.menu.IMenuService;
 import com.wt.restaurant.tool.Constants;
@@ -33,9 +37,12 @@ public class MenuCtrl {
 		return map;
 	}
 
-	@RequestMapping(value = { "/back/updatemenu" }, method = RequestMethod.PUT)
-	public Map<String, Object> updateMenu(HttpServletRequest request, Menu menu,
+	@RequestMapping(value = { "/back/updatemenu" }, method = RequestMethod.POST)
+	public Map<String, Object> updateMenu(HttpServletRequest request, String jsonMenu,
 			@RequestParam(value = "menuImg", required = false) MultipartFile[] file) throws Exception {
+	
+		String rs = URLDecoder.decode(jsonMenu, "UTF-8");
+		Menu menu = JSON.parseObject(rs, Menu.class);
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		boolean flag = menuservice.updateMenu(menu);
 		resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);
@@ -43,8 +50,10 @@ public class MenuCtrl {
 	}
 
 	@RequestMapping(value = { "/back/savemenu" }, method = RequestMethod.POST)
-	public Map<String, Object> saveMenu(HttpServletRequest request, Menu menu,
+	public Map<String, Object> saveMenu(HttpServletRequest request, String jsonMenu,
 			@RequestParam(value = "menuImg", required = false) MultipartFile[] file) throws Exception {
+		String rs = URLDecoder.decode(jsonMenu, "UTF-8");
+		Menu menu = JSON.parseObject(rs, Menu.class);
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		String staticsPath = ContextUtil.getStaticResourceAbsolutePath(request);
 		boolean flag = menuservice.saveMenu(menu,file,staticsPath);
@@ -52,8 +61,8 @@ public class MenuCtrl {
 		return resultMap;
 	}
 
-	@RequestMapping(value = { "/back/removemenu" }, method = RequestMethod.DELETE)
-	public Map<String, Object> removeMenu(@RequestParam("id") int id) throws Exception {
+	@RequestMapping(value = { "/back/removemenu/{id}" }, method = RequestMethod.DELETE)
+	public Map<String, Object> removeMenu(@PathVariable("id") Integer id) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		boolean flag = menuservice.removeMenu(id);
 		resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);

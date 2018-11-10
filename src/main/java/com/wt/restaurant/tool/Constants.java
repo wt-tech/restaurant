@@ -1,5 +1,8 @@
 package com.wt.restaurant.tool;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Constants {
 	
 	//session相关
@@ -85,6 +88,10 @@ public class Constants {
 
 
 	public static final String ORDER_NUMBER_PREFIX = "XTXZSMF";
-
 	
+	//小程序端拥有商家入口权限的用户id集合.
+	public static final List<Integer> managerList = new ArrayList<Integer>(); 
+	static {
+		managerList.add(new Integer(188));
+	}
 }

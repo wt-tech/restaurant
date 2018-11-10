@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,7 +32,7 @@ public class ClassificationCtrl {
 	}
 
 	@RequestMapping(value = { "/back/updateclassification" }, method = RequestMethod.PUT)
-	public Map<String, Object> updateClassification(Classification classification) throws Exception {
+	public Map<String, Object> updateClassification(@RequestBody() Classification classification) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		boolean flag = classificationservice.updateClassification(classification);
 		resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);
@@ -38,15 +40,15 @@ public class ClassificationCtrl {
 	}
 
 	@RequestMapping(value = { "/back/saveclassification" }, method = RequestMethod.POST)
-	public Map<String, Object> saveClassification(Classification classification) throws Exception {
+	public Map<String, Object> saveClassification(@RequestBody() Classification classification) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		boolean flag = classificationservice.saveClassification(classification);
 		resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);
 		return resultMap;
 	}
 
-	@RequestMapping(value = { "/back/removeclassification" }, method = RequestMethod.DELETE)
-	public Map<String, Object> removeClassification(@RequestParam("id") int id) throws Exception {
+	@RequestMapping(value = { "/back/removeclassification/{id}" }, method = RequestMethod.DELETE)
+	public Map<String, Object> removeClassification(@PathVariable("id") Integer id) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		boolean flag = classificationservice.removeClassification(id);
 		resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);

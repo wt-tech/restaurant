@@ -48,6 +48,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		LEFT JOIN
 		combo ON
 		combo.id=banquet_reserve.combo_id
+		where 1=1
+		<if test="banquetreserve !=null and banquetreserve.reservationsName !=null">
+			and
+			reservations_name like "%${banquetreserve.reservationsName}%"
+		</if>
+		<if test="banquetreserve !=null and banquetreserve.reservationsTel !=null">
+			and
+			reservations_tel=#{banquetreserve.reservationsTel}
+		</if>
 		ORDER BY reserve_time desc
 		LIMIT
 		${(currentPageNo-1)*pageSize},${pageSize}
@@ -143,7 +152,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="countBanquetReserve" resultType="Integer">
 		SELECT COUNT(*) FROM
-		banquet_reserve;
+		banquet_reserve
+		where 1=1
+		<if test="banquetreserve !=null and banquetreserve.reservationsName !=null">
+			and
+			reservations_name like "%${banquetreserve.reservationsName}%"
+		</if>
+		<if test="banquetreserve !=null and banquetreserve.reservationsTel !=null">
+			and
+			reservations_tel=#{banquetreserve.reservationsTel}
+		</if>
 	</select>
 
 </mapper>

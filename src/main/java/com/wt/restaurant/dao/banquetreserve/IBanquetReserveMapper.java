@@ -16,7 +16,7 @@ public interface IBanquetReserveMapper {
 	 * @return
 	 */
 	List<BanquetReserve> listBanquetReserve(@Param("currentPageNo") Integer currentPageNo,
-			@Param("pageSize") Integer pageSize);
+			@Param("pageSize") Integer pageSize,@Param("banquetreserve") BanquetReserve banquetreserve);
 
 	/**
 	 * 修改预订信息
@@ -75,5 +75,5 @@ public interface IBanquetReserveMapper {
 	 * 
 	 * @return
 	 */
-	Integer countBanquetReserve();
+	Integer countBanquetReserve(@Param("banquetreserve") BanquetReserve banquetreserve);
 }

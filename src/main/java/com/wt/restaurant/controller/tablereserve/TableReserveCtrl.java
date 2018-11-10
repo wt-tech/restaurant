@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -64,8 +65,8 @@ public class TableReserveCtrl {
 		return resultMap;
 	}
 
-	@RequestMapping(value = { "/back/gettablereserve" }, method = RequestMethod.GET)
-	public Map<String, Object> getTableReserve(@RequestParam("id") int id) throws Exception {
+	@RequestMapping(value = { "/back/gettablereserve/{id}" }, method = RequestMethod.GET)
+	public Map<String, Object> getTableReserve(@PathVariable Integer id) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		TableReserve tablereserve = tablereserveservice.getTableReserve(id);
 		resultMap.put(Constants.STATUS, Constants.SUCCESS);

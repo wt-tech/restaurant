@@ -1,5 +1,6 @@
 package com.wt.restaurant.controller.banquetreserve;
 
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
 
@@ -31,14 +32,19 @@ public class BanquetReserveCtrl implements ApplicationContextAware{
 
 	@RequestMapping(value = { "/back/listbanquetreserve" }, method = RequestMethod.GET)
 	public Map<String, Object> listBanquetReserve(@RequestParam("currentPageNo") Integer currentPageNo,
+			BanquetReserve banquetreserve,
 			@RequestParam(value = "newReserveNum", required = false) Integer newReserveNum) throws Exception {
+		String name = banquetreserve.getReservationsName();
+		if(name != null && name.length() > 0) {
+			banquetreserve.setReservationsName(URLDecoder.decode(name, "UTF-8"));
+		} 
 		Map<String, Object> map = MapUtils.getHashMapInstance();
 		Integer pagesizes= PageUtil.getPageNum(newReserveNum);
 		// 总数量（表）
-		int totalCount = banquetreserveservice.countBanquetReserve();
+		int totalCount = banquetreserveservice.countBanquetReserve(banquetreserve);
 		Integer currentPageNos = new PageUtil().Page(totalCount, currentPageNo, pagesizes);
 		List<BanquetReserve> banquetreserves = banquetreserveservice.listBanquetReserve(currentPageNos,
-				pagesizes);
+				pagesizes,banquetreserve);
 		map.put(Constants.STATUS, Constants.SUCCESS);
 		map.put("banquetreserves", banquetreserves);
 		map.put("totalCount", totalCount);

@@ -12,7 +12,7 @@ public interface ITableReserveHomeService {
 	 * @param pageSize
 	 * @return
 	 */
-	List<TableReserveHome> listTableReserveHome(Integer currentPageNo,Integer pageSize);
+	List<TableReserveHome> listTableReserveHome(Integer currentPageNo,Integer pageSize,TableReserveHome tablereservehome);
 
 	/**
 	 * 修改预订信息
@@ -69,5 +69,5 @@ public interface ITableReserveHomeService {
 	 * 
 	 * @return
 	 */
-	Integer countTableReserveHome();
+	Integer countTableReserveHome(TableReserveHome tablereservehome);
 }

@@ -18,9 +18,9 @@ public class BanquetReserveServiceImpl implements IBanquetReserveService {
 	private IBanquetReserveMapper banquetreservemapper;
 
 	@Override
-	public List<BanquetReserve> listBanquetReserve(Integer currentPageNo, Integer pageSize) {
+	public List<BanquetReserve> listBanquetReserve(Integer currentPageNo, Integer pageSize,BanquetReserve banquetreserve) {
 		// TODO Auto-generated method stub
-		return banquetreservemapper.listBanquetReserve(currentPageNo, pageSize);
+		return banquetreservemapper.listBanquetReserve(currentPageNo, pageSize,banquetreserve);
 	}
 
 	@Override
@@ -71,9 +71,9 @@ public class BanquetReserveServiceImpl implements IBanquetReserveService {
 	}
 
 	@Override
-	public Integer countBanquetReserve() {
+	public Integer countBanquetReserve(BanquetReserve banquetreserve) {
 		// TODO Auto-generated method stub
-		return banquetreservemapper.countBanquetReserve();
+		return banquetreservemapper.countBanquetReserve(banquetreserve);
 	}
 
 }

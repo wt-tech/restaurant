@@ -60,8 +60,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		LEFT JOIN menu ON
 		menu.id=table_reserve_menu.menu_id
 		ORDER BY reserve_time DESC
-		LIMIT
-		${(currentPageNo-1)*pageSize},${pageSize}
 	</select>
 
 	<update id="updateTableReserve" parameterType="TableReserve">
@@ -141,7 +139,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		LEFT JOIN menu ON
 		menu.id=table_reserve_menu.menu_id
 		WHERE
-		reserve.id=#{id}
+		table_reserve.id=#{id}
 	</select>
 
 	<select id="listTableReserveByCustomerId" resultMap="tablereserve">

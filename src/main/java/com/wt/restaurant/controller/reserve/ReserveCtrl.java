@@ -1,5 +1,6 @@
 package com.wt.restaurant.controller.reserve;
 
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
 
@@ -32,8 +33,11 @@ public class ReserveCtrl implements ApplicationContextAware {
 	
 	@RequestMapping(value = { "/back/listreserve" }, method = RequestMethod.GET)
 	public Map<String, Object> listReserve(@RequestParam("currentPageNo") Integer currentPageNo,
-			@RequestParam(value = "reserve", required = false) Reserve reserve,
-			@RequestParam(value = "newReserveNum", required = false) Integer newReserveNum) throws Exception {
+	    Reserve reserve,@RequestParam(value = "newReserveNum", required = false) Integer newReserveNum) throws Exception {
+		String name = reserve.getReservationsName();
+		if(name != null && name.length() > 0) {
+			reserve.setReservationsName(URLDecoder.decode(name, "UTF-8"));
+		} 
 		Map<String, Object> map = MapUtils.getHashMapInstance();
 		Integer pagesizes= PageUtil.getPageNum(newReserveNum);
 		// 总数量（表）

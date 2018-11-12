@@ -12,7 +12,7 @@ public interface IBanquetReserveService {
 	 * @param pageSize
 	 * @return
 	 */
-	List<BanquetReserve> listBanquetReserve(Integer currentPageNo, Integer pageSize);
+	List<BanquetReserve> listBanquetReserve(Integer currentPageNo, Integer pageSize,BanquetReserve banquetreserve);
 
 	/**
 	 * 修改预订信息
@@ -71,5 +71,5 @@ public interface IBanquetReserveService {
 	 * 
 	 * @return
 	 */
-	Integer countBanquetReserve();
+	Integer countBanquetReserve(BanquetReserve banquetreserve);
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,14 +25,15 @@ public class TableReserveHomeCtrl {
 
 	@RequestMapping(value = { "/back/listtablereservehome" }, method = RequestMethod.GET)
 	public Map<String, Object> listTableReserveHome(@RequestParam("currentPageNo") Integer currentPageNo,
+			TableReserveHome tablereservehome,
 			@RequestParam(value = "newReserveNum", required = false) Integer newReserveNum) throws Exception {
 		Map<String, Object> map = MapUtils.getHashMapInstance();
 		Integer pagesizes = PageUtil.getPageNum(newReserveNum);
 		// 总数量（表）
-		int totalCount = tablereservehomeservice.countTableReserveHome();
+		int totalCount = tablereservehomeservice.countTableReserveHome(tablereservehome);
 		Integer currentPageNos = new PageUtil().Page(totalCount, currentPageNo, pagesizes);
 		List<TableReserveHome> tablereservehomes = tablereservehomeservice.listTableReserveHome(currentPageNos,
-				pagesizes);
+				pagesizes, tablereservehome);
 		map.put(Constants.STATUS, Constants.SUCCESS);
 		map.put("tablereservehomes", tablereservehomes);
 		map.put("totalCount", totalCount);
@@ -63,8 +65,8 @@ public class TableReserveHomeCtrl {
 		return resultMap;
 	}
 
-	@RequestMapping(value = { "/back/gettablereservehome" }, method = RequestMethod.GET)
-	public Map<String, Object> getTableReserveHome(@RequestParam("id") int id) throws Exception {
+	@RequestMapping(value = { "/back/gettablereservehome/{id}" }, method = RequestMethod.GET)
+	public Map<String, Object> getTableReserveHome(@PathVariable Integer id) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		TableReserveHome tablereservehome = tablereservehomeservice.getTableReserveHome(id);
 		resultMap.put(Constants.STATUS, Constants.SUCCESS);

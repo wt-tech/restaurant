@@ -21,9 +21,9 @@ public class TableReserveHomeServiceImpl implements ITableReserveHomeService {
 	private ITableReserveHomeMapper tablereservehomemapper;
 
 	@Override
-	public List<TableReserveHome> listTableReserveHome(Integer currentPageNo, Integer pageSize) {
+	public List<TableReserveHome> listTableReserveHome(Integer currentPageNo, Integer pageSize,TableReserveHome tablereservehome) {
 		// TODO Auto-generated method stub
-		return tablereservehomemapper.listTableReserveHome(currentPageNo, pageSize);
+		return tablereservehomemapper.listTableReserveHome(currentPageNo, pageSize,tablereservehome);
 	}
 
 	@Override
@@ -108,9 +108,9 @@ public class TableReserveHomeServiceImpl implements ITableReserveHomeService {
 	}
 
 	@Override
-	public Integer countTableReserveHome() {
+	public Integer countTableReserveHome(TableReserveHome tablereservehome) {
 		// TODO Auto-generated method stub
-		return tablereservehomemapper.countTableReserveHome();
+		return tablereservehomemapper.countTableReserveHome(tablereservehome);
 	}
 
 }

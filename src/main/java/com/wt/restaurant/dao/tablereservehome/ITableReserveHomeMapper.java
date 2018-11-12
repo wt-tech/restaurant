@@ -17,7 +17,7 @@ public interface ITableReserveHomeMapper {
 	 * @param pageSize
 	 * @return
 	 */
-	List<TableReserveHome> listTableReserveHome(@Param("currentPageNo") Integer currentPageNo, @Param("pageSize") Integer pageSize);
+	List<TableReserveHome> listTableReserveHome(@Param("currentPageNo") Integer currentPageNo, @Param("pageSize") Integer pageSize,@Param("tablereservehome") TableReserveHome tablereservehome);
 
 	/**
 	 * 修改预订信息
@@ -94,5 +94,5 @@ public interface ITableReserveHomeMapper {
 	 * 
 	 * @return
 	 */
-	Integer countTableReserveHome();
+	Integer countTableReserveHome(@Param("tablereservehome") TableReserveHome tablereservehome);
 }

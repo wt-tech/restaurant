@@ -26,6 +26,12 @@ public class ComboServiceImpl implements IComboService {
 	}
 
 	@Override
+	public List<Combo> listAllCombo() {
+		// TODO Auto-generated method stub
+		return combomapper.listAllCombo();
+	}
+
+	@Override
 	public boolean updateCombo(Combo combo) throws Exception {
 		// TODO Auto-generated method stub
 		return combomapper.updateCombo(combo) > 0;

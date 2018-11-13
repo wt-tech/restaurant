@@ -38,6 +38,14 @@ public class ReserveCtrl implements ApplicationContextAware {
 		if(name != null && name.length() > 0) {
 			reserve.setReservationsName(URLDecoder.decode(name, "UTF-8"));
 		} 
+		String reservationType=reserve.getReservationType();
+		if(reservationType != null && reservationType.length() > 0) {
+			reserve.setReservationType(URLDecoder.decode(reservationType, "UTF-8"));
+		} 
+		String reservationsMode=reserve.getReservationsMode();
+		if(reservationsMode != null && reservationsMode.length() > 0) {
+			reserve.setReservationsMode(URLDecoder.decode(reservationsMode, "UTF-8"));
+		} 
 		Map<String, Object> map = MapUtils.getHashMapInstance();
 		Integer pagesizes= PageUtil.getPageNum(newReserveNum);
 		// 总数量（表）

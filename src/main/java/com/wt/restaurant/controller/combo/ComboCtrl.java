@@ -39,6 +39,15 @@ public class ComboCtrl {
 		return map;
 	}
 
+	@RequestMapping(value = { "/back/listallcombo" }, method = RequestMethod.GET)
+	public Map<String, Object> listAllcombo() throws Exception {
+		Map<String, Object> map = MapUtils.getHashMapInstance();
+		List<Combo> combo = comboservice.listAllCombo();
+		map.put(Constants.STATUS, Constants.SUCCESS);
+		map.put("combos", combo);
+		return map;
+	}
+
 	@RequestMapping(value = { "/back/updatecombo" }, method = RequestMethod.PUT)
 	public Map<String, Object> updatecombo(HttpServletRequest request, Combo combo,
 			@RequestParam(value = "comboImg", required = false) MultipartFile[] file) throws Exception {

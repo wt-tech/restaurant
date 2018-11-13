@@ -24,7 +24,7 @@ public interface IMenuService {
 	 * @return
 	 * @throws Exception
 	 */
-	boolean updateMenu(Menu Menu) throws Exception;
+	boolean updateMenu(Menu Menu,MultipartFile file,String staticsPath) throws Exception;
 
 	/**
 	 * 保存菜品信息
@@ -33,7 +33,7 @@ public interface IMenuService {
 	 * @return
 	 * @throws Exception
 	 */
-	boolean saveMenu(Menu Menu,MultipartFile[] file,String staticsPath) throws Exception;
+	boolean saveMenu(Menu Menu,MultipartFile file,String staticsPath) throws Exception;
 
 	/**
 	 * 删除菜品

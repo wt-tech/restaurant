@@ -26,44 +26,48 @@ public class BoxServiceImpl implements IBoxService {
 	}
 
 	@Override
-	public boolean updateBox(Box box) throws Exception {
+	public boolean updateBox(Box box, MultipartFile file, String staticsPath) throws Exception {
 		// TODO Auto-generated method stub
-		return boxmapper.updateBox(box) > 0;
+		boolean flag = false;
+		flag = boxmapper.updateBox(box) > 0;
+		if (flag) {
+			return saveupdateImage(box, file, staticsPath);
+		}
+		return flag;
 	}
 
 	@Override
-	public boolean saveBox(Box box, MultipartFile[] file, String staticsPath) throws Exception {
+	public boolean saveBox(Box box, MultipartFile file, String staticsPath) throws Exception {
 		// TODO Auto-generated method stub
 		boolean flag = false;
 		flag = boxmapper.saveBox(box) > 0;
 		if (flag) {
-			if (null != file && file.length > 0) {
-				for (int i = 0; i < file.length; i++) {
-					MultipartFile attach = file[i];
-					if (!attach.isEmpty()) {
-						int id = (int) new Date().getTime();
-						// 获取文件名
-						String suffix = ImageUtils.getImageTypeWithDot(attach);
-						// 根据传递的公共路径（前半部分）+表名+id+文件名生成存储路径
-						String absolutePath = ImageUtils.generateAbsoluteImgPath(staticsPath, Constants.BOX_IMG, id,
-								suffix);
-						flag = false;
-						// 上传图片
-						flag = ImageUtils.saveImage(attach, absolutePath);
-						// 生成网络访问的路径
-						String url = ImageUtils.genrateVirtualImgPath(Constants.BOX_IMG, id, suffix);
-						if (flag) {
-							BoxImage boximage = new BoxImage();
-							boximage.setBox(box);
-							String imgName = box.getRoomName() + i;
-							boximage.setName(imgName);
-							boximage.setUrl(url);
-							flag = boxmapper.saveBoxImage(boximage) > 0;
-							if (flag)
-								continue;
-						}
-					}
-				}
+			return saveupdateImage(box, file, staticsPath);
+		}
+		return flag;
+	}
+
+	public boolean saveupdateImage(Box box, MultipartFile file, String staticsPath) throws Exception {
+		// TODO Auto-generated method stub
+		boolean flag = true;
+		if (null != file && !file.isEmpty()) {
+			int id = (int) new Date().getTime();
+			// 获取文件名
+			String suffix = ImageUtils.getImageTypeWithDot(file);
+			// 根据传递的公共路径（前半部分）+表名+id+文件名生成存储路径
+			String absolutePath = ImageUtils.generateAbsoluteImgPath(staticsPath, Constants.BOX_IMG, id, suffix);
+			flag = false;
+			// 上传图片
+			flag = ImageUtils.saveImage(file, absolutePath);
+			// 生成网络访问的路径
+			String url = ImageUtils.genrateVirtualImgPath(Constants.BOX_IMG, id, suffix);
+			if (flag) {
+				BoxImage boximage = new BoxImage();
+				boximage.setBox(box);
+				String imgName = box.getRoomName();
+				boximage.setName(imgName);
+				boximage.setUrl(url);
+				flag = boxmapper.saveBoxImage(boximage) > 0;
 			}
 		}
 

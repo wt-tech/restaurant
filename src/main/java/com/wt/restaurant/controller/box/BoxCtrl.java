@@ -93,16 +93,17 @@ public class BoxCtrl {
 
 	@RequestMapping(value = { "/back/updatebox" }, method = RequestMethod.PUT)
 	public Map<String, Object> updateBox(HttpServletRequest request, Box box,
-			@RequestParam(value = "boxImg", required = false) MultipartFile[] file) throws Exception {
+			@RequestParam(value = "boxImg", required = false) MultipartFile file) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
-		boolean flag = boxservice.updateBox(box);
+		String staticsPath = ContextUtil.getStaticResourceAbsolutePath(request);
+		boolean flag = boxservice.updateBox(box, file, staticsPath);
 		resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);
 		return resultMap;
 	}
 
 	@RequestMapping(value = { "/back/savebox" }, method = RequestMethod.POST)
 	public Map<String, Object> saveBox(HttpServletRequest request, Box box,
-			@RequestParam(value = "boxImg", required = false) MultipartFile[] file) throws Exception {
+			@RequestParam(value = "boxImg", required = false) MultipartFile file) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		String staticsPath = ContextUtil.getStaticResourceAbsolutePath(request);
 		boolean flag = boxservice.saveBox(box, file, staticsPath);

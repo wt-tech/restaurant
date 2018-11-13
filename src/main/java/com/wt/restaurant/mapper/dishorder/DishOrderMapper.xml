@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- namespace指向mapper接口 -->
-<mapper namespace="com.wt.restaurant.dao.table.ITableMapper">
+<mapper namespace="com.wt.restaurant.dao.dishorder.IDishOrderMapper">
 	<resultMap type="Reserve" id="reserve">
 		<id column="id" property="id" />
 		<result column="reservations_name" property="reservationsName" />
@@ -25,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<result column="room_name" property="roomName" />
 		</collection>
 	</resultMap>
-	<select id="listTable" resultType="Table">
+	<select id="listDishOrder" resultType="DishOrder">
 		SELECT
 		id,
 		number,
@@ -37,29 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		${(currentPageNo-1)*pageSize},${pageSize}
 	</select>
 
-	<update id="updateTable" parameterType="Table">
-		update table
-		set
-		number=#{number},
-		image=#{image}
-		where
-		id=#{id};
-	</update>
-
-	<insert id="saveTable" parameterType="Table">
-		insert into table
-		(number,image)
-		values(#{number},
-		#{image});
-	</insert>
-
-	<delete id="removeTable" parameterType="Integer">
-		delete from table
-		where
-		id=#{id}
-	</delete>
-
-	<select id="getTable" resultType="Table">
+	<select id="listDishOrderByCustomerId" resultType="DishOrder">
 		SELECT
 		id,
 		number,
@@ -67,11 +45,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM table
 		WHERE
 		id=#{id}
-	</select>
-
-	<select id="countTable" resultType="Integer">
-		SELECT COUNT(*) FROM
-		table
 	</select>
 
 </mapper>

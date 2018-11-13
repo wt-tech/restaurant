@@ -16,7 +16,7 @@ public interface IComboMapper {
 	 * @return
 	 */
 	List<Combo> listCombo(@Param("currentPageNo") Integer currentPageNo, @Param("pageSize") Integer pageSize);
-
+	List<Combo> listAllCombo();
 	/**
 	 * 修改套餐
 	 * 

@@ -15,6 +15,7 @@ public interface IComboService {
 	 * @return
 	 */
 	List<Combo> listCombo(Integer currentPageNo, Integer pageSize);
+	List<Combo> listAllCombo();
 
 	/**
 	 * 修改套餐

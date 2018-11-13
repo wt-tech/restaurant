@@ -41,6 +41,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		LIMIT
 		${(currentPageNo-1)*pageSize},${pageSize}
 	</select>
+	
+	<select id="listAllCombo" resultType="Combo">
+		SELECT
+		id,
+		combo_name
+		FROM combo
+		ORDER BY combo_sort
+	</select>
 
 	<update id="updateCombo" parameterType="Combo">
 		update combo

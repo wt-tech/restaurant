@@ -21,7 +21,7 @@ public interface IBoxService {
 	 * @return
 	 * @throws Exception
 	 */
-	boolean updateBox(Box box) throws Exception;
+	boolean updateBox(Box box, MultipartFile file, String staticsPath) throws Exception;
 
 
 	/**
@@ -30,7 +30,7 @@ public interface IBoxService {
 	 * @return
 	 * @throws Exception
 	 */
-	boolean saveBox(Box box, MultipartFile[] file, String staticsPath) throws Exception;
+	boolean saveBox(Box box, MultipartFile file, String staticsPath) throws Exception;
 
 	/**
 	 * 删除包厢

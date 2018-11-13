@@ -26,47 +26,48 @@ public class MenuServiceImpl implements IMenuService {
 	}
 
 	@Override
-	public boolean updateMenu(Menu Menu) throws Exception {
+	public boolean updateMenu(Menu menu, MultipartFile file, String staticsPath) throws Exception {
 		// TODO Auto-generated method stub
-		return menumapper.updateMenu(Menu) > 0;
+		boolean flag = false;
+		flag = menumapper.updateMenu(menu) > 0;
+		if (flag) {
+			return saveupdateImage(menu, file, staticsPath);
+		}
+		return flag;
+	}
+
+	public boolean saveupdateImage(Menu menu, MultipartFile file, String staticsPath) throws Exception {
+		boolean flag = true;
+		if (null != file && !file.isEmpty()) {
+			int id = (int) new Date().getTime();
+			// 获取文件名
+			String suffix = ImageUtils.getImageTypeWithDot(file);
+			// 根据传递的公共路径（前半部分）+表名+id+文件名生成存储路径
+			String absolutePath = ImageUtils.generateAbsoluteImgPath(staticsPath, Constants.MENU_IMG, id, suffix);
+			// 上传图片
+			flag = ImageUtils.saveImage(file, absolutePath);
+			// 生成网络访问的路径
+			String url = ImageUtils.genrateVirtualImgPath(Constants.MENU_IMG, id, suffix);
+			if (flag) {
+				MenuImage menuimage = new MenuImage();
+				menuimage.setMenu(menu);
+				String imgName = menu.getName();
+				menuimage.setName(imgName);
+				menuimage.setUrl(url);
+				flag = menumapper.saveMenuImage(menuimage) > 0;
+			}
+		}
+		return flag;
 	}
 
 	@Override
-	public boolean saveMenu(Menu menu, MultipartFile[] file, String staticsPath) throws Exception {
+	public boolean saveMenu(Menu menu, MultipartFile file, String staticsPath) throws Exception {
 		// TODO Auto-generated method stub
 		boolean flag = false;
 		flag = menumapper.saveMenu(menu) > 0;
 		if (flag) {
-			if (null != file && file.length > 0) {
-				for (int i = 0; i < file.length; i++) {
-					MultipartFile attach = file[i];
-					if (!attach.isEmpty()) {
-						int id = (int) new Date().getTime();
-						// 获取文件名
-						String suffix = ImageUtils.getImageTypeWithDot(attach);
-						// 根据传递的公共路径（前半部分）+表名+id+文件名生成存储路径
-						String absolutePath = ImageUtils.generateAbsoluteImgPath(staticsPath, Constants.MENU_IMG, id,
-								suffix);
-						flag = false;
-						// 上传图片
-						flag = ImageUtils.saveImage(attach, absolutePath);
-						// 生成网络访问的路径
-						String url = ImageUtils.genrateVirtualImgPath(Constants.MENU_IMG, id, suffix);
-						if (flag) {
-							MenuImage menuimage = new MenuImage();
-							menuimage.setMenu(menu);
-							String imgName = menu.getName() + i;
-							menuimage.setName(imgName);
-							menuimage.setUrl(url);
-							flag = menumapper.saveMenuImage(menuimage) > 0;
-							if (flag)
-								continue;
-						}
-					}
-				}
-			}
+			return saveupdateImage(menu, file, staticsPath);
 		}
-
 		return flag;
 	}
 

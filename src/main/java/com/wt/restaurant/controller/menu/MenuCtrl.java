@@ -1,7 +1,6 @@
 package com.wt.restaurant.controller.menu;
 
 import java.net.URLDecoder;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
@@ -39,24 +38,24 @@ public class MenuCtrl {
 
 	@RequestMapping(value = { "/back/updatemenu" }, method = RequestMethod.POST)
 	public Map<String, Object> updateMenu(HttpServletRequest request, String jsonMenu,
-			@RequestParam(value = "menuImg", required = false) MultipartFile[] file) throws Exception {
-	
+			@RequestParam(value = "menuImg", required = false) MultipartFile file) throws Exception {
 		String rs = URLDecoder.decode(jsonMenu, "UTF-8");
 		Menu menu = JSON.parseObject(rs, Menu.class);
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
-		boolean flag = menuservice.updateMenu(menu);
+		String staticsPath = ContextUtil.getStaticResourceAbsolutePath(request);
+		boolean flag = menuservice.updateMenu(menu, file, staticsPath);
 		resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);
 		return resultMap;
 	}
 
 	@RequestMapping(value = { "/back/savemenu" }, method = RequestMethod.POST)
 	public Map<String, Object> saveMenu(HttpServletRequest request, String jsonMenu,
-			@RequestParam(value = "menuImg", required = false) MultipartFile[] file) throws Exception {
+			@RequestParam(value = "menuImg", required = false) MultipartFile file) throws Exception {
 		String rs = URLDecoder.decode(jsonMenu, "UTF-8");
 		Menu menu = JSON.parseObject(rs, Menu.class);
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		String staticsPath = ContextUtil.getStaticResourceAbsolutePath(request);
-		boolean flag = menuservice.saveMenu(menu,file,staticsPath);
+		boolean flag = menuservice.saveMenu(menu, file, staticsPath);
 		resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);
 		return resultMap;
 	}

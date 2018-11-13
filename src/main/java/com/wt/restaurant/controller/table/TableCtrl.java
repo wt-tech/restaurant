@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,9 +39,8 @@ public class TableCtrl {
 		return map;
 	}
 
-	@RequestMapping(value = { "/back/updatetable" }, method = RequestMethod.PUT)
-	public Map<String, Object> updateTable(HttpServletRequest request, Table table,
-			@RequestParam(value = "tableImg", required = false) MultipartFile[] file) throws Exception {
+	@RequestMapping(value = { "/back/updatetable" }, method = RequestMethod.POST)
+	public Map<String, Object> updateTable(HttpServletRequest request, Table table) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		boolean flag = tableservice.updateTable(table);
 		resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);
@@ -48,8 +48,7 @@ public class TableCtrl {
 	}
 
 	@RequestMapping(value = { "/back/savetable" }, method = RequestMethod.POST)
-	public Map<String, Object> saveTable(HttpServletRequest request, Table table,
-			@RequestParam(value = "tableImg", required = false) MultipartFile[] file) throws Exception {
+	public Map<String, Object> saveTable(HttpServletRequest request, Table table) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		//String staticsPath = ContextUtil.getStaticResourceAbsolutePath(request);
 		boolean flag = tableservice.saveTable(table);
@@ -57,8 +56,8 @@ public class TableCtrl {
 		return resultMap;
 	}
 
-	@RequestMapping(value = { "/back/removetable" }, method = RequestMethod.DELETE)
-	public Map<String, Object> removeTable(@RequestParam("id") int id) throws Exception {
+	@RequestMapping(value = { "/back/removetable/{id}" }, method = RequestMethod.DELETE)
+	public Map<String, Object> removeTable(@PathVariable("id") Integer id) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		boolean flag = tableservice.removeTable(id);
 		resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);

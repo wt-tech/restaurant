@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,9 +26,9 @@ import com.wt.restaurant.service.box.IBoxService;
 import com.wt.restaurant.service.reserve.IReserveService;
 import com.wt.restaurant.tool.CompareBox;
 import com.wt.restaurant.tool.Constants;
+import com.wt.restaurant.tool.ContextUtil;
 import com.wt.restaurant.tool.MapUtils;
 import com.wt.restaurant.tool.PageUtil;
-import com.wt.restaurant.tool.ContextUtil;
 
 @RestController("")
 @RequestMapping("/box")
@@ -91,7 +92,7 @@ public class BoxCtrl {
 		return map;
 	}
 
-	@RequestMapping(value = { "/back/updatebox" }, method = RequestMethod.PUT)
+	@RequestMapping(value = { "/back/updatebox" }, method = RequestMethod.POST)
 	public Map<String, Object> updateBox(HttpServletRequest request, Box box,
 			@RequestParam(value = "boxImg", required = false) MultipartFile[] file) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
@@ -110,8 +111,8 @@ public class BoxCtrl {
 		return resultMap;
 	}
 
-	@RequestMapping(value = { "/back/removebox" }, method = RequestMethod.DELETE)
-	public Map<String, Object> removeBox(@RequestParam("id") int id) throws Exception {
+	@RequestMapping(value = { "/back/removebox/{id}" }, method = RequestMethod.DELETE)
+	public Map<String, Object> removeBox(@PathVariable("id") Integer id) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		boolean flag = boxservice.removeBox(id);
 		resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);

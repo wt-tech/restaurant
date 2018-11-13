@@ -1,9 +1,5 @@
 package com.wt.restaurant.entity;
 
-import org.hibernate.validator.constraints.NotBlank;
-
-import com.wt.restaurant.inface.Get;
-
 /**
  * 生成二维码需要的参数,和后台数据库表无关,说明:<br/>
  * https://developers.weixin.qq.com/miniprogram/dev/api/open-api/qr-code/getWXACodeUnlimit.html
@@ -11,16 +7,28 @@ import com.wt.restaurant.inface.Get;
  */
 public class MiniProgramCodeParam {
 	
-	@NotBlank(message="{code.access_token}",groups= {Get.class})
 	private String access_token;
 	private String scene;
-	@NotBlank(message="{code.path}",groups= {Get.class})
-	private String path;
+	private String page;
 	private String width;
 	private Boolean auto_color;
 	private Boolean is_hyaline;
 	private LineColor line_color;
+	/**
+	 * 该字段用来给最终生成的二维码命名.
+	 * 由于MiniProgramCodeParam对象本身是需要发给微信提供的API接口的.
+	 * 并且不可以有多余的字段,因此imgName字段在发送时会被移除.
+	 * 他的作用仅仅是给二维码命名,没有其他意义.
+	 * @see com.wt.restaurant.servimpl.minicode.MiniProgramCodeServImpl#prepareParams
+	 */
+	private String imgName;
 	
+	public String getImgName() {
+		return imgName;
+	}
+	public void setImgName(String imgName) {
+		this.imgName = imgName;
+	}
 	
 	public String getAccess_token() {
 		return access_token;
@@ -35,11 +43,12 @@ public class MiniProgramCodeParam {
 		this.scene = scene;
 	}
 	
-	public String getPath() {
-		return path;
+
+	public String getPage() {
+		return page;
 	}
-	public void setPath(String path) {
-		this.path = path;
+	public void setPage(String page) {
+		this.page = page;
 	}
 	public String getWidth() {
 		return width;

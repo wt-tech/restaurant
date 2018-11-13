@@ -11,7 +11,16 @@ public abstract class ResponseHanlder {
 	
 	private Integer code = -1;
 	private Object content = null;
+	private String contentType = null;
 	
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+
 	public void fetchStatusCode() {
 		Integer code = -1;
 		try {
@@ -21,10 +30,23 @@ public abstract class ResponseHanlder {
 		}
 		this.setCode(code);
 	}
+	
+	public void fetchContentType() {
+		String conentType = null;
+		try {
+			conentType = this.connection.getContentType();
+		}catch(Exception e) {
+			BusinessUtils.throwNewBusinessException("获取contentType失败"+e.getMessage());
+		}
+		this.setContentType(conentType);
+	}
+	
+	
 	public abstract void fetchContent();
 	
 	public void fetchInfo() {
 		this.fetchStatusCode();
+		this.fetchContentType();
 		this.fetchContent();
 	}
 	

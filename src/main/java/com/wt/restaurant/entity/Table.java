@@ -4,6 +4,7 @@ public class Table {
 	private Integer id;
 	private String number;
 	private String image;
+	private String tableName;
 
 	public Integer getId() {
 		return id;
@@ -27,6 +28,14 @@ public class Table {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	public String getTableName() {
+		return tableName;
+	}
+
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
 	}
 
 }

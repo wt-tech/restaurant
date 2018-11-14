@@ -2,6 +2,11 @@ package com.wt.restaurant.entity;
 
 import java.util.Date;
 
+/*
+ * 
+ * 喜宴预订
+ *
+ */
 public class BanquetReserve {
 	private Integer id;
 	private Customer customer;// 用户id

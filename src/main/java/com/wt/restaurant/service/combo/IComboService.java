@@ -24,7 +24,7 @@ public interface IComboService {
 	 * @return
 	 * @throws Exception
 	 */
-	boolean updateCombo(Combo combo) throws Exception;
+	boolean updateCombo(Combo combo, MultipartFile file, String staticsPath) throws Exception;
 
 	/**
 	 * 新增套餐
@@ -33,7 +33,7 @@ public interface IComboService {
 	 * @return
 	 * @throws Exception
 	 */
-	boolean saveCombo(Combo combo, MultipartFile[] file, String staticsPath) throws Exception;
+	boolean saveCombo(Combo combo, MultipartFile file, String staticsPath) throws Exception;
 
 	/**
 	 * 删除套餐

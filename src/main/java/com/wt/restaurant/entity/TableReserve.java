@@ -3,10 +3,15 @@ package com.wt.restaurant.entity;
 import java.util.Date;
 import java.util.List;
 
+/*
+ * 扫码点餐
+ */
 public class TableReserve {
 	private Integer id;
 	private Customer customer;// 用户id
 	private Table table;// 桌子id
+	private Box box;// 包厢id
+	private String type;// 类型(包厢or桌子)
 	private Date reserveTime;// 预订时间
 	private List<Menu> menu;// 菜品
 
@@ -32,6 +37,22 @@ public class TableReserve {
 
 	public void setTable(Table table) {
 		this.table = table;
+	}
+
+	public Box getBox() {
+		return box;
+	}
+
+	public void setBox(Box box) {
+		this.box = box;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public Date getReserveTime() {

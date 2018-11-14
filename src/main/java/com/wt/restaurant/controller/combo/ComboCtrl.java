@@ -48,7 +48,7 @@ public class ComboCtrl {
 		return map;
 	}
 
-	@RequestMapping(value = { "/back/updatecombo" }, method = RequestMethod.PUT)
+	@RequestMapping(value = { "/back/updatecombo" }, method = RequestMethod.POST)
 	public Map<String, Object> updatecombo(HttpServletRequest request, Combo combo,
 			@RequestParam(value = "comboImg", required = false) MultipartFile[] file) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();

@@ -50,16 +50,17 @@ public class ComboCtrl {
 
 	@RequestMapping(value = { "/back/updatecombo" }, method = RequestMethod.POST)
 	public Map<String, Object> updatecombo(HttpServletRequest request, Combo combo,
-			@RequestParam(value = "comboImg", required = false) MultipartFile[] file) throws Exception {
+			@RequestParam(value = "comboImg", required = false) MultipartFile file) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
-		boolean flag = comboservice.updateCombo(combo);
+		String staticsPath = ContextUtil.getStaticResourceAbsolutePath(request);
+		boolean flag = comboservice.updateCombo(combo, file, staticsPath);
 		resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);
 		return resultMap;
 	}
 
 	@RequestMapping(value = { "/back/savecombo" }, method = RequestMethod.POST)
 	public Map<String, Object> savecombo(HttpServletRequest request, Combo combo,
-			@RequestParam(value = "comboImg", required = false) MultipartFile[] file) throws Exception {
+			@RequestParam(value = "comboImg", required = false) MultipartFile file) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		String staticsPath = ContextUtil.getStaticResourceAbsolutePath(request);
 		boolean flag = comboservice.saveCombo(combo, file, staticsPath);

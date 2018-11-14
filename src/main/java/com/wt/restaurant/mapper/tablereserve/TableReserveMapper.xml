@@ -38,20 +38,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 		<discriminator javaType="string" column="type">
 			<case value="包厢" resultType="Box">
-
-				<!-- <association property="box" javaType="Box"> -->
+				<association property="box" javaType="Box" autoMapping="false">
 					<id column="box_id" property="id" />
 					<result column="room_number" property="roomNumber" />
 					<result column="room_name" property="roomName" />
-				<!-- </association> -->
+				</association>
 			</case>
-			<!-- <case value="桌子" >
-				<association property="table" javaType="Table">
+			<case value="桌子" >
+				<association property="table" javaType="Table" autoMapping="false">
 					<id column="box_id" property="id" />
 					<result column="room_number" property="number" />
 					<result column="room_name" property="tableName" />
 				</association>
-			</case> -->
+			</case>
 		</discriminator>
 	</resultMap>
 

@@ -3,9 +3,10 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+
 <mapper namespace="com.wt.restaurant.dao.table.ITableMapper">
 
-	<select id="listTable" resultType="Table">
+	<select id="listTables" resultType="Table">
 		SELECT
 		id,
 		number,
@@ -17,7 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		${(currentPageNo-1)*pageSize},${pageSize}
 	</select>
 
-	<update id="updateTable" parameterType="Table">
+	<update id="updateTables" parameterType="Table">
 		update `table`
 		set
 		number=#{number},

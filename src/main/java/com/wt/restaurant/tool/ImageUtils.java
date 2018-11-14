@@ -68,8 +68,8 @@ public class ImageUtils {
 	 */
 	public static String getMiniQRAbsoluteURI(MiniProgramCodeParam param) {
 		return Constants.ContextPath + File.separator + Constants.MINIQRCODE 
-				+ File.separator + param.getPath().replace('/', '-') + File.separator 
-				+ param.getScene() + Constants.MINIQRCODESUFFIX;
+				+ File.separator + param.getPage().replace('/', '-') + File.separator 
+				+ param.getImgName() + Constants.MINIQRCODESUFFIX;
 	}
 	
 	/**

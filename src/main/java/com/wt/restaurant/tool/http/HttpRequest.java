@@ -83,6 +83,7 @@ public class HttpRequest {
 		this.connection.setDoOutput(true);
 		try(OutputStream outStream = this.connection.getOutputStream();){//try with resouce会自动关闭流
 			String params = this.contentTypeStrategy.assembleParams();
+			System.err.println(params);
 			outStream.write(params.getBytes());
 		}catch (IOException e) {
 			BusinessUtils.throwNewBusinessException("写入参数失败" + e.getMessage());
@@ -201,9 +202,6 @@ public class HttpRequest {
 		return contentTypeStrategy;
 	}
 
-	public void setContentTypeStrategy(RequestContentType contentTypeStrategy) {
-		this.contentTypeStrategy = contentTypeStrategy;
-	}
 
 	//======================获取响应处理的结果========================
 	public Integer getResponseStatusCode() {

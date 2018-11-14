@@ -23,7 +23,11 @@ public class BinaryDataResponseHandler extends ResponseHanlder{
 			while(-1 != (len = inStream.read(bts))) {
 				outStream.write(bts,0,len); 
 			}
+
 			this.setContent(outStream.toByteArray());
+			
+			System.out.println(this.getContentType());
+//			System.out.println(new String(outStream.toByteArray()));
 		} catch (IOException e) {
 			BusinessUtils.throwNewBusinessException("获取响应主体内容失败" + e.getMessage());
 		}

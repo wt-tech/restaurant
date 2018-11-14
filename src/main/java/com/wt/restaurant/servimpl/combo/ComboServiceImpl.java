@@ -32,47 +32,48 @@ public class ComboServiceImpl implements IComboService {
 	}
 
 	@Override
-	public boolean updateCombo(Combo combo) throws Exception {
+	public boolean updateCombo(Combo combo, MultipartFile file, String staticsPath) throws Exception {
 		// TODO Auto-generated method stub
-		return combomapper.updateCombo(combo) > 0;
+		boolean flag = false;
+		flag = combomapper.updateCombo(combo) > 0;
+		if (flag)
+			return saveupdateImage(combo, file, staticsPath);
+		return flag;
+	}
+
+	public boolean saveupdateImage(Combo combo, MultipartFile attach, String staticsPath) throws Exception {
+		// TODO Auto-generated method stub
+		boolean flag = true;
+		if (null != attach && !attach.isEmpty()) {
+			int id = (int) new Date().getTime();
+			// 获取文件名
+			String suffix = ImageUtils.getImageTypeWithDot(attach);
+			// 根据传递的公共路径（前半部分）+表名+id+文件名生成存储路径
+			String absolutePath = ImageUtils.generateAbsoluteImgPath(staticsPath, Constants.COMBO_IMG, id, suffix);
+			flag = false;
+			// 上传图片
+			flag = ImageUtils.saveImage(attach, absolutePath);
+			// 生成网络访问的路径
+			String url = ImageUtils.genrateVirtualImgPath(Constants.COMBO_IMG, id, suffix);
+			if (flag) {
+				ComboImage comboimage = new ComboImage();
+				comboimage.setCombo(combo);
+				String imgName = combo.getComboName();
+				comboimage.setName(imgName);
+				comboimage.setUrl(url);
+				flag = combomapper.saveComboImage(comboimage) > 0;
+			}
+		}
+		return flag;
 	}
 
 	@Override
-	public boolean saveCombo(Combo combo, MultipartFile[] file, String staticsPath) throws Exception {
+	public boolean saveCombo(Combo combo, MultipartFile file, String staticsPath) throws Exception {
 		// TODO Auto-generated method stub
 		boolean flag = false;
 		flag = combomapper.saveCombo(combo) > 0;
-		if (flag) {
-			if (null != file && file.length > 0) {
-				for (int i = 0; i < file.length; i++) {
-					MultipartFile attach = file[i];
-					if (!attach.isEmpty()) {
-						int id = (int) new Date().getTime();
-						// 获取文件名
-						String suffix = ImageUtils.getImageTypeWithDot(attach);
-						// 根据传递的公共路径（前半部分）+表名+id+文件名生成存储路径
-						String absolutePath = ImageUtils.generateAbsoluteImgPath(staticsPath, Constants.COMBO_IMG, id,
-								suffix);
-						flag = false;
-						// 上传图片
-						flag = ImageUtils.saveImage(attach, absolutePath);
-						// 生成网络访问的路径
-						String url = ImageUtils.genrateVirtualImgPath(Constants.COMBO_IMG, id, suffix);
-						if (flag) {
-							ComboImage comboimage = new ComboImage();
-							comboimage.setCombo(combo);
-							String imgName = combo.getComboName() + i;
-							comboimage.setName(imgName);
-							comboimage.setUrl(url);
-							flag = combomapper.saveComboImage(comboimage) > 0;
-							if (flag)
-								continue;
-						}
-					}
-				}
-			}
-		}
-
+		if (flag)
+			return saveupdateImage(combo, file, staticsPath);
 		return flag;
 	}
 

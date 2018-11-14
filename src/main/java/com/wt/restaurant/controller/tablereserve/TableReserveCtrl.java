@@ -25,7 +25,7 @@ public class TableReserveCtrl {
 	@Autowired
 	private ITableReserveService tablereserveservice;
 
-	@RequestMapping(value = { "/back/listtablereserve" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/back/listtablereserve" })
 	public Map<String, Object> listTableReserve(@RequestParam("currentPageNo") Integer currentPageNo,
 			@RequestParam(value = "newReserveNum", required = false) Integer newReserveNum) throws Exception {
 		Map<String, Object> map = MapUtils.getHashMapInstance();

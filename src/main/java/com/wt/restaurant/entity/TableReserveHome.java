@@ -3,6 +3,9 @@ package com.wt.restaurant.entity;
 import java.util.Date;
 import java.util.List;
 
+/*
+ * 店外点餐
+ */
 public class TableReserveHome {
 	private Integer id;
 	private Customer customer;// 用户id

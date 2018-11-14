@@ -3,6 +3,10 @@ package com.wt.restaurant.entity;
 import java.util.Date;
 import java.util.List;
 
+/*
+ * 包厢预订
+ *
+ */
 public class Reserve {
 	private Integer id;
 	private Customer customer;// 用户id
@@ -17,13 +21,13 @@ public class Reserve {
 	private String remarks;// 备注
 	private List<Box> box;// 包厢
 	private List<Menu> menu;// 菜品
-    
-	/************只用于后台管理的时间段筛选功能，方便mybatis使用************/
+
+	/************ 只用于后台管理的时间段筛选功能，方便mybatis使用 ************/
 	private String EatStartTime;// 就餐开始时间
 	private String EatEndTime;// 就餐结束时间
 	private String reserveStartTime;// 预订开始时间
 	private String reserveEndTime;// 预订结束时间
-	
+
 	public Integer getId() {
 		return id;
 	}

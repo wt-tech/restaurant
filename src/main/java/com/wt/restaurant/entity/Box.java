@@ -11,6 +11,15 @@ public class Box {
 	private String roomIntroduction;// 包厢介绍
 	private int reserveStatus;// 包厢预订情况(0预订午餐,1预订晚餐,2午餐和晚餐均预订,3午餐和晚餐均没预订)
 	private List<BoxImage> boximage;// 包厢图片
+	private String url;//存放小程序码路径
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
 	public Integer getId() {
 		return id;

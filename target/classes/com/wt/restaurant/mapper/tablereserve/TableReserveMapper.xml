@@ -11,17 +11,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="reserve_time" property="reserveTime" />
 		<result column="type" property="type" />
 
-		<!-- <association javaType="com.wt.restaurant.entity.Table" property="table"> 
-			<id column="table_id" property="id" /> <result column="number" property="number" 
-			/> </association> <association property="box" javaType="com.wt.restaurant.entity.Box"> 
-			<id column="box_id" property="id" /> <result column="room_number" property="roomNumber" 
-			/> <result column="room_name" property="roomName" /> </association> -->
+
 
 		<association javaType="com.wt.restaurant.entity.Customer"
 			property="customer">
 			<id column="customer_id" property="id" />
 			<result column="nickname" property="nickname" />
 		</association>
+
 
 		<collection property="menu" ofType="Menu" column="id">
 			<id column="menu_id" property="id" />
@@ -36,23 +33,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<result column="discount" property="discount" />
 		</collection>
 
+
 		<discriminator javaType="string" column="type">
-			<case value="包厢" resultType="Box">
-				<association property="box" javaType="Box" autoMapping="false">
+			<case value="包厢" resultType="TableReserve">
+				<association property="box"
+					javaType="com.wt.restaurant.entity.Box">
 					<id column="box_id" property="id" />
 					<result column="room_number" property="roomNumber" />
 					<result column="room_name" property="roomName" />
 				</association>
 			</case>
-			<case value="桌子" >
-				<association property="table" javaType="Table" autoMapping="false">
+			<case value="桌子" resultType="TableReserve">
+				<association property="table"
+					javaType="com.wt.restaurant.entity.Table">
 					<id column="box_id" property="id" />
 					<result column="room_number" property="number" />
 					<result column="room_name" property="tableName" />
 				</association>
 			</case>
 		</discriminator>
+
+
 	</resultMap>
+
+
 
 	<select id="listTableReserve" resultMap="tablereserve">
 		SELECT

@@ -9,9 +9,9 @@ public class Box {
 	private int roomSize;// 包厢大小(可容纳人数)
 	private String roomName;// 包厢名称
 	private String roomIntroduction;// 包厢介绍
-	private String url;//小程序码
 	private int reserveStatus;// 包厢预订情况(0预订午餐,1预订晚餐,2午餐和晚餐均预订,3午餐和晚餐均没预订)
 	private List<BoxImage> boximage;// 包厢图片
+	private String url;//存放小程序码路径
 
 	public Integer getId() {
 		return id;

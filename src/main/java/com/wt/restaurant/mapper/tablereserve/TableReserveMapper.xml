@@ -26,6 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<result column="nickname" property="nickname" />
 		</association>
 
+
 		<collection property="menu" ofType="Menu" column="id">
 			<id column="menu_id" property="id" />
 			<result column="menu_name" property="name" />
@@ -53,7 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<result column="room_number" property="roomNumber" />
 			<result column="room_name" property="roomName" />
 		</association>
-
+		
 		<association javaType="com.wt.restaurant.entity.Customer"
 			property="customer">
 			<id column="customer_id" property="id" />
@@ -81,6 +82,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<case value="桌子" resultMap="table"></case>
 		</discriminator>
 	</resultMap>
+
+
 
 	<select id="listTableReserve" resultMap="tablereserve">
 		SELECT

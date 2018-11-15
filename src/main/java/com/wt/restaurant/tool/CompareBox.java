@@ -19,8 +19,8 @@ public class CompareBox {
 		}
 		return singlelistbox;
 	}
-     
-	//查询晚餐预订的包厢
+
+	// 查询晚餐预订的包厢
 	public static List<Box> DinnerReserve(List<Reserve> reserve) {
 		List<Box> pairlistbox = new ArrayList<Box>();
 		for (int i = 0; i < reserve.size(); i++) {
@@ -35,29 +35,43 @@ public class CompareBox {
 
 	public static List<Box> LuncheonDinnerReserve(List<Box> singlelistbox, List<Box> pairlistbox, List<Box> box) {
 		List<Box> singlepairlistbox = new ArrayList<Box>();
-		for (Box box2 : singlelistbox) {//遍历午餐预订的包厢
-			if (pairlistbox.contains(box2)) {//如果晚餐预订也包含此包厢，则放到新的集合中
+		for (Box box2 : singlelistbox) {// 遍历午餐预订的包厢
+			if (pairlistbox.contains(box2)) {// 如果晚餐预订也包含此包厢，则放到新的集合中
 				singlepairlistbox.add(box2);// 午餐与晚餐均预订
 			}
 		}
-		singlelistbox.removeAll(singlepairlistbox);//午餐包厢中移除午餐与晚餐均有预订的包厢，也就是说专门存放只有午餐预订的包厢
-		pairlistbox.removeAll(singlepairlistbox);//同上
+		singlelistbox.removeAll(singlepairlistbox);// 午餐包厢中移除午餐与晚餐均有预订的包厢，也就是说专门存放只有午餐预订的包厢
+		pairlistbox.removeAll(singlepairlistbox);// 同上
 		return CompareBox.SetBoxStatus(singlelistbox, pairlistbox, singlepairlistbox, box);
 	}
 
 	public static List<Box> SetBoxStatus(List<Box> singlelistbox, List<Box> pairlistbox, List<Box> singlepairlistbox,
 			List<Box> box) {
-		for (Box box2 : box) {//遍历要显示的包厢
-			if (singlelistbox.contains(box2)) {//如果存放午餐包厢的集合包含此包厢
-				box2.setReserveStatus(0);//将其预订转态设置为0
-			} else if (pairlistbox.contains(box2)) {//....晚餐.....
-				box2.setReserveStatus(1);//........1
-			} else if (singlepairlistbox.contains(box2)) {//....午餐和晚餐均有.....
-				box2.setReserveStatus(2);//........2
-			} else {//否则，即午餐和晚餐均没有预订
-				box2.setReserveStatus(3);//......3
+		for (Box box2 : box) {// 遍历要显示的包厢
+			if (singlelistbox.contains(box2)) {// 如果存放午餐包厢的集合包含此包厢
+				box2.setReserveStatus(0);// 将其预订转态设置为0
+			} else if (pairlistbox.contains(box2)) {// ....晚餐.....
+				box2.setReserveStatus(1);// ........1
+			} else if (singlepairlistbox.contains(box2)) {// ....午餐和晚餐均有.....
+				box2.setReserveStatus(2);// ........2
+			} else {// 否则，即午餐和晚餐均没有预订
+				box2.setReserveStatus(3);// ......3
 			}
 		}
 		return box;
+	}
+   
+	//判断在提交预订之前该包厢是否被预订过
+	public static boolean getBoxStatus(List<Box> boxs, Reserve reserve) {
+		boolean flag = false;
+        if("午餐预订".equals(reserve.getReservationType())) {
+        	if(boxs.get(0).getReserveStatus()==1 ||boxs.get(0).getReserveStatus()==3)
+        		return true;
+        }
+        if("晚餐预订".equals(reserve.getReservationType())) {
+        	if(boxs.get(0).getReserveStatus()==0 ||boxs.get(0).getReserveStatus()==3)
+        		return true;
+        }
+		return flag;
 	}
 }

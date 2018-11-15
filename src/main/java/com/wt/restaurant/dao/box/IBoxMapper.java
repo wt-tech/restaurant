@@ -14,7 +14,7 @@ public interface IBoxMapper {
 	 * @param pageSize
 	 * @return
 	 */
-	List<Box> listBox(@Param("currentPageNo") Integer currentPageNo, @Param("pageSize") Integer pageSize);
+	List<Box> listBox(@Param("currentPageNo") Integer currentPageNo, @Param("pageSize") Integer pageSize,@Param("roomNumber") Integer roomNumber);
 
 	/**
 	 * 修改包厢信息
@@ -67,6 +67,6 @@ public interface IBoxMapper {
 	 * 查询所有包厢的数量
 	 * @return
 	 */
-	Integer countBox();
+	Integer countBox(@Param("roomNumber") Integer roomNumber);
 
 }

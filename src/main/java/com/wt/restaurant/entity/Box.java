@@ -5,7 +5,7 @@ import java.util.List;
 public class Box {
 	private Integer id;
 	private Integer reserveId;//预订id 
-	private int roomNumber;// 包厢号
+	private Integer roomNumber;// 包厢号
 	private int roomSize;// 包厢大小(可容纳人数)
 	private String roomName;// 包厢名称
 	private String roomIntroduction;// 包厢介绍
@@ -29,11 +29,11 @@ public class Box {
 		this.reserveId = reserveId;
 	}
 
-	public int getRoomNumber() {
+	public Integer getRoomNumber() {
 		return roomNumber;
 	}
 
-	public void setRoomNumber(int roomNumber) {
+	public void setRoomNumber(Integer roomNumber) {
 		this.roomNumber = roomNumber;
 	}
 

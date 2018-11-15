@@ -67,7 +67,7 @@ public class ReserveCtrl implements ApplicationContextAware {
 		return resultMap;
 	}
 
-	@RequestMapping(value = { "/savereserve" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/savereserve","/back/savereserve" }, method = RequestMethod.POST)
 	public Map<String, Object> saveReserve(@RequestBody() Reserve reserve) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		boolean flag = reserveservice.saveReserve(reserve);

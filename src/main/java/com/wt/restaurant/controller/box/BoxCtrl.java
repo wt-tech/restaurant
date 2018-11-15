@@ -84,7 +84,7 @@ public class BoxCtrl {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));// CustomDateEditor为自定义日期编辑器
 	}
 
-	@RequestMapping(value = { "/listbox" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/back/listbox","/listbox" }, method = RequestMethod.GET)
 	public Map<String, Object> listBox(@RequestParam(value = "reserveStatus", required = false) Integer reserveStatus,
 			@RequestParam("currentPageNo") Integer currentPageNo) throws Exception {
 		Map<String, Object> map = MapUtils.getHashMapInstance();

@@ -54,7 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<result column="room_number" property="roomNumber" />
 			<result column="room_name" property="roomName" />
 		</association>
-		
+
 		<association javaType="com.wt.restaurant.entity.Customer"
 			property="customer">
 			<id column="customer_id" property="id" />
@@ -118,11 +118,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				box.room_number,box.id AS box_id,box.room_name ,`type`
 				FROM (SELECT *
 				FROM table_reserve
+				where 1=1
+				<if
+					test="tablereserve !=null and tablereserve.reserveStartTime !=null and tablereserve.reserveEndTime !=null">
+					and
+					reserve_time between #{tablereserve.reserveStartTime} and
+					#{tablereserve.reserveEndTime}
+				</if>
 				ORDER BY reserve_time DESC) AS
 				table_reserve
 				LEFT
 				JOIN box
-				ON box.id=table_reserve.table_box_id
+				ON
+				box.id=table_reserve.table_box_id
 				WHERE `type`='包厢'
 			</when>
 			<when
@@ -140,6 +148,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				FROM
 				(SELECT *
 				FROM table_reserve
+				where 1=1
+				<if
+					test="tablereserve !=null and tablereserve.reserveStartTime !=null and tablereserve.reserveEndTime !=null">
+					and
+					reserve_time between #{tablereserve.reserveStartTime} and
+					#{tablereserve.reserveEndTime}
+				</if>
 				ORDER BY reserve_time DESC) AS
 				table_reserve
 				LEFT JOIN `table`
@@ -154,7 +169,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		LIMIT
 		${(currentPageNo-1)*pageSize},${pageSize}
 		) AS
-		tr
+		tr where 1=1
+		<if test="tablereserve !=null and tablereserve.customer !=null">
+			and
+			tr.customer_id in(select id from customer where
+			nickname like "%${tablereserve.customer.nickname}%")
+		</if>
 		LEFT JOIN
 		table_reserve_menu
 		ON tr.id =
@@ -376,5 +396,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</when>
 			<otherwise></otherwise>
 		</choose>
+		<if
+			test="tablereserve !=null and tablereserve.reserveStartTime !=null and tablereserve.reserveEndTime !=null">
+			and
+			reserve_time between #{tablereserve.reserveStartTime} and
+			#{tablereserve.reserveEndTime}
+		</if>
+		<if test="tablereserve !=null and tablereserve.customer !=null">
+			and
+			table_reserve.customer_id in(select id from customer where
+			nickname like "%${tablereserve.customer.nickname}%")
+		</if>
 	</select>
 </mapper>

@@ -57,6 +57,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			and
 			reservations_tel=#{banquetreserve.reservationsTel}
 		</if>
+		<if
+			test="banquetreserve !=null and banquetreserve.EatStartTime !=null and banquetreserve.EatEndTime !=null">
+			and
+			reservations_start_time between #{banquetreserve.EatStartTime} and
+			#{banquetreserve.EatEndTime}
+		</if>
+		<if
+			test="banquetreserve !=null and banquetreserve.reserveStartTime !=null and banquetreserve.reserveEndTime !=null">
+			and
+			reserve_time between #{banquetreserve.reserveStartTime} and
+			#{banquetreserve.reserveEndTime}
+		</if>
+		<if test="banquetreserve !=null and banquetreserve.combo !=null">
+			and
+			combo_id=#{banquetreserve.combo.id}
+		</if>
 		ORDER BY reserve_time desc
 		LIMIT
 		${(currentPageNo-1)*pageSize},${pageSize}
@@ -161,6 +177,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="banquetreserve !=null and banquetreserve.reservationsTel !=null">
 			and
 			reservations_tel=#{banquetreserve.reservationsTel}
+		</if>
+		<if
+			test="banquetreserve !=null and banquetreserve.EatStartTime !=null and banquetreserve.EatEndTime !=null">
+			and
+			reservations_start_time between #{banquetreserve.EatStartTime} and
+			#{banquetreserve.EatEndTime}
+		</if>
+		<if
+			test="banquetreserve !=null and banquetreserve.reserveStartTime !=null and banquetreserve.reserveEndTime !=null">
+			and
+			reserve_time between #{banquetreserve.reserveStartTime} and
+			#{banquetreserve.reserveEndTime}
+		</if>
+		<if test="banquetreserve !=null and banquetreserve.combo !=null">
+			and
+			combo_id=#{banquetreserve.combo.id}
 		</if>
 	</select>
 

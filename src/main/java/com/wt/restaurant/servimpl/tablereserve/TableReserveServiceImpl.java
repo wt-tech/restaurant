@@ -21,9 +21,9 @@ public class TableReserveServiceImpl implements ITableReserveService {
 	private ITableReserveMapper tablereservemapper;
 
 	@Override
-	public List<TableReserve> listTableReserve(Integer currentPageNo, Integer pageSize) {
+	public List<TableReserve> listTableReserve(Integer currentPageNo, Integer pageSize,TableReserve tablereserve) {
 		// TODO Auto-generated method stub
-		return tablereservemapper.listTableReserve(currentPageNo, pageSize);
+		return tablereservemapper.listTableReserve(currentPageNo, pageSize,tablereserve);
 	}
 
 	@Override
@@ -109,9 +109,9 @@ public class TableReserveServiceImpl implements ITableReserveService {
 	}
 
 	@Override
-	public Integer countTableReserve() {
+	public Integer countTableReserve(TableReserve tablereserve) {
 		// TODO Auto-generated method stub
-		return tablereservemapper.countTableReserve();
+		return tablereservemapper.countTableReserve(tablereserve);
 	}
 
 }

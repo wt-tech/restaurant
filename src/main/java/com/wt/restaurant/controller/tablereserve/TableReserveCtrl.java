@@ -27,13 +27,14 @@ public class TableReserveCtrl {
 
 	@RequestMapping(value = { "/back/listtablereserve" })
 	public Map<String, Object> listTableReserve(@RequestParam("currentPageNo") Integer currentPageNo,
-			@RequestParam(value = "newReserveNum", required = false) Integer newReserveNum) throws Exception {
+			@RequestParam(value = "newReserveNum", required = false) Integer newReserveNum,
+			TableReserve tablereserve) throws Exception {
 		Map<String, Object> map = MapUtils.getHashMapInstance();
 		Integer pagesizes= PageUtil.getPageNum(newReserveNum);
 		// 总数量（表）
-		int totalCount = tablereserveservice.countTableReserve();
+		int totalCount = tablereserveservice.countTableReserve(tablereserve);
 		Integer currentPageNos = new PageUtil().Page(totalCount, currentPageNo, pagesizes);
-		List<TableReserve> tablereserves = tablereserveservice.listTableReserve(currentPageNos,pagesizes);
+		List<TableReserve> tablereserves = tablereserveservice.listTableReserve(currentPageNos,pagesizes,tablereserve);
 		map.put(Constants.STATUS, Constants.SUCCESS);
 		map.put("tablereserves", tablereserves);
 		map.put("totalCount", totalCount);

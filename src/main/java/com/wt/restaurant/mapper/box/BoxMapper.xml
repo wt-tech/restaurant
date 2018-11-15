@@ -11,6 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="room_size" property="roomSize" />
 		<result column="room_name" property="roomName" />
 		<result column="room_introduction" property="roomIntroduction" />
+		<result column="room_url" property="url" />
 
 		<collection property="boximage" ofType="BoxImage"
 			column="id">
@@ -29,7 +30,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		room_name,
 		room_introduction,
 		box_image.id AS boximage_id,
-		box.url,
+		box.url AS room_url,
+		box_image.url,
 		box_image.name
 		FROM box
 		LEFT JOIN

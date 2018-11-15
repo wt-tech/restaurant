@@ -13,7 +13,7 @@ public interface IBoxService {
 	 * @param pageSize
 	 * @return
 	 */
-	List<Box> listBox(Integer currentPageNo,Integer pageSize);
+	List<Box> listBox(Integer currentPageNo,Integer pageSize,Integer roomNumber);
 
 	/**
 	 * 修改包厢信息
@@ -51,6 +51,6 @@ public interface IBoxService {
 	 * 查询所有包厢的数量
 	 * @return
 	 */
-	Integer countBox();
+	Integer countBox(Integer roomNumber);
 
 }

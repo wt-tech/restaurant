@@ -20,9 +20,9 @@ public class BoxServiceImpl implements IBoxService {
 	private IBoxMapper boxmapper;
 
 	@Override
-	public List<Box> listBox(Integer currentPageNo, Integer pageSize) {
+	public List<Box> listBox(Integer currentPageNo, Integer pageSize,Integer roomNumber) {
 		// TODO Auto-generated method stub
-		return boxmapper.listBox(currentPageNo, pageSize);
+		return boxmapper.listBox(currentPageNo, pageSize,roomNumber);
 	}
 
 	@Override
@@ -87,9 +87,9 @@ public class BoxServiceImpl implements IBoxService {
 	}
 
 	@Override
-	public Integer countBox() {
+	public Integer countBox(Integer roomNumber) {
 		// TODO Auto-generated method stub
-		return boxmapper.countBox();
+		return boxmapper.countBox(roomNumber);
 	}
 
 }

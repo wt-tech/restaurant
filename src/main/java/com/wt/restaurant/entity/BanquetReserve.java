@@ -18,6 +18,12 @@ public class BanquetReserve {
 	private Date reservationsStartTime;// 预订开始时间
 	private Date reserveTime;// 预订时间
 	private String remarks;// 备注
+	
+	/************ 只用于后台管理的时间段筛选功能，方便mybatis使用 ************/
+	private String EatStartTime;// 就餐开始时间
+	private String EatEndTime;// 就餐结束时间
+	private String reserveStartTime;// 预订开始时间
+	private String reserveEndTime;// 预订结束时间
 
 	public Integer getId() {
 		return id;
@@ -98,4 +104,37 @@ public class BanquetReserve {
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
 	}
+
+	public String getEatStartTime() {
+		return EatStartTime;
+	}
+
+	public void setEatStartTime(String eatStartTime) {
+		EatStartTime = eatStartTime;
+	}
+
+	public String getEatEndTime() {
+		return EatEndTime;
+	}
+
+	public void setEatEndTime(String eatEndTime) {
+		EatEndTime = eatEndTime;
+	}
+
+	public String getReserveStartTime() {
+		return reserveStartTime;
+	}
+
+	public void setReserveStartTime(String reserveStartTime) {
+		this.reserveStartTime = reserveStartTime;
+	}
+
+	public String getReserveEndTime() {
+		return reserveEndTime;
+	}
+
+	public void setReserveEndTime(String reserveEndTime) {
+		this.reserveEndTime = reserveEndTime;
+	}
+	
 }

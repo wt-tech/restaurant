@@ -5,21 +5,13 @@ import java.util.List;
 public class Box {
 	private Integer id;
 	private Integer reserveId;//预订id 
-	private int roomNumber;// 包厢号
+	private Integer roomNumber;// 包厢号
 	private int roomSize;// 包厢大小(可容纳人数)
 	private String roomName;// 包厢名称
 	private String roomIntroduction;// 包厢介绍
 	private int reserveStatus;// 包厢预订情况(0预订午餐,1预订晚餐,2午餐和晚餐均预订,3午餐和晚餐均没预订)
 	private List<BoxImage> boximage;// 包厢图片
 	private String url;//存放小程序码路径
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
 
 	public Integer getId() {
 		return id;
@@ -37,11 +29,11 @@ public class Box {
 		this.reserveId = reserveId;
 	}
 
-	public int getRoomNumber() {
+	public Integer getRoomNumber() {
 		return roomNumber;
 	}
 
-	public void setRoomNumber(int roomNumber) {
+	public void setRoomNumber(Integer roomNumber) {
 		this.roomNumber = roomNumber;
 	}
 
@@ -67,6 +59,14 @@ public class Box {
 
 	public void setRoomIntroduction(String roomIntroduction) {
 		this.roomIntroduction = roomIntroduction;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 	public int getReserveStatus() {

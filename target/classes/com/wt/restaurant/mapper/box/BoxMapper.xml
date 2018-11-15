@@ -12,7 +12,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="room_name" property="roomName" />
 		<result column="room_introduction" property="roomIntroduction" />
 		<result column="room_url" property="url" />
-		
 
 		<collection property="boximage" ofType="BoxImage"
 			column="id">
@@ -39,6 +38,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		box_image
 		ON box_image.box_id = box.id
 		where 1=1
+		<if test="roomNumber !=null">
+			and
+			room_number like "%${roomNumber}%"
+		</if>
 		ORDER BY room_number
 		LIMIT
 		${(currentPageNo-1)*pageSize},${pageSize}
@@ -116,6 +119,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="countBox" resultType="Integer">
 		SELECT COUNT(*) FROM
 		box where 1=1
+		<if test="roomNumber !=null">
+			and
+			room_number like "%${roomNumber}%"
+		</if>
 	</select>
 
 </mapper>

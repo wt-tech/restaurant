@@ -2,6 +2,7 @@ package com.wt.restaurant.controller.box;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -39,30 +40,37 @@ public class BoxCtrl {
 	private IReserveService reserveservice;
 
 	@RequestMapping(value = { "/listnullbox" }, method = RequestMethod.GET)
-	public Map<String, Object> listNullBox(@RequestParam("currentPageNo") Integer currentPageNo,
+	public Map<String, Object> listNullBox(
+			@RequestParam(value = "currentPageNo", required = false) Integer currentPageNo,
+			@RequestParam(value = "roomNumber", required = false) Integer roomNumber,
 			@RequestParam("reservationsStartTime") Date reservationsStartTime) throws Exception {
 		Map<String, Object> map = MapUtils.getHashMapInstance();
-		
+
 		Reserve reserve = new Reserve();
+		List<Box> box = new ArrayList<Box>();
 		reserve.setReservationsStartTime(reservationsStartTime);
 		// 根据传过来的时间筛选出预订的总数量（表）
 		int totalCount = reserveservice.countReserve(reserve);
-		//根据传过来的时间查询出所有的预订
+		// 根据传过来的时间查询出所有的预订
 		List<Reserve> reserves = reserveservice.listReserve(1, totalCount, reserve);
-		//查询出午餐预订的所有包厢
+		// 查询出午餐预订的所有包厢
 		List<Box> singlelistbox = CompareBox.LuncheonReserve(reserves);
-		//查询出晚餐预订的所有包厢
+		// 查询出晚餐预订的所有包厢
 		List<Box> pairlistbox = CompareBox.DinnerReserve(reserves);
-		
 
 		// 包厢总数量（表）
-		int totalCounts = boxservice.countBox();
-		Integer currentPageNos = new PageUtil().Page(totalCounts, currentPageNo, Constants.pageSizes);
-		//查询出当前页的包厢
-		List<Box> box = boxservice.listBox(currentPageNos, Constants.pageSizes);
-        //给当前页的每个包厢设置预订状态(0预订午餐,1预订晚餐,2午餐和晚餐均预订,3午餐和晚餐均没预订)
+		int totalCounts = boxservice.countBox(roomNumber);
+		if (null != currentPageNo && currentPageNo > 0) {
+			Integer currentPageNos = new PageUtil().Page(totalCounts, currentPageNo, Constants.pageSizes);
+			// 查询出当前页的包厢
+			box = boxservice.listBox(currentPageNos, Constants.pageSizes, roomNumber);
+		} else {
+			// 查询出所有的包厢
+			box = boxservice.listBox(1, totalCounts, roomNumber);
+		}
+		// 给当前页的每个包厢设置预订状态(0预订午餐,1预订晚餐,2午餐和晚餐均预订,3午餐和晚餐均没预订)
 		List<Box> boxs = CompareBox.LuncheonDinnerReserve(singlelistbox, pairlistbox, box);
-		
+
 		map.put(Constants.STATUS, Constants.SUCCESS);
 		map.put("boxs", boxs);
 		map.put("totalCounts", totalCounts);
@@ -77,14 +85,16 @@ public class BoxCtrl {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));// CustomDateEditor为自定义日期编辑器
 	}
 
-	@RequestMapping(value = { "/listbox" }, method = RequestMethod.GET)
+
+	@RequestMapping(value = { "/listbox","/back/listbox" }, method = RequestMethod.GET)
 	public Map<String, Object> listBox(@RequestParam(value = "reserveStatus", required = false) Integer reserveStatus,
-			@RequestParam("currentPageNo") Integer currentPageNo) throws Exception {
+			@RequestParam("currentPageNo") Integer currentPageNo,
+			@RequestParam(value = "roomNumber", required = false) Integer roomNumber) throws Exception {
 		Map<String, Object> map = MapUtils.getHashMapInstance();
 		// 总数量（表）
-		int totalCount = boxservice.countBox();
+		int totalCount = boxservice.countBox(roomNumber);
 		Integer currentPageNos = new PageUtil().Page(totalCount, currentPageNo, Constants.pageSizes);
-		List<Box> box = boxservice.listBox(currentPageNos, Constants.pageSizes);
+		List<Box> box = boxservice.listBox(currentPageNos, Constants.pageSizes, roomNumber);
 		map.put(Constants.STATUS, Constants.SUCCESS);
 		map.put("boxs", box);
 		map.put("totalCount", totalCount);

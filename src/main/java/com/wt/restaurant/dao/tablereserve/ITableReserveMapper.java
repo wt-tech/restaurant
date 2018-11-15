@@ -18,7 +18,7 @@ public interface ITableReserveMapper {
 	 * @return
 	 */
 	List<TableReserve> listTableReserve(@Param("currentPageNo") Integer currentPageNo,
-			@Param("pageSize") Integer pageSize);
+			@Param("pageSize") Integer pageSize,@Param("tablereserve") TableReserve tablereserve);
 
 	/**
 	 * 修改点餐信息
@@ -95,5 +95,5 @@ public interface ITableReserveMapper {
 	 * 
 	 * @return
 	 */
-	Integer countTableReserve();
+	Integer countTableReserve(@Param("tablereserve") TableReserve tablereserve);
 }

@@ -1,6 +1,7 @@
 package com.wt.restaurant.controller.customer;
 
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -16,6 +17,7 @@ import com.wt.restaurant.entity.Customer;
 import com.wt.restaurant.inface.Update;
 import com.wt.restaurant.service.customer.ICode2OpenIdServ;
 import com.wt.restaurant.service.customer.ICustomerServ;
+import com.wt.restaurant.tool.BusinessUtils;
 import com.wt.restaurant.tool.Constants;
 import com.wt.restaurant.tool.MapUtils;
 
@@ -90,11 +92,39 @@ public class CustomerCtrl {
 	 * @param session
 	 * @return
 	 */
-	@RequestMapping(value = "manager",method = RequestMethod.GET)
+	@RequestMapping(value = {"/manager","/back/manager"},method = RequestMethod.GET)
 	public Map<String,Object> listWeChatEndManager(HttpSession session){
 		Map<String,Object> map = MapUtils.getHashMapInstance();
 		map.put(Constants.STATUS, Constants.SUCCESS);
 		map.put("managerList", Constants.managerList);
+		return map;
+	}
+	
+	@RequestMapping(value = "/back/amanager",method = RequestMethod.POST)
+	public Map<String,Object> addCustomerID2ManagerList(
+			@RequestParam(value="icbxd",required = true) Integer customerID){
+		Map<String,Object> map = MapUtils.getHashMapInstance();
+		Set<Integer> managerlist = Constants.managerList;
+		synchronized(this) {//controller 本身就是单例模式 
+			if(managerlist.add(customerID))
+				map.put(Constants.STATUS, Constants.SUCCESS);
+			else
+				BusinessUtils.throwNewBusinessException(customerID + "已经是管理员,无需重复添加");
+		}
+		return map;
+	}
+	
+	@RequestMapping(value = "/back/dmanager",method = RequestMethod.POST)
+	public Map<String,Object> removeCustomerIDFromManagerList(
+			@RequestParam(value="icbxd",required = true) Integer customerID){
+		Map<String,Object> map = MapUtils.getHashMapInstance();
+		Set<Integer> managerlist = Constants.managerList;
+		synchronized(this) {//controller 本身就是单例模式 
+			if(managerlist.remove(customerID))
+				map.put(Constants.STATUS, Constants.SUCCESS);
+			else
+				BusinessUtils.throwNewBusinessException("移除失败,请确认" + customerID + "是管理员");
+		}
 		return map;
 	}
 }

@@ -20,6 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.wt.restaurant.entity.Box;
 import com.wt.restaurant.entity.Reserve;
 import com.wt.restaurant.service.reserve.IReserveService;
+import com.wt.restaurant.tool.BusinessUtils;
 import com.wt.restaurant.tool.CompareBox;
 import com.wt.restaurant.tool.Constants;
 import com.wt.restaurant.tool.MapUtils;
@@ -64,14 +65,18 @@ public class ReserveCtrl implements ApplicationContextAware {
 
 	public boolean getBoxReserveStatus(Date reservationsStartTime, Reserve reserve) {
 
+		Reserve newReserve = new Reserve();
+		newReserve.setBox(reserve.getBox());
+		newReserve.setReservationsStartTime(reserve.getReservationsStartTime());
+		newReserve.setReservationType(reserve.getReservationType());
 		// 查询预订的包厢
 		List<Box> box = reserve.getBox();
 
-		reserve.setReservationsStartTime(reservationsStartTime);
+		newReserve.setReservationsStartTime(reservationsStartTime);
 		// 根据传过来的时间筛选出预订的总数量（表）
-		int totalCount = reserveservice.countReserve(reserve);
+		int totalCount = reserveservice.countReserve(newReserve);
 		// 根据传过来的时间查询出所有的预订
-		List<Reserve> reserves = reserveservice.listReserve(1, totalCount, reserve);
+		List<Reserve> reserves = reserveservice.listReserve(1, totalCount, newReserve);
 		// 查询出午餐预订的所有包厢
 		List<Box> singlelistbox = CompareBox.LuncheonReserve(reserves);
 		// 查询出晚餐预订的所有包厢
@@ -91,12 +96,13 @@ public class ReserveCtrl implements ApplicationContextAware {
 		return resultMap;
 	}
 
-	@RequestMapping(value = { "/savereserve" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/savereserve","/back/savereserve" }, method = RequestMethod.POST)
 	public Map<String, Object> saveReserve(@RequestBody() Reserve reserve) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		resultMap.put(Constants.STATUS, Constants.FAIL);
-		if (!getBoxReserveStatus(reserve.getReservationsStartTime(), reserve)) {
-			return resultMap;
+		boolean flags = getBoxReserveStatus(reserve.getReservationsStartTime(), reserve);
+		if (!flags) {
+			BusinessUtils.throwNewBusinessException("该包厢已被预订");
 		}
 		boolean flag = reserveservice.saveReserve(reserve);
 		// resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);

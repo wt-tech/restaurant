@@ -14,9 +14,9 @@ public class TableServiceImpl implements ITableService {
 	private ITableMapper tablemapper;
 
 	@Override
-	public List<Table> listTable(Integer currentPageNo, Integer pageSize) {
+	public List<Table> listTable(Integer currentPageNo, Integer pageSize,String number) {
 		// TODO Auto-generated method stub
-		return tablemapper.listTables(currentPageNo, pageSize);
+		return tablemapper.listTables(currentPageNo, pageSize,number);
 	}
 
 	@Override
@@ -48,5 +48,11 @@ public class TableServiceImpl implements ITableService {
 		// TODO Auto-generated method stub
 		return tablemapper.countTable();
 	}
+	
+	@Override
+	public Integer countTable(String number) {
+		return tablemapper.countTableByName(number);
+	}
 
+	
 }

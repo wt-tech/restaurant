@@ -1,5 +1,6 @@
 package com.wt.restaurant.controller.table;
 
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
 
@@ -25,12 +26,20 @@ public class TableCtrl {
 	private ITableService tableservice;
 
 	@RequestMapping(value = { "/listtable","/back/listtable" }, method = RequestMethod.GET)
-	public Map<String, Object> listTable(@RequestParam("currentPageNo") Integer currentPageNo) throws Exception {
+	public Map<String, Object> listTable(
+			@RequestParam("currentPageNo") Integer currentPageNo,
+			@RequestParam(value="tableNumber",required = false) String number) throws Exception {
 		Map<String, Object> map = MapUtils.getHashMapInstance();
+		
+		if(number != null && number.length() > 0) {
+			//考虑到后期number可能会添加汉字.前端使用了encodeURI进行包装.
+			number = URLDecoder.decode(number, "UTF-8");
+		}
+		
 		// 总数量（表）
-		int totalCount = tableservice.countTable();
+		int totalCount = tableservice.countTable(number);
 		Integer currentPageNos = new PageUtil().Page(totalCount, currentPageNo, Constants.pageSizes);
-		List<Table> table = tableservice.listTable(currentPageNos, Constants.pageSizes);
+		List<Table> table = tableservice.listTable(currentPageNos, Constants.pageSizes,number);
 		map.put(Constants.STATUS, Constants.SUCCESS);
 		map.put("tables", table);
 		map.put("totalCount", totalCount);

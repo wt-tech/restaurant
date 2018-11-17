@@ -12,9 +12,11 @@ public interface ITableMapper {
 	 * 
 	 * @param currentPageNo
 	 * @param pageSize
+	 * @param number 
 	 * @return
 	 */
-	List<Table> listTables(@Param("currentPageNo") Integer currentPageNo, @Param("pageSize") Integer pageSize);
+	List<Table> listTables(@Param("currentPageNo") Integer currentPageNo, 
+			@Param("pageSize") Integer pageSize, @Param("number") String number);
 
 	/**
 	 * 修改桌子信息
@@ -57,5 +59,10 @@ public interface ITableMapper {
 	 * @return
 	 */
 	Integer countTable();
-
+	
+	/**
+	 * 查询桌号like number 的桌子的数量
+	 * @return
+	 */
+	Integer countTableByName(@Param("number") String number);
 }

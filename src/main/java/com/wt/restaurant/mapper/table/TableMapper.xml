@@ -13,6 +13,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		image
 		FROM
 		`table`
+	<if test='number != null and number != ""'>
+		WHERE number like '%${number}%'
+	</if>
 		ORDER BY number
 		LIMIT
 		${(currentPageNo-1)*pageSize},${pageSize}
@@ -54,5 +57,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT COUNT(*) FROM
 		`table`
 	</select>
+	
+	<select id="countTableByName" resultType="Integer">
+		SELECT COUNT(id) FROM
+		`table`
+	<if test='number != null and number != ""'>
+		WHERE number like '%${number}%'
+	</if>
+	</select>
+
+
+
+
 
 </mapper>

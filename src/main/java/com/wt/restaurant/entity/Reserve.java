@@ -7,13 +7,13 @@ import java.util.List;
  * 包厢预订
  *
  */
-public class Reserve {
+public class Reserve{
 	private Integer id;
 	private Customer customer;// 用户id
 	private String reservationsName;// 预订人姓名
 	private String reservationsSex;// 性别
 	private String reservationsTel;// 预订人联系方式
-	private int reservationsNum;// 预订人数
+	private Integer reservationsNum;// 预订人数
 	private Date reservationsStartTime;// 预订开始时间
 	private String reservationType;// 预订类型
 	private Date reserveTime;// 预订时间
@@ -35,7 +35,13 @@ public class Reserve {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	public Integer getReservationsNum() {
+		return reservationsNum;
+	}
 
+	public void setReservationsNum(Integer reservationsNum) {
+		this.reservationsNum = reservationsNum;
+	}
 	public Customer getCustomer() {
 		return customer;
 	}
@@ -68,13 +74,6 @@ public class Reserve {
 		this.reservationsTel = reservationsTel;
 	}
 
-	public int getReservationsNum() {
-		return reservationsNum;
-	}
-
-	public void setReservationsNum(int reservationsNum) {
-		this.reservationsNum = reservationsNum;
-	}
 
 	public Date getReservationsStartTime() {
 		return reservationsStartTime;

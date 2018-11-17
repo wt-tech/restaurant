@@ -20,9 +20,9 @@ public class MenuServiceImpl implements IMenuService {
 	private IMenuMapper menumapper;
 
 	@Override
-	public List<Menu> listMenu(Integer classificationId) {
+	public List<Menu> listMenu(Integer classificationId,Integer currentPageNos,String name) {
 		// TODO Auto-generated method stub
-		return menumapper.listMenu(classificationId);
+		return menumapper.listMenu(classificationId,currentPageNos,Constants.pageSizes, name);
 	}
 
 	@Override
@@ -84,9 +84,20 @@ public class MenuServiceImpl implements IMenuService {
 	}
 
 	@Override
-	public Integer countMenu(Integer classificationId) {
+	public Integer countMenu(Integer classificationId,String name) {
 		// TODO Auto-generated method stub
-		return menumapper.countMenu(classificationId);
+		return menumapper.countMenu(classificationId,name);
+	}
+
+	@Override
+	public List<Menu> listMenuByName(String name,Integer pageNo,Integer pagesizes) {
+		return menumapper.listMenuByName(name,pageNo,pagesizes);
+	}
+
+	@Override
+	public Integer listMenuCountByName(String name) {
+
+		return menumapper.listMenuCountByName(name);
 	}
 
 }

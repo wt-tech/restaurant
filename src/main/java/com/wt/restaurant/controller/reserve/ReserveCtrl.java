@@ -19,7 +19,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.wt.restaurant.entity.Box;
 import com.wt.restaurant.entity.Reserve;
-import com.wt.restaurant.service.box.IBoxService;
 import com.wt.restaurant.service.reserve.IReserveService;
 import com.wt.restaurant.tool.BusinessUtils;
 import com.wt.restaurant.tool.CompareBox;
@@ -35,9 +34,6 @@ import com.wt.restaurant.websocket.entity.MessageType;
 public class ReserveCtrl implements ApplicationContextAware {
 	@Autowired
 	private IReserveService reserveservice;
-
-	@Autowired
-	private IBoxService boxservice;
 
 	@RequestMapping(value = { "/back/listreserve" }, method = RequestMethod.GET)
 	public Map<String, Object> listReserve(@RequestParam("currentPageNo") Integer currentPageNo, Reserve reserve,

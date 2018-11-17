@@ -9,7 +9,7 @@ public class DishOrder {
 	private Integer id;
 	private Reserve reserve;// 预定
 	private Customer customer;// 客户
-	// private int discountId;// 优惠券
+  //private int discountId;// 优惠券
 	private String orderNumber;// 订单编号
 	private String reserveType;// 预订类型
 	private Date createTime;// 订单创建时间

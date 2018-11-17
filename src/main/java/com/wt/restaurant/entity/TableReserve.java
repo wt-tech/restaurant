@@ -14,6 +14,11 @@ public class TableReserve {
 	private String type;// 类型(包厢or桌子)
 	private Date reserveTime;// 预订时间
 	private List<Menu> menu;// 菜品
+	
+	
+	/************ 只用于后台管理的时间段筛选功能，方便mybatis使用 ************/
+	private String reserveStartTime;// 预订开始时间
+	private String reserveEndTime;// 预订结束时间
 
 	public Integer getId() {
 		return id;
@@ -69,6 +74,22 @@ public class TableReserve {
 
 	public void setMenu(List<Menu> menu) {
 		this.menu = menu;
+	}
+
+	public String getReserveStartTime() {
+		return reserveStartTime;
+	}
+
+	public void setReserveStartTime(String reserveStartTime) {
+		this.reserveStartTime = reserveStartTime;
+	}
+
+	public String getReserveEndTime() {
+		return reserveEndTime;
+	}
+
+	public void setReserveEndTime(String reserveEndTime) {
+		this.reserveEndTime = reserveEndTime;
 	}
 
 }

@@ -60,6 +60,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			and
 			reservations_tel=#{tablereservehome.reservationsTel}
 		</if>
+		<if
+			test="tablereservehome !=null and tablereservehome.EatStartTime !=null and tablereservehome.EatEndTime !=null">
+			and
+			reservations_start_time between #{tablereservehome.EatStartTime} and
+			#{tablereservehome.EatEndTime}
+		</if>
+		<if
+			test="tablereservehome !=null and tablereservehome.reserveStartTime !=null and tablereservehome.reserveEndTime !=null">
+			and
+			reserve_time between #{tablereservehome.reserveStartTime} and
+			#{tablereservehome.reserveEndTime}
+		</if>
 		ORDER BY reserve_time DESC LIMIT ${(currentPageNo-1)*pageSize},${pageSize})
 		AS table_reserve_home
 		LEFT JOIN
@@ -199,6 +211,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="tablereservehome !=null and tablereservehome.reservationsTel !=null">
 			and
 			reservations_tel=#{tablereservehome.reservationsTel}
+		</if>
+		<if
+			test="tablereservehome !=null and tablereservehome.EatStartTime !=null and tablereservehome.EatEndTime !=null">
+			and
+			reservations_start_time between #{tablereservehome.EatStartTime} and
+			#{tablereservehome.EatEndTime}
+		</if>
+		<if
+			test="tablereservehome !=null and tablereservehome.reserveStartTime !=null and tablereservehome.reserveEndTime !=null">
+			and
+			reserve_time between #{tablereservehome.reserveStartTime} and
+			#{tablereservehome.reserveEndTime}
 		</if>
 	</select>
 

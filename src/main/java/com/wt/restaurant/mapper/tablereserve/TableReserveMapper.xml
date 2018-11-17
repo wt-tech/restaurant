@@ -109,59 +109,61 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		(SELECT
 		* FROM (
 		<choose>
-			<when
-				test="tablereserve.type !=null and tablereserve.type='包厢' or tablereserve.type='包厢桌子' ">
-				SELECT
-				table_reserve.id,
-				table_reserve.customer_id,
-				reserve_time,
-				box.room_number,box.id AS box_id,box.room_name ,`type`
-				FROM (SELECT *
-				FROM table_reserve
-				where 1=1
+			<when test="tablereserve !=null">
 				<if
-					test="tablereserve !=null and tablereserve.reserveStartTime !=null and tablereserve.reserveEndTime !=null">
-					and
-					reserve_time between #{tablereserve.reserveStartTime} and
-					#{tablereserve.reserveEndTime}
+					test='tablereserve.type !=null and tablereserve.type=="包厢" or tablereserve.type=="包厢桌子" '>
+					SELECT
+					table_reserve.id,
+					table_reserve.customer_id,
+					reserve_time,
+					box.room_number,box.id AS box_id,box.room_name ,`type`
+					FROM (SELECT *
+					FROM table_reserve
+					where 1=1
+					<if
+						test="tablereserve.reserveStartTime !=null and tablereserve.reserveEndTime !=null">
+						and
+						reserve_time between #{tablereserve.reserveStartTime} and
+						#{tablereserve.reserveEndTime}
+					</if>
+					ORDER BY reserve_time DESC) AS
+					table_reserve
+					LEFT
+					JOIN box
+					ON
+					box.id=table_reserve.table_box_id
+					WHERE `type`='包厢'
 				</if>
-				ORDER BY reserve_time DESC) AS
-				table_reserve
-				LEFT
-				JOIN box
-				ON
-				box.id=table_reserve.table_box_id
-				WHERE `type`='包厢'
-			</when>
-			<when
-				test="tablereserve.type !=null and tablereserve.type='包厢桌子'">
-				UNION ALL
-			</when>
-			<when
-				test="tablereserve.type !=null and tablereserve.type='桌子' or tablereserve.type='包厢桌子' ">
-				SELECT
-				table_reserve.id,
-				table_reserve.customer_id,
-				reserve_time,
-				`table`.number,`table`.id AS
-				table_id,`table`.table_name,`type`
-				FROM
-				(SELECT *
-				FROM table_reserve
-				where 1=1
+				<if test='tablereserve.type !=null and tablereserve.type=="包厢桌子"'>
+					UNION ALL
+				</if>
 				<if
-					test="tablereserve !=null and tablereserve.reserveStartTime !=null and tablereserve.reserveEndTime !=null">
-					and
-					reserve_time between #{tablereserve.reserveStartTime} and
-					#{tablereserve.reserveEndTime}
+					test='tablereserve.type !=null and tablereserve.type=="桌子" or tablereserve.type=="包厢桌子"'>
+					SELECT
+					table_reserve.id,
+					table_reserve.customer_id,
+					reserve_time,
+					`table`.number,`table`.id AS
+					table_id,`table`.table_name,`type`
+					FROM
+					(SELECT *
+					FROM table_reserve
+					where 1=1
+					<if
+						test="tablereserve.reserveStartTime !=null and tablereserve.reserveEndTime !=null">
+						and
+						reserve_time between #{tablereserve.reserveStartTime} and
+						#{tablereserve.reserveEndTime}
+					</if>
+					ORDER BY reserve_time DESC) AS
+					table_reserve
+					LEFT JOIN `table`
+					ON
+					`table`.id=table_reserve.table_box_id
+					WHERE `type`='桌子'
 				</if>
-				ORDER BY reserve_time DESC) AS
-				table_reserve
-				LEFT JOIN `table`
-				ON
-				`table`.id=table_reserve.table_box_id
-				WHERE `type`='桌子'
 			</when>
+			<otherwise>table_reserve</otherwise>
 		</choose>
 		) AS s
 		ORDER BY
@@ -169,12 +171,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		LIMIT
 		${(currentPageNo-1)*pageSize},${pageSize}
 		) AS
-		tr where 1=1
-		<if test="tablereserve !=null and tablereserve.customer !=null">
-			and
-			tr.customer_id in(select id from customer where
-			nickname like "%${tablereserve.customer.nickname}%")
-		</if>
+		tr
 		LEFT JOIN
 		table_reserve_menu
 		ON tr.id =
@@ -184,8 +181,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ON customer.id =
 		tr.customer_id
 		LEFT JOIN menu
-		ON menu.id =
+		ON
+		menu.id =
 		table_reserve_menu.menu_id
+		where 1=1
+		<if test="tablereserve !=null and tablereserve.customer !=null">
+			and
+			tr.customer_id in(select id from customer where
+			nickname like "%${tablereserve.customer.nickname}%")
+		</if>
 		ORDER BY tr.reserve_time desc
 	</select>
 
@@ -388,10 +392,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT COUNT(*) FROM
 		table_reserve where 1=1
 		<choose>
-			<when test="tablereserve.type !=null and tablereserve.type='包厢'">
+			<when
+				test='tablereserve.type !=null and tablereserve.type=="包厢"'>
 				and `type`='包厢'
 			</when>
-			<when test="tablereserve.type !=null and tablereserve.type='桌子'">
+			<when
+				test='tablereserve.type !=null and tablereserve.type=="桌子"'>
 				and `type`='桌子'
 			</when>
 			<otherwise></otherwise>
@@ -404,7 +410,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</if>
 		<if test="tablereserve !=null and tablereserve.customer !=null">
 			and
-			table_reserve.customer_id in(select id from customer where
+			table_reserve.customer_id in(select id from customer
+			where
 			nickname like "%${tablereserve.customer.nickname}%")
 		</if>
 	</select>

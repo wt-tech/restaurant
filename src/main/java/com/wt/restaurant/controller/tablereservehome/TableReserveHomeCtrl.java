@@ -1,5 +1,6 @@
 package com.wt.restaurant.controller.tablereservehome;
 
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +29,10 @@ public class TableReserveHomeCtrl {
 			TableReserveHome tablereservehome,
 			@RequestParam(value = "newReserveNum", required = false) Integer newReserveNum) throws Exception {
 		Map<String, Object> map = MapUtils.getHashMapInstance();
+		String name = tablereservehome.getReservationsName();
+		if (name != null && name.length() > 0) {
+			tablereservehome.setReservationsName(URLDecoder.decode(name, "UTF-8"));
+		}
 		Integer pagesizes = PageUtil.getPageNum(newReserveNum);
 		// 总数量（表）
 		int totalCount = tablereservehomeservice.countTableReserveHome(tablereservehome);

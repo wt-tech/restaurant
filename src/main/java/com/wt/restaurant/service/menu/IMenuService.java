@@ -11,11 +11,12 @@ public interface IMenuService {
 	 * 查询指定分类下的菜品
 	 * 
 	 * @param classificationId
+	 * @param currentPageNos 
 	 * @param currentPageNo
 	 * @param pageSize
 	 * @return
 	 */
-	List<Menu> listMenu(Integer classificationId);
+	List<Menu> listMenu(Integer classificationId, Integer currentPageNos,String name);
 
 	/**
 	 * 修改菜品信息
@@ -58,5 +59,19 @@ public interface IMenuService {
 	 * @param classificationId
 	 * @return
 	 */
-	Integer countMenu(Integer classificationId);
+	Integer countMenu(Integer classificationId,String name);
+	
+	/**
+	 * 根据菜品名模糊查询
+	 * @param name
+	 * @return
+	 */
+	List<Menu> listMenuByName(String name,Integer pageNo,Integer pagesizes);
+	
+	/**
+	 * 根据菜品名模糊查询总个数
+	 * @param name
+	 * @return
+	 */
+	Integer listMenuCountByName( String name);
 }

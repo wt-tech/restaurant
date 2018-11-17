@@ -20,6 +20,7 @@ import com.wt.restaurant.service.menu.IMenuService;
 import com.wt.restaurant.tool.Constants;
 import com.wt.restaurant.tool.ContextUtil;
 import com.wt.restaurant.tool.MapUtils;
+import com.wt.restaurant.tool.PageUtil;
 
 @RestController("")
 @RequestMapping("/menu")
@@ -27,10 +28,29 @@ public class MenuCtrl {
 	@Autowired
 	private IMenuService menuservice;
 
+	/**
+	 * 小程序端 没有做分页.
+	 */
 	@RequestMapping(value = { "/listmenu", "/back/listmenu" }, method = RequestMethod.GET)
-	public Map<String, Object> listMenu(@RequestParam("classificationId") Integer classificationId) throws Exception {
+	public Map<String, Object> listMenu(
+			@RequestParam(value="classificationId",required = true) Integer classificationId,
+			@RequestParam(value="menuName",required = false) String name,
+			@RequestParam(value = "currentPageNo", required = false) Integer currentPageNo
+			) throws Exception {
 		Map<String, Object> map = MapUtils.getHashMapInstance();
-		List<Menu> menu = menuservice.listMenu(classificationId);
+		
+		if(name != null && name.length()>0)
+			name = URLDecoder.decode(name, "UTF-8");
+		
+		Integer currentPageNos = null;
+		if(currentPageNo != null) {
+			int totalCount = menuservice.countMenu(classificationId,name);
+			currentPageNos = new PageUtil().Page(totalCount, currentPageNo, Constants.pageSizes);
+			map.put("totalCount", totalCount);		
+			map.put("pageSize", Constants.pageSizes);
+		}
+		
+		List<Menu> menu = menuservice.listMenu(classificationId,currentPageNos,name);
 		map.put(Constants.STATUS, Constants.SUCCESS);
 		map.put("menus", menu);
 		return map;
@@ -75,5 +95,31 @@ public class MenuCtrl {
 		resultMap.put("menu", menuservice.getMenu(id));
 		return resultMap;
 	}
+	
+	/**
+	 * 根据菜名模糊查询
+	 * @param pageNo
+	 * @param name
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = { "/back/listmenubyname" }, method = RequestMethod.GET)
+	public Map<String, Object> listMenuByName(
+			@RequestParam(value="currentPageNo",required = true) Integer pageNo,
+			@RequestParam(value="menuName",required = true) String name) throws Exception {
+		Map<String, Object> map = MapUtils.getHashMapInstance();
+		map.put(Constants.STATUS, Constants.SUCCESS);
+		List<Menu> menus = null;
+		if(null != name && name.length() > 0)
+			name = URLDecoder.decode(name, "UTF-8");
 
+		Integer totalCount = menuservice.listMenuCountByName(name);
+		Integer currentPageNos = new PageUtil().Page(totalCount, pageNo, Constants.pageSizes);
+		menus = menuservice.listMenuByName(name,currentPageNos,Constants.pageSizes);
+		map.put("totalCount", totalCount);
+		map.put("pageSize", Constants.pageSizes);
+		
+		map.put("menus", menus);
+		return map;
+	}
 }

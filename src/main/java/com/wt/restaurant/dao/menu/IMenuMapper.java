@@ -12,11 +12,14 @@ public interface IMenuMapper {
 	 * 查询指定分类下的菜品
 	 * 
 	 * @param classificationId
+	 * @param name 
 	 * @param currentPageNo
-	 * @param pageSize
+	 * @param pagesizes 
 	 * @return
 	 */
-	List<Menu> listMenu(@Param("classificationId") Integer classificationId);
+	List<Menu> listMenu(
+			@Param("classificationId") Integer classificationId,@Param("pageNo")Integer currentPageNos, 
+			@Param("pageSize")int pagesizes,@Param("name") String name);
 
 	/**
 	 * 修改菜品信息
@@ -77,5 +80,21 @@ public interface IMenuMapper {
 	 * @param classificationId
 	 * @return
 	 */
-	Integer countMenu(@Param("classificationId") Integer classificationId);
+	Integer countMenu(@Param("classificationId") Integer classificationId,@Param("name") String name);
+	
+	/**
+	 * 根据菜品名模糊查询
+	 * @param name
+	 * @return
+	 */
+	List<Menu> listMenuByName(@Param("name") String name,
+			@Param("pageNo") Integer pageNo,@Param("pageSize")Integer pagesizes);
+	
+	/**
+	 * 根据菜品名模糊查询总个数
+	 * @param name
+	 * @return
+	 */
+	Integer listMenuCountByName(@Param("name") String name);
+	
 }

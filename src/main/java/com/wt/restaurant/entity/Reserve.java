@@ -7,7 +7,7 @@ import java.util.List;
  * 包厢预订
  *
  */
-public class Reserve {
+public class Reserve{
 	private Integer id;
 	private Customer customer;// 用户id
 	private String reservationsName;// 预订人姓名

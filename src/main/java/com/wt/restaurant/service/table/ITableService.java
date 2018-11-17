@@ -12,7 +12,7 @@ public interface ITableService {
 	 * @param pageSize
 	 * @return
 	 */
-	List<Table> listTable(Integer currentPageNo, Integer pageSize);
+	List<Table> listTable(Integer currentPageNo, Integer pageSize,String number);
 
 	/**
 	 * 修改桌子信息
@@ -55,5 +55,11 @@ public interface ITableService {
 	 * @return
 	 */
 	Integer countTable();
+	
+	/**
+	 * 查询桌号like number 的桌子的数量
+	 * @return
+	 */
+	Integer countTable(String number);
 
 }

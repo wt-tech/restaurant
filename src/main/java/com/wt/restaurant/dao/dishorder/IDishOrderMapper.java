@@ -24,5 +24,11 @@ public interface IDishOrderMapper {
 	 * @return
 	 */
 	List<DishOrder> listDishOrderByCustomerId(@Param("customerId") Integer customerId);
+	
+	/**
+	 * 查询数量
+	 * @return
+	 */
+	Integer countDishOrder();
 
 }

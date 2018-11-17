@@ -7,9 +7,9 @@ import java.util.Map;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,7 +19,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.wt.restaurant.entity.Box;
 import com.wt.restaurant.entity.Reserve;
-import com.wt.restaurant.service.box.IBoxService;
 import com.wt.restaurant.service.reserve.IReserveService;
 import com.wt.restaurant.tool.CompareBox;
 import com.wt.restaurant.tool.Constants;
@@ -34,9 +33,6 @@ import com.wt.restaurant.websocket.entity.MessageType;
 public class ReserveCtrl implements ApplicationContextAware {
 	@Autowired
 	private IReserveService reserveservice;
-
-	@Autowired
-	private IBoxService boxservice;
 
 	@RequestMapping(value = { "/back/listreserve" }, method = RequestMethod.GET)
 	public Map<String, Object> listReserve(@RequestParam("currentPageNo") Integer currentPageNo, Reserve reserve,

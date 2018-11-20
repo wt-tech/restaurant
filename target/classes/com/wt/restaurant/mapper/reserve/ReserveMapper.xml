@@ -81,10 +81,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			#{reserve.EatEndTime}
 		</if>
 		<if
+			test="reserve !=null and reserve.EatStartTime !=null and reserve.EatEndTime ==null">
+			and
+			reservations_start_time >= #{reserve.EatStartTime}
+		</if>
+		<if
+			test="reserve !=null and reserve.EatStartTime ==null and reserve.EatEndTime !=null">
+			and
+			#{reserve.EatEndTime} >reservations_start_time
+		</if>
+		<if
 			test="reserve !=null and reserve.reserveStartTime !=null and reserve.reserveEndTime !=null">
 			and
 			reserve_time between #{reserve.reserveStartTime} and
 			#{reserve.reserveEndTime}
+		</if>
+		<if
+			test="reserve !=null and reserve.reserveStartTime !=null and reserve.reserveEndTime ==null">
+			and
+			reserve_time >= #{reserve.reserveStartTime}
+		</if>
+		<if
+			test="reserve !=null and reserve.reserveStartTime ==null and reserve.reserveEndTime !=null">
+			and
+			#{reserve.reserveEndTime} > reserve_time
+
 		</if>
 		<if test="reserve !=null and reserve.reservationType !=null">
 			and
@@ -274,10 +295,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			#{reserve.EatEndTime}
 		</if>
 		<if
+			test="reserve !=null and reserve.EatStartTime !=null and reserve.EatEndTime ==null">
+			and
+			reservations_start_time >= #{reserve.EatStartTime}
+		</if>
+		<if
+			test="reserve !=null and reserve.EatStartTime ==null and reserve.EatEndTime !=null">
+			and
+			#{reserve.EatEndTime} >reservations_start_time
+		</if>
+		<if
 			test="reserve !=null and reserve.reserveStartTime !=null and reserve.reserveEndTime !=null">
 			and
 			reserve_time between #{reserve.reserveStartTime} and
 			#{reserve.reserveEndTime}
+		</if>
+		<if
+			test="reserve !=null and reserve.reserveStartTime !=null and reserve.reserveEndTime ==null">
+			and
+			reserve_time >= #{reserve.reserveStartTime}
+		</if>
+		<if
+			test="reserve !=null and reserve.reserveStartTime ==null and reserve.reserveEndTime !=null">
+			and
+			#{reserve.reserveEndTime} > reserve_time
+
 		</if>
 		<if test="reserve !=null and reserve.reservationType !=null">
 			and

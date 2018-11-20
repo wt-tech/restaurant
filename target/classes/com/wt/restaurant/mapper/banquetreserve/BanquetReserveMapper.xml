@@ -64,10 +64,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			#{banquetreserve.EatEndTime}
 		</if>
 		<if
+			test="banquetreserve !=null and banquetreserve.EatStartTime !=null and banquetreserve.EatEndTime ==null">
+			and
+			reservations_start_time >= #{banquetreserve.EatStartTime}
+		</if>
+		<if
+			test="banquetreserve !=null and banquetreserve.EatStartTime ==null and banquetreserve.EatEndTime !=null">
+			and
+			#{banquetreserve.EatEndTime} >reservations_start_time
+		</if>
+		<if
 			test="banquetreserve !=null and banquetreserve.reserveStartTime !=null and banquetreserve.reserveEndTime !=null">
 			and
 			reserve_time between #{banquetreserve.reserveStartTime} and
 			#{banquetreserve.reserveEndTime}
+		</if>
+		<if
+			test="banquetreserve !=null and banquetreserve.reserveStartTime !=null and banquetreserve.reserveEndTime ==null">
+			and
+			reserve_time >= #{banquetreserve.reserveStartTime}
+		</if>
+		<if
+			test="banquetreserve !=null and banquetreserve.reserveStartTime ==null and banquetreserve.reserveEndTime !=null">
+			and
+			#{banquetreserve.reserveEndTime} > reserve_time
 		</if>
 		<if test="banquetreserve !=null and banquetreserve.combo !=null">
 			and
@@ -185,10 +205,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			#{banquetreserve.EatEndTime}
 		</if>
 		<if
+			test="banquetreserve !=null and banquetreserve.EatStartTime !=null and banquetreserve.EatEndTime ==null">
+			and
+			reservations_start_time >= #{banquetreserve.EatStartTime}
+		</if>
+		<if
+			test="banquetreserve !=null and banquetreserve.EatStartTime ==null and banquetreserve.EatEndTime !=null">
+			and
+			#{banquetreserve.EatEndTime} >reservations_start_time
+		</if>
+		<if
 			test="banquetreserve !=null and banquetreserve.reserveStartTime !=null and banquetreserve.reserveEndTime !=null">
 			and
 			reserve_time between #{banquetreserve.reserveStartTime} and
 			#{banquetreserve.reserveEndTime}
+		</if>
+		<if
+			test="banquetreserve !=null and banquetreserve.reserveStartTime !=null and banquetreserve.reserveEndTime ==null">
+			and
+			reserve_time >= #{banquetreserve.reserveStartTime}
+		</if>
+		<if
+			test="banquetreserve !=null and banquetreserve.reserveStartTime ==null and banquetreserve.reserveEndTime !=null">
+			and
+			#{banquetreserve.reserveEndTime} > reserve_time
 		</if>
 		<if test="banquetreserve !=null and banquetreserve.combo !=null">
 			and

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.wt.restaurant.dao.dishorder.IDishOrderMapper;
 import com.wt.restaurant.entity.DishOrder;
+import com.wt.restaurant.entity.DishOrderLine;
 import com.wt.restaurant.service.dishorder.IDishOrderService;
 
 @Service
@@ -15,9 +16,9 @@ public class DishOrderServiceImpl implements IDishOrderService {
 	private IDishOrderMapper dishordermapper;
 
 	@Override
-	public List<DishOrder> listDishOrder(Integer currentPageNo, Integer pageSize) {
+	public List<DishOrder> listDishOrder(Integer currentPageNo, Integer pageSize,DishOrder dishorder) {
 		// TODO Auto-generated method stub
-		return dishordermapper.listDishOrder(currentPageNo, pageSize);
+		return dishordermapper.listDishOrder(currentPageNo, pageSize,dishorder);
 	}
 
 	@Override
@@ -27,9 +28,33 @@ public class DishOrderServiceImpl implements IDishOrderService {
 	}
 
 	@Override
-	public Integer countDishOrder() {
+	public Integer countDishOrder(DishOrder dishorder) {
 		// TODO Auto-generated method stub
-		return dishordermapper.countDishOrder();
+		return dishordermapper.countDishOrder(dishorder);
+	}
+
+	@Override
+	public List<DishOrderLine> listDishOrderMenu(Integer dishorderId) {
+		// TODO Auto-generated method stub
+		return dishordermapper.listDishOrderMenu(dishorderId);
+	}
+
+	@Override
+	public boolean updateDishOrderRemark(Integer id, String remark) throws Exception {
+		// TODO Auto-generated method stub
+		return dishordermapper.updateDishOrderRemark(id, remark)>0;
+	}
+
+	@Override
+	public DishOrder getDishOrderRemark(Integer id) throws Exception {
+		// TODO Auto-generated method stub
+		return dishordermapper.getDishOrderRemark(id);
+	}
+
+	@Override
+	public boolean updateDishOrderStatus(Integer id, double totalPayAmount) throws Exception {
+		// TODO Auto-generated method stub
+		return dishordermapper.updateDishOrderStatus(id, totalPayAmount)>0;
 	}
 
 }

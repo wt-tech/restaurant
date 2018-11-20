@@ -48,10 +48,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM
 		(SELECT * FROM table_reserve_home 
 		where 1=1
-		<if test="tablereservehome !=null and tablereservehome.reservationsStartTime !=null">
-			and
-			reservations_start_time=#{tablereservehome.reservationsStartTime} 
-		</if>
 		<if test="tablereservehome !=null and tablereservehome.reservationsName !=null">
 			and
 			reservations_name like "%${tablereservehome.reservationsName}%"
@@ -67,10 +63,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			#{tablereservehome.EatEndTime}
 		</if>
 		<if
+			test="tablereservehome !=null and tablereservehome.EatStartTime !=null and tablereservehome.EatEndTime ==null">
+			and
+			reservations_start_time >= #{tablereservehome.EatStartTime}
+		</if>
+		<if
+			test="tablereservehome !=null and tablereservehome.EatStartTime ==null and tablereservehome.EatEndTime !=null">
+			and
+			#{tablereservehome.EatEndTime} >reservations_start_time
+		</if>
+		<if
 			test="tablereservehome !=null and tablereservehome.reserveStartTime !=null and tablereservehome.reserveEndTime !=null">
 			and
 			reserve_time between #{tablereservehome.reserveStartTime} and
 			#{tablereservehome.reserveEndTime}
+		</if>
+		<if
+			test="tablereservehome !=null and tablereservehome.reserveStartTime !=null and tablereservehome.reserveEndTime ==null">
+			and
+			reserve_time >= #{tablereservehome.reserveStartTime}
+		</if>
+		<if
+			test="tablereservehome !=null and tablereservehome.reserveStartTime ==null and tablereservehome.reserveEndTime !=null">
+			and
+			#{tablereservehome.reserveEndTime} > reserve_time
+
 		</if>
 		ORDER BY reserve_time DESC LIMIT ${(currentPageNo-1)*pageSize},${pageSize})
 		AS table_reserve_home
@@ -200,10 +217,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="countTableReserveHome" resultType="Integer">
 		SELECT COUNT(*) FROM table_reserve_home
 		where 1=1
-		<if test="tablereservehome !=null and tablereservehome.reservationsStartTime !=null">
-			and
-			reservations_start_time=#{tablereservehome.reservationsStartTime} 
-		</if>
 		<if test="tablereservehome !=null and tablereservehome.reservationsName !=null">
 			and
 			reservations_name like "%${tablereservehome.reservationsName}%"
@@ -219,10 +232,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			#{tablereservehome.EatEndTime}
 		</if>
 		<if
+			test="tablereservehome !=null and tablereservehome.EatStartTime !=null and tablereservehome.EatEndTime ==null">
+			and
+			reservations_start_time >= #{tablereservehome.EatStartTime}
+		</if>
+		<if
+			test="tablereservehome !=null and tablereservehome.EatStartTime ==null and tablereservehome.EatEndTime !=null">
+			and
+			#{tablereservehome.EatEndTime} >reservations_start_time
+		</if>
+		<if
 			test="tablereservehome !=null and tablereservehome.reserveStartTime !=null and tablereservehome.reserveEndTime !=null">
 			and
 			reserve_time between #{tablereservehome.reserveStartTime} and
 			#{tablereservehome.reserveEndTime}
+		</if>
+		<if
+			test="tablereservehome !=null and tablereservehome.reserveStartTime !=null and tablereservehome.reserveEndTime ==null">
+			and
+			reserve_time >= #{tablereservehome.reserveStartTime}
+		</if>
+		<if
+			test="tablereservehome !=null and tablereservehome.reserveStartTime ==null and tablereservehome.reserveEndTime !=null">
+			and
+			#{tablereservehome.reserveEndTime} > reserve_time
 		</if>
 	</select>
 

@@ -18,7 +18,13 @@ public class DishOrder {
 	private double discountAmount;// 优惠金额
 	private double totalPayAmount;// 实付总金额
 	private int orderStatus;// 订单状态
+	private String remark;//备注
 	private List<DishOrderLine> dishorderline;// 订单项
+	
+	
+	/************ 只用于后台管理的时间段筛选功能，方便mybatis使用 ************/
+	private String reserveStartTime;// 预订开始时间
+	private String reserveEndTime;// 预订结束时间
 
 	// 无参构造函数,初始化一个订单编号
 	public DishOrder() {
@@ -113,12 +119,36 @@ public class DishOrder {
 		this.orderStatus = orderStatus;
 	}
 
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
 	public List<DishOrderLine> getDishorderline() {
 		return dishorderline;
 	}
 
 	public void setDishorderline(List<DishOrderLine> dishorderline) {
 		this.dishorderline = dishorderline;
+	}
+
+	public String getReserveStartTime() {
+		return reserveStartTime;
+	}
+
+	public void setReserveStartTime(String reserveStartTime) {
+		this.reserveStartTime = reserveStartTime;
+	}
+
+	public String getReserveEndTime() {
+		return reserveEndTime;
+	}
+
+	public void setReserveEndTime(String reserveEndTime) {
+		this.reserveEndTime = reserveEndTime;
 	}
 
 }

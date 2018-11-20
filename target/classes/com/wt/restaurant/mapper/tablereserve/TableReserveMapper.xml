@@ -215,11 +215,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		type,
 		reserve_time)
 		values(#{customer.id},
-		<if test="tablereserve !=null and tablereserve.table !=null">
+		<if test="table !=null">
 			#{table.id},
 			'桌子',
 		</if>
-		<if test="tablereserve !=null and tablereserve.box !=null">
+		<if test="box !=null">
 			#{box.id},
 			'包厢',
 		</if>

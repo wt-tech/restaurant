@@ -1,13 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
-  <Appenders>
-    <Console name="Console" target="SYSTEM_OUT">
-      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] [daryl] %-5level %logger{36} - %msg%n"/>
-    </Console>
-  </Appenders>
-  <Loggers>
-    <Root level="error">
-      <AppenderRef ref="Console"/>
-    </Root>
-  </Loggers>
+	<!-- 
+		几个级别的关系
+		OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL
+	-->
+	<Properties>
+		<Property name="baseLogPath">${sys:catalina.home}/logs/restaurant</Property>
+	</Properties>
+	
+	<Appenders>
+		<!-- 专门处理websocket相关的日志记录,所有这里只有info输出.因此只记录info级别的 -->
+		<RollingFile name="notifyInfo" fileName="${baseLogPath}/notify.log" immediateFlush="true"
+			filePattern="${baseLogPath}/notify-history/%d{yyyy-MM-dd}-%i.log.zip">
+			<Filters>
+				<ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+				<ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL"/>
+			</Filters>
+			<PatternLayout>
+				<Pattern>%d{HH:mm:ss} %t %m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="50 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="20"/>
+		</RollingFile>
+		
+		<!-- 专门处理GlobalException相关的日志记录,所有这里只有error级别输出.因此只记录error级别 -->
+		<RollingFile name="globaleror" fileName="${baseLogPath}/globalInfo.log" immediateFlush="true"
+			filePattern="${baseLogPath}/globalerror-history/%d{yyyy-MM-dd}-%i.log.zip">
+			<PatternLayout>
+				<Pattern>%d{HH:mm:ss} %t %m%n</Pattern>
+			</PatternLayout>
+			<Filters>
+				<ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+				<ThresholdFilter level="FATAL" onMatch="DENY" onMismatch="NEUTRAL"/>
+			</Filters>
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+			</Policies>
+			<DefaultRolloverStrategy max="365"/>
+		</RollingFile>
+		
+		<!-- 专门处理登录成功和非法访问接口相关的日志记录 主要是DataAcessInterceptor类和LoginCtrl类-->
+		<RollingFile name="logininfo" fileName="${baseLogPath}/loginInfo.log" immediateFlush="true"
+			filePattern="${baseLogPath}/logininfo-history/%d{yyyy-MM-dd}-%i.log.zip">
+			<PatternLayout>
+				<Pattern>%d{yyyy-MM-dd HH:mm:ss} %t %m%n</Pattern>
+			</PatternLayout>
+			<Filters>
+				<!-- 这里记录INFO 和 WARN级别的日志信息 -->
+				<ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+				<ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
+			</Filters>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="50 MB"/>
+			</Policies>
+			<DefaultRolloverStrategy max="20"/>
+		</RollingFile>
+		
+		<!-- 处理其他所有的默认日志信息-->
+		<RollingFile name="defaultInfo" fileName="${baseLogPath}/defaultInfo.log" immediateFlush="true"
+			filePattern="${baseLogPath}/defaultinfo-history/%d{yyyy-MM-dd}-%i.log.zip">
+			<PatternLayout>
+				<Pattern>%d{HH:mm:ss} %t %m%n</Pattern>
+			</PatternLayout>
+			<Filters>
+				<ThresholdFilter level="ALL" onMatch="ACCEPT" onMismatch="DENY"/>
+			</Filters>
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+			</Policies>
+			<DefaultRolloverStrategy max="365"/>
+		</RollingFile>
+	</Appenders>
+	
+	<Loggers>
+		<Root level="error">
+			<AppenderRef ref="defaultInfo"></AppenderRef>
+		</Root>
+		
+		<Logger name="com.wt.restaurant.controller.login.LoginCtrl" level="info">
+			<AppenderRef ref="logininfo"></AppenderRef>
+		</Logger>
+		
+		<Logger name="com.wt.restaurant.interceptor.DataAccessInterceptor" level="warn">
+			<AppenderRef ref="logininfo"></AppenderRef>
+		</Logger>
+		
+		<Logger name="com.wt.restaurant.exception.handler.GloblalExceptionHandler" level="error">
+			<AppenderRef ref="globaleror"/>
+		</Logger>
+		
+		<Logger name="com.wt.restaurant.websocket.NewReservationNotifyHandler" level="info">
+			<AppenderRef ref="notifyInfo"/>
+		</Logger>
+	</Loggers>
+	
 </Configuration>

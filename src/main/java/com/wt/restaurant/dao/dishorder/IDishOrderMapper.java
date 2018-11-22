@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import com.wt.restaurant.entity.Box;
 import com.wt.restaurant.entity.DishOrder;
 import com.wt.restaurant.entity.DishOrderLine;
 
@@ -38,6 +39,14 @@ public interface IDishOrderMapper {
 	List<DishOrderLine> listDishOrderMenu(@Param("dishorderId") Integer dishorderId);
 
 	/**
+	 * 查询订单的包厢
+	 * 
+	 * @param dishorderId
+	 * @return
+	 */
+	List<Box> listDishOrderBox(@Param("dishorderId") Integer dishorderId);
+
+	/**
 	 * 查询数量
 	 * 
 	 * @return
@@ -54,16 +63,18 @@ public interface IDishOrderMapper {
 	 */
 	@Update("update dish_order set remark=#{remark} where id=#{id}")
 	Integer updateDishOrderRemark(@Param("id") Integer id, @Param("remark") String remark) throws Exception;
-	
+
 	/**
 	 * 订单结账
+	 * 
 	 * @param id
 	 * @param totalPayAmount
 	 * @return
 	 * @throws Exception
 	 */
 	@Update("update dish_order set total_pay_amount=#{totalPayAmount},order_status=1 where id=#{id}")
-	Integer updateDishOrderStatus(@Param("id") Integer id, @Param("totalPayAmount") double totalPayAmount) throws Exception;
+	Integer updateDishOrderStatus(@Param("id") Integer id, @Param("totalPayAmount") double totalPayAmount)
+			throws Exception;
 
 	/**
 	 * 查询备注

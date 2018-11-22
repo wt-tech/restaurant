@@ -88,4 +88,13 @@ public class TableReserveHomeCtrl {
 		resultMap.put("tablereservehomes", tablereservehome);
 		return resultMap;
 	}
+
+	@RequestMapping(value = { "/back/updatetablenum" }, method = RequestMethod.POST)
+	public Map<String, Object> updateTableNum(TableReserveHome tablereservehome) throws Exception {
+		Map<String, Object> map = MapUtils.getHashMapInstance();
+		boolean flag = tablereservehomeservice.updateTableNum(tablereservehome.getId(), tablereservehome.getTableNum());
+		map.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);
+		return map;
+	}
+
 }

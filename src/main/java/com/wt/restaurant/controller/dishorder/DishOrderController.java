@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wt.restaurant.entity.Box;
 import com.wt.restaurant.entity.DishOrder;
 import com.wt.restaurant.entity.DishOrderLine;
 import com.wt.restaurant.service.dishorder.IDishOrderService;
@@ -59,6 +60,16 @@ public class DishOrderController {
 		List<DishOrderLine> dishordermenu = dishorderservice.listDishOrderMenu(dishorderId);
 		map.put(Constants.STATUS, Constants.SUCCESS);
 		map.put("dishordermenu", dishordermenu);
+		return map;
+	}
+	
+	@RequestMapping(value = { "/back/listdishorderbox/{dishorderId}" }, method = RequestMethod.GET)
+	public Map<String, Object> listDishOrderBox(@PathVariable("dishorderId") Integer dishorderId)
+			throws Exception {
+		Map<String, Object> map = MapUtils.getHashMapInstance();
+		List<Box> box = dishorderservice.listDishOrderBox(dishorderId);
+		map.put(Constants.STATUS, Constants.SUCCESS);
+		map.put("dishorderbox", box);
 		return map;
 	}
 	

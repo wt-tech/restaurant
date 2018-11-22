@@ -70,4 +70,6 @@ public interface ITableReserveHomeService {
 	 * @return
 	 */
 	Integer countTableReserveHome(TableReserveHome tablereservehome);
+	
+	boolean updateTableNum(Integer id,String tableNum) throws Exception;
 }

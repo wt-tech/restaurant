@@ -113,4 +113,10 @@ public class TableReserveHomeServiceImpl implements ITableReserveHomeService {
 		return tablereservehomemapper.countTableReserveHome(tablereservehome);
 	}
 
+	@Override
+	public boolean updateTableNum(Integer id, String tableNum) throws Exception {
+		// TODO Auto-generated method stub
+		return tablereservehomemapper.updateTableNum(id, tableNum)>0;
+	}
+
 }

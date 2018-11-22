@@ -2,6 +2,7 @@ package com.wt.restaurant.service.dishorder;
 
 import java.util.List;
 
+import com.wt.restaurant.entity.Box;
 import com.wt.restaurant.entity.DishOrder;
 import com.wt.restaurant.entity.DishOrderLine;
 
@@ -25,6 +26,8 @@ public interface IDishOrderService {
 	List<DishOrder> listDishOrderByCustomerId(Integer customerId);
 
 	List<DishOrderLine> listDishOrderMenu(Integer dishorderId);
+	
+	List<Box> listDishOrderBox(Integer dishorderId);
 
 	/**
 	 * 查询数量

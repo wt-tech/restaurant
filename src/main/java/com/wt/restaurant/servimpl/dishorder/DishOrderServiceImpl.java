@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wt.restaurant.dao.dishorder.IDishOrderMapper;
+import com.wt.restaurant.entity.Box;
 import com.wt.restaurant.entity.DishOrder;
 import com.wt.restaurant.entity.DishOrderLine;
 import com.wt.restaurant.service.dishorder.IDishOrderService;
@@ -16,9 +17,9 @@ public class DishOrderServiceImpl implements IDishOrderService {
 	private IDishOrderMapper dishordermapper;
 
 	@Override
-	public List<DishOrder> listDishOrder(Integer currentPageNo, Integer pageSize,DishOrder dishorder) {
+	public List<DishOrder> listDishOrder(Integer currentPageNo, Integer pageSize, DishOrder dishorder) {
 		// TODO Auto-generated method stub
-		return dishordermapper.listDishOrder(currentPageNo, pageSize,dishorder);
+		return dishordermapper.listDishOrder(currentPageNo, pageSize, dishorder);
 	}
 
 	@Override
@@ -42,7 +43,7 @@ public class DishOrderServiceImpl implements IDishOrderService {
 	@Override
 	public boolean updateDishOrderRemark(Integer id, String remark) throws Exception {
 		// TODO Auto-generated method stub
-		return dishordermapper.updateDishOrderRemark(id, remark)>0;
+		return dishordermapper.updateDishOrderRemark(id, remark) > 0;
 	}
 
 	@Override
@@ -54,7 +55,18 @@ public class DishOrderServiceImpl implements IDishOrderService {
 	@Override
 	public boolean updateDishOrderStatus(Integer id, double totalPayAmount) throws Exception {
 		// TODO Auto-generated method stub
-		return dishordermapper.updateDishOrderStatus(id, totalPayAmount)>0;
+		return dishordermapper.updateDishOrderStatus(id, totalPayAmount) > 0;
 	}
 
+	@Override
+	public List<Box> listDishOrderBox(Integer dishorderId) {
+		// TODO Auto-generated method stub
+		List<Box> boxList = dishordermapper.listDishOrderBox(dishorderId);
+		for (Box box : boxList) {
+			if (null == box.getId()) {
+				boxList.remove(box);
+			}
+		}
+		return boxList;
+	}
 }

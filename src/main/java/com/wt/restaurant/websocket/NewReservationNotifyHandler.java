@@ -10,6 +10,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -25,9 +27,10 @@ public class NewReservationNotifyHandler extends TextWebSocketHandler {
 	
 	private static Queue<TextMessage> messages = null; 
 	
+	private Logger logger = LogManager.getLogger(NewReservationNotifyHandler.class);
+	
 	@Override
 	public void handleTextMessage(WebSocketSession session, TextMessage message){
-		System.out.println(message.getPayload());
 		try {
 			super.handleTextMessage(session, message);
 		} catch (Exception e) {
@@ -54,6 +57,7 @@ public class NewReservationNotifyHandler extends TextWebSocketHandler {
 			}
 		}
 		users.put(this.getSessionKey(session), session);
+		logger.info(this.getSessionKey(session) + " in queue, there are " + users.size() + " users in total");
 		this.sendAllMessagesToAllUsers();//后台管理人员接收离线信息
 	}
 
@@ -65,6 +69,7 @@ public class NewReservationNotifyHandler extends TextWebSocketHandler {
 		} catch (Exception e) {
 			BusinessUtils.throwNewBusinessException("连接关闭出现异常 : "+e.getMessage());
 		}
+		logger.info(this.getSessionKey(session) + " out queue, there are " + users.size() + " users left");
 	}
 	
 	private String getSessionKey(WebSocketSession session) {
@@ -131,16 +136,21 @@ public class NewReservationNotifyHandler extends TextWebSocketHandler {
 	 * 将notify发送给所有后台管理人员
 	 * @param notify
 	 */
-	private void sendMessageToAllUsers(TextMessage notify) {
+	private boolean sendMessageToAllUsers(TextMessage notify) {
+		if(users == null || users.size() == 0)
+			return false;
 		for(Entry<String,WebSocketSession> entry : NewReservationNotifyHandler.users.entrySet()) {
 			if(entry.getValue().isOpen()) {
 				try {
 					entry.getValue().sendMessage(notify);
 				} catch (IOException e) {
+					//如果发送出现异常,让notify重新回到队列? 算了吧 不需要了.					
 					BusinessUtils.throwNewBusinessException("向客户端发送信息失败,发送的消息为:" + notify.getPayload());
 				}
 			}
 		}
+		logger.info("已向 " + users.size()	+ " 位管理员发送'" + notify.getPayload() + "'信息");
+		return true;
 	}
 	
 	

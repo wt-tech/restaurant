@@ -146,5 +146,17 @@ public class ReserveCtrl implements ApplicationContextAware {
 	}
 
 	private WebApplicationContext context;
+	
+	@RequestMapping("/ss")
+	public void test(@RequestParam Integer type) {
+		if(type==1)
+			context.getBean(ControllerHandlerBridge.class).notifyManager(new Message(MessageType.BOX_RESERVE));
+		if(type==2)
+			context.getBean(ControllerHandlerBridge.class).notifyManager(new Message(MessageType.BANQUET_RESERVE));
+		if(type==3)
+			context.getBean(ControllerHandlerBridge.class).notifyManager(new Message(MessageType.CODE_SCAN_ORDER));
+		if(type==4)
+			context.getBean(ControllerHandlerBridge.class).notifyManager(new Message(MessageType.TABLE_RESERVE));
+	}
 
 }

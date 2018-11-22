@@ -1,7 +1,7 @@
 package com.wt.restaurant.tool;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Constants {
 	
@@ -90,7 +90,7 @@ public class Constants {
 	public static final String ORDER_NUMBER_PREFIX = "XTXZSMF";
 	
 	//小程序端拥有商家入口权限的用户id集合.
-	public static final List<Integer> managerList = new ArrayList<Integer>(); 
+	public static final Set<Integer> managerList = new HashSet<Integer>();
 	static {
 		managerList.add(new Integer(188));
 	}

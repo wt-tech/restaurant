@@ -16,6 +16,7 @@ public class TableReserveHome {
 	private Date reservationsStartTime;// 预订开始时间
 	private Date reserveTime;// 预订时间
 	private String remarks;// 备注
+	private String tableNum;//桌号或者包厢号
 	private List<Menu> menu;// 菜品
 	
 	
@@ -135,6 +136,14 @@ public class TableReserveHome {
 
 	public void setReserveEndTime(String reserveEndTime) {
 		this.reserveEndTime = reserveEndTime;
+	}
+
+	public String getTableNum() {
+		return tableNum;
+	}
+
+	public void setTableNum(String tableNum) {
+		this.tableNum = tableNum;
 	}
 
 }

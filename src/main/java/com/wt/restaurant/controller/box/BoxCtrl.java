@@ -85,16 +85,20 @@ public class BoxCtrl {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));// CustomDateEditor为自定义日期编辑器
 	}
 
-
-	@RequestMapping(value = { "/listbox","/back/listbox" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/listbox", "/back/listbox" }, method = RequestMethod.GET)
 	public Map<String, Object> listBox(@RequestParam(value = "reserveStatus", required = false) Integer reserveStatus,
-			@RequestParam("currentPageNo") Integer currentPageNo,
+			@RequestParam(value = "currentPageNo", required = false) Integer currentPageNo,
 			@RequestParam(value = "roomNumber", required = false) Integer roomNumber) throws Exception {
 		Map<String, Object> map = MapUtils.getHashMapInstance();
+		List<Box> box = new ArrayList<Box>();
 		// 总数量（表）
 		int totalCount = boxservice.countBox(roomNumber);
-		Integer currentPageNos = new PageUtil().Page(totalCount, currentPageNo, Constants.pageSizes);
-		List<Box> box = boxservice.listBox(currentPageNos, Constants.pageSizes, roomNumber);
+		if (null == currentPageNo) {
+			box = boxservice.listBox(1, totalCount, roomNumber);
+		} else {
+			Integer currentPageNos = new PageUtil().Page(totalCount, currentPageNo, Constants.pageSizes);
+			box = boxservice.listBox(currentPageNos, Constants.pageSizes, roomNumber);
+		}
 		map.put(Constants.STATUS, Constants.SUCCESS);
 		map.put("boxs", box);
 		map.put("totalCount", totalCount);

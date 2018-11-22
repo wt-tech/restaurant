@@ -1,6 +1,7 @@
 package com.wt.restaurant.controller.table;
 
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,21 +26,24 @@ public class TableCtrl {
 	@Autowired
 	private ITableService tableservice;
 
-	@RequestMapping(value = { "/listtable","/back/listtable" }, method = RequestMethod.GET)
-	public Map<String, Object> listTable(
-			@RequestParam("currentPageNo") Integer currentPageNo,
-			@RequestParam(value="tableNumber",required = false) String number) throws Exception {
+	@RequestMapping(value = { "/listtable", "/back/listtable" }, method = RequestMethod.GET)
+	public Map<String, Object> listTable(@RequestParam(value = "currentPageNo", required = false) Integer currentPageNo,
+			@RequestParam(value = "tableNumber", required = false) String number) throws Exception {
 		Map<String, Object> map = MapUtils.getHashMapInstance();
-		
-		if(number != null && number.length() > 0) {
-			//考虑到后期number可能会添加汉字.前端使用了encodeURI进行包装.
+		List<Table> table = new ArrayList<Table>();
+		if (number != null && number.length() > 0) {
+			// 考虑到后期number可能会添加汉字.前端使用了encodeURI进行包装.
 			number = URLDecoder.decode(number, "UTF-8");
 		}
-		
+
 		// 总数量（表）
 		int totalCount = tableservice.countTable(number);
-		Integer currentPageNos = new PageUtil().Page(totalCount, currentPageNo, Constants.pageSizes);
-		List<Table> table = tableservice.listTable(currentPageNos, Constants.pageSizes,number);
+		if (null == currentPageNo) {
+			table = tableservice.listTable(1, totalCount, number);
+		} else {
+			Integer currentPageNos = new PageUtil().Page(totalCount, currentPageNo, Constants.pageSizes);
+			table = tableservice.listTable(currentPageNos, Constants.pageSizes, number);
+		}
 		map.put(Constants.STATUS, Constants.SUCCESS);
 		map.put("tables", table);
 		map.put("totalCount", totalCount);
@@ -58,7 +62,7 @@ public class TableCtrl {
 	@RequestMapping(value = { "/back/savetable" }, method = RequestMethod.POST)
 	public Map<String, Object> saveTable(HttpServletRequest request, Table table) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
-		//String staticsPath = ContextUtil.getStaticResourceAbsolutePath(request);
+		// String staticsPath = ContextUtil.getStaticResourceAbsolutePath(request);
 		boolean flag = tableservice.saveTable(table);
 		resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);
 		return resultMap;

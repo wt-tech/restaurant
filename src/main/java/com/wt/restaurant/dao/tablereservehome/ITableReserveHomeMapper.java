@@ -3,6 +3,7 @@ package com.wt.restaurant.dao.tablereservehome;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 
 import com.wt.restaurant.entity.DishOrder;
 import com.wt.restaurant.entity.DishOrderLine;
@@ -95,4 +96,15 @@ public interface ITableReserveHomeMapper {
 	 * @return
 	 */
 	Integer countTableReserveHome(@Param("tablereservehome") TableReserveHome tablereservehome);
+	
+	
+	/**
+	 * 添加桌号
+	 * @param id
+	 * @param tableNum
+	 * @return
+	 * @throws Exception
+	 */
+	@Update("update table_reserve_home set table_num=#{tableNum} where id=#{id}")
+	Integer updateTableNum(@Param("id") Integer id, @Param("tableNum") String tableNum) throws Exception;
 }

@@ -6,10 +6,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.wt.restaurant.dao.table.ITableMapper">
 
-	<select id="listTables" resultType="Table">
+	<resultMap type="Table" id="table">
+		<id column="id" property="id"/>
+		<result column="table_name" property="tableName"/>
+		<result column="number" property="number"/>
+		<result column="image" property="image"/>
+	</resultMap>
+	
+
+	<select id="listTables" resultMap="table">
 		SELECT
 		id,
 		number,
+		table_name,
 		image
 		FROM
 		`table`
@@ -25,6 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update `table`
 		set
 		number=#{number},
+		table_name=#{tableName},
 		image=#{image}
 		where
 		id=#{id};
@@ -32,9 +42,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<insert id="saveTable" parameterType="Table">
 		insert into `table`
-		(number,image)
+		(number,image,table_name)
 		values(#{number},
-		#{image});
+		#{image},#{tableName});
 	</insert>
 
 	<delete id="removeTable" parameterType="Integer">
@@ -43,14 +53,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		id=#{id}
 	</delete>
 
-	<select id="getTable" resultType="Table">
+	<select id="getTable" resultMap="table">
 		SELECT
 		id,
 		number,
+		table_name,
 		image
 		FROM `table`
 		WHERE
 		id=#{id}
+	</select>
+	
+	<select id="getTableByTableNumber" resultMap="table">
+		SELECT
+		id,
+		number,
+		table_name,
+		image
+		FROM `table`
+		WHERE
+		number=#{tableNumber}
 	</select>
 
 	<select id="countTable" resultType="Integer">

@@ -92,4 +92,9 @@ public class BoxServiceImpl implements IBoxService {
 		return boxmapper.countBox(roomNumber);
 	}
 
+	@Override
+	public Box getBoxByBoxNumber(Integer boxNumber) {
+		return boxmapper.getBoxByBoxNumber(boxNumber);
+	}
+
 }

@@ -105,7 +105,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		room_introduction,
 		box_image.id AS
 		boximage_id,
-		url,
+		box.url AS room_url,
 		box_image.name
 		FROM box
 		LEFT JOIN
@@ -116,6 +116,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		box.id=#{id}
 	</select>
 
+
+
+	<select id="getBoxByBoxNumber" resultMap="box">
+		SELECT
+		box.id,
+		room_number,
+		room_size,
+		room_name,
+		room_introduction,
+		box_image.id AS
+		boximage_id,
+		box.url AS room_url,
+		box_image.name
+		FROM box
+		LEFT JOIN
+		box_image
+		ON
+		box_image.box_id = box.id
+		WHERE
+		box.room_number=#{boxNumber}
+	</select>
+	
 	<select id="countBox" resultType="Integer">
 		SELECT COUNT(*) FROM
 		box where 1=1

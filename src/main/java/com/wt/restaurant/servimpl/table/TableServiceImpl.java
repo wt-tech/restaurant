@@ -54,5 +54,10 @@ public class TableServiceImpl implements ITableService {
 		return tablemapper.countTableByName(number);
 	}
 
+	@Override
+	public Table getTableByTableNumber(String tableNumber) {
+		return tablemapper.getTableByTableNumber(tableNumber);
+	}
+
 	
 }

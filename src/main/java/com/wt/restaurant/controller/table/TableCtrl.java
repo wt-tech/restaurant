@@ -79,4 +79,14 @@ public class TableCtrl {
 		resultMap.put("table", tableservice.getTable(id));
 		return resultMap;
 	}
+	
+	@RequestMapping(value = { "/back/tablecheck" }, method = RequestMethod.GET)
+	public Map<String, Object> checkIfTableExist(@RequestParam(value = "tableNumber",required = true) String tableNumber) throws Exception {
+		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
+		Table table = tableservice.getTableByTableNumber(tableNumber);
+		resultMap.put(Constants.STATUS, Constants.SUCCESS);
+		resultMap.put("existFlag",null == table ? false : true);
+		return resultMap;
+	}
+	
 }

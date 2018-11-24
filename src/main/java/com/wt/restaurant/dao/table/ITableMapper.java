@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.wt.restaurant.entity.Box;
 import com.wt.restaurant.entity.Table;
 
 public interface ITableMapper {
@@ -53,6 +54,14 @@ public interface ITableMapper {
 	 */
 	Table getTable(@Param("id") int id);
 
+	/**
+	 * 查看单个桌子的信息
+	 * @param tableNumber 桌子号
+	 * @return
+	 */
+	Table getTableByTableNumber(@Param("tableNumber") String tableNumber);
+	
+	
 	/**
 	 * 查询所有桌子的数量
 	 * 

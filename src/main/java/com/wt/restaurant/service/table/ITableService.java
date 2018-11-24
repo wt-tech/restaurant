@@ -50,6 +50,14 @@ public interface ITableService {
 	Table getTable(int id);
 
 	/**
+	 * 查看单个桌子的信息
+	 * @param tableNumber 桌子号
+	 * @return
+	 */
+	Table getTableByTableNumber(String tableNumber);
+	
+	
+	/**
 	 * 查询所有桌子的数量
 	 * 
 	 * @return

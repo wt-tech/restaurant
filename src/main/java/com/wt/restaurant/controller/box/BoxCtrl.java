@@ -141,4 +141,13 @@ public class BoxCtrl {
 		resultMap.put("box", boxservice.getBox(id));
 		return resultMap;
 	}
+	
+	@RequestMapping(value = { "/back/boxcheck" }, method = RequestMethod.GET)
+	public Map<String, Object> checkIfBoxExist(@RequestParam(value = "roomNumber",required = true) Integer roomNumber) throws Exception {
+		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
+		Box box = boxservice.getBoxByBoxNumber(roomNumber);
+		resultMap.put(Constants.STATUS, Constants.SUCCESS);
+		resultMap.put("existFlag",null == box ? false : true);
+		return resultMap;
+	}
 }

@@ -47,6 +47,15 @@ public interface IBoxService {
 	 */
 	Box getBox(int id);
 
+	
+	/**
+	 * 查看单个包厢的信息
+	 * @param boxNumber 包厢号
+	 * @return
+	 */
+	Box getBoxByBoxNumber(Integer boxNumber);
+	
+	
 	/**
 	 * 查询所有包厢的数量
 	 * @return

@@ -3,7 +3,8 @@ package com.wt.restaurant.entity;
 import java.util.Date;
 import java.util.List;
 
-import com.wt.restaurant.tool.StringUtils;
+import com.wt.restaurant.service.sequence.ISequenceService;
+import com.wt.restaurant.tool.SpringContextUtils;
 
 public class DishOrder {
 	private Integer id;
@@ -29,7 +30,7 @@ public class DishOrder {
 
 	// 无参构造函数,初始化一个订单编号
 	public DishOrder() {
-		this.setOrderNumber(StringUtils.createOrderNumber());
+		this.setOrderNumber(SpringContextUtils.getBeanByClass(ISequenceService.class).updateAndGetNextSequence());
 	}
 
 	public Integer getId() {

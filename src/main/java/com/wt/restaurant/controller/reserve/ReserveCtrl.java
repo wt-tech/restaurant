@@ -5,35 +5,36 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.BeansException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.WebApplicationContext;
 
 import com.wt.restaurant.entity.Box;
 import com.wt.restaurant.entity.Reserve;
 import com.wt.restaurant.service.reserve.IReserveService;
+import com.wt.restaurant.service.sequence.ISequenceService;
 import com.wt.restaurant.tool.BusinessUtils;
 import com.wt.restaurant.tool.CompareBox;
 import com.wt.restaurant.tool.Constants;
 import com.wt.restaurant.tool.MapUtils;
 import com.wt.restaurant.tool.PageUtil;
+import com.wt.restaurant.tool.SpringContextUtils;
 import com.wt.restaurant.websocket.ControllerHandlerBridge;
 import com.wt.restaurant.websocket.entity.Message;
 import com.wt.restaurant.websocket.entity.MessageType;
 
 @RestController("")
 @RequestMapping("/reserve")
-public class ReserveCtrl implements ApplicationContextAware {
+public class ReserveCtrl{
 	@Autowired
 	private IReserveService reserveservice;
+	private Logger logger = LogManager.getLogger();
 
 	@RequestMapping(value = { "/back/listreserve" }, method = RequestMethod.GET)
 	public Map<String, Object> listReserve(@RequestParam("currentPageNo") Integer currentPageNo, Reserve reserve,
@@ -108,7 +109,7 @@ public class ReserveCtrl implements ApplicationContextAware {
 		// resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);
 		if (flag) {
 			resultMap.put(Constants.STATUS, Constants.SUCCESS);
-			context.getBean(ControllerHandlerBridge.class).notifyManager(new Message(MessageType.BOX_RESERVE));
+			SpringContextUtils.getBeanByClass(ControllerHandlerBridge.class).notifyManager(new Message(MessageType.BOX_RESERVE));
 		}
 		return resultMap;
 	}
@@ -138,25 +139,6 @@ public class ReserveCtrl implements ApplicationContextAware {
 		resultMap.put(Constants.STATUS, Constants.SUCCESS);
 		resultMap.put("reserves", reserve);
 		return resultMap;
-	}
-
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		context = (WebApplicationContext) applicationContext;
-	}
-
-	private WebApplicationContext context;
-	
-	@RequestMapping("/ss")
-	public void test(@RequestParam Integer type) {
-		if(type==1)
-			context.getBean(ControllerHandlerBridge.class).notifyManager(new Message(MessageType.BOX_RESERVE));
-		if(type==2)
-			context.getBean(ControllerHandlerBridge.class).notifyManager(new Message(MessageType.BANQUET_RESERVE));
-		if(type==3)
-			context.getBean(ControllerHandlerBridge.class).notifyManager(new Message(MessageType.CODE_SCAN_ORDER));
-		if(type==4)
-			context.getBean(ControllerHandlerBridge.class).notifyManager(new Message(MessageType.TABLE_RESERVE));
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.wt.restaurant.controller.tablereserve;
 
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.wt.restaurant.entity.Customer;
 import com.wt.restaurant.entity.TableReserve;
 import com.wt.restaurant.service.tablereserve.ITableReserveService;
 import com.wt.restaurant.tool.Constants;
@@ -29,20 +33,40 @@ public class TableReserveCtrl {
 	@Autowired
 	private ITableReserveService tablereserveservice;
 
-	@RequestMapping(value = { "/back/listtablereserve" })
+	@RequestMapping(value = { "/back/listtablereserve" }, method = RequestMethod.GET)
 	public Map<String, Object> listTableReserve(@RequestParam("currentPageNo") Integer currentPageNo,
 			@RequestParam(value = "newReserveNum", required = false) Integer newReserveNum,
-			TableReserve tablereserve) throws Exception {
+			@RequestParam(value = "queryString", required = false) String queryString) throws Exception {
+		TableReserve tablereserve = null;
+		if (null != queryString && queryString.length() > 0) {
+			JSONObject jsonObj = (JSONObject) JSON.parse(URLDecoder.decode(queryString, "UTF-8"));
+			tablereserve = jsonObj.toJavaObject(TableReserve.class);
+			if (tablereserve.getCustomer() != null) {
+				String nickname = tablereserve.getCustomer().getNickname();
+				if (nickname != null && nickname.length() > 0) {
+					Customer customer = new Customer();
+					customer.setNickname(URLDecoder.decode(nickname, "UTF-8"));
+					tablereserve.setCustomer(customer);
+				}
+			}
+			String tablereserveType = tablereserve.getType();
+			if (tablereserveType != null && tablereserveType.length() > 0) {
+				tablereserve.setType(URLDecoder.decode(tablereserveType, "UTF-8"));
+			}
+		}
+
 		Map<String, Object> map = MapUtils.getHashMapInstance();
-		String tablereserveType=tablereserve.getType();
+
 /*		if(tablereserveType != null && "请选择".equals(tablereserveType)) {
 			tablereserve.setType("包厢桌子");
 		} */
 		Integer pagesizes= PageUtil.getPageNum(newReserveNum);
+
 		// 总数量（表）
 		int totalCount = tablereserveservice.countTableReserve(tablereserve);
 		Integer currentPageNos = new PageUtil().Page(totalCount, currentPageNo, pagesizes);
-		List<TableReserve> tablereserves = tablereserveservice.listTableReserve(currentPageNos,pagesizes,tablereserve);
+		List<TableReserve> tablereserves = tablereserveservice.listTableReserve(currentPageNos, pagesizes,
+				tablereserve);
 		map.put(Constants.STATUS, Constants.SUCCESS);
 		map.put("tablereserves", tablereserves);
 		map.put("totalCount", tablereserves.size());

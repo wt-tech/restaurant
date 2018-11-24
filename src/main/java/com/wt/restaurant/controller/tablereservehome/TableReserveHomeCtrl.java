@@ -17,6 +17,10 @@ import com.wt.restaurant.service.tablereservehome.ITableReserveHomeService;
 import com.wt.restaurant.tool.Constants;
 import com.wt.restaurant.tool.MapUtils;
 import com.wt.restaurant.tool.PageUtil;
+import com.wt.restaurant.tool.SpringContextUtils;
+import com.wt.restaurant.websocket.ControllerHandlerBridge;
+import com.wt.restaurant.websocket.entity.Message;
+import com.wt.restaurant.websocket.entity.MessageType;
 
 @RestController("")
 @RequestMapping("/tablereservehome")
@@ -58,7 +62,11 @@ public class TableReserveHomeCtrl {
 	public Map<String, Object> saveTableReserveHome(@RequestBody() TableReserveHome tablereservehome) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		boolean flag = tablereservehomeservice.saveTableReserveHome(tablereservehome);
-		resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);
+		resultMap.put(Constants.STATUS,Constants.FAIL);
+		if (flag) {
+			resultMap.put(Constants.STATUS, Constants.SUCCESS);
+			SpringContextUtils.getBeanByClass(ControllerHandlerBridge.class).notifyManager(new Message(MessageType.TABLE_RESERVE));
+		}
 		return resultMap;
 	}
 

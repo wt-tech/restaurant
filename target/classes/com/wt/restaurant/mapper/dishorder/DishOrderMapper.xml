@@ -58,8 +58,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			and
 			order_status=#{dishorder.orderStatus}
 		</if>
+<<<<<<< HEAD
+		<!-- <if test="dishorder !=null and dishorder.orderStatus !=null">
+			SELECT dish_order.id FROM dish_order
+=======
 		<if test="dishorder !=null and dishorder.tableOrboxNum !=null">
 			and dish_order.id in(SELECT dish_order.id FROM dish_order
+>>>>>>> cbe6f807c046c8b60b9222398eeffa1e21a9e940
 
 			LEFT JOIN
 			reserve ON dish_order.reserve_id=reserve.id
@@ -134,8 +139,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			AS tableBox4
 
 			ON dish_order.reserve_id=tableBox4.id WHERE
+<<<<<<< HEAD
+			dish_order.reserve_type='店外点餐' AND tableBox4.type='桌子') AS tablebox2
+
+
+
+
+		</if> -->
+=======
 			dish_order.reserve_type='店外点餐' AND tableBox4.type='桌子') AS tablebox2)
 		</if>
+>>>>>>> cbe6f807c046c8b60b9222398eeffa1e21a9e940
 		ORDER BY create_time desc
 		LIMIT
 		${(currentPageNo-1)*pageSize},${pageSize}

@@ -77,7 +77,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- 3333333333333333333333333扫码点餐3333333333333333333333333333333 -->
 	<resultMap type="TableReserve" id="tablereserve">
-		<!-- <id column="reserve_id" property="id" /> -->
+
 		<discriminator javaType="string" column="type">
 			<case value="包厢" resultMap="box"></case>
 			<case value="桌子" resultMap="table"></case>
@@ -190,6 +190,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				</if>
 			</when>
 			<otherwise>
+
 				SELECT
 				NULL AS 'id',
 				NULL AS 'customer_id',

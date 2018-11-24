@@ -58,6 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			and
 			order_status=#{dishorder.orderStatus}
 		</if>
+
 		<if test="dishorder !=null and dishorder.tableOrboxNum !=null">
 			and dish_order.id in(SELECT dish_order.id FROM dish_order
 
@@ -134,8 +135,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			AS tableBox4
 
 			ON dish_order.reserve_id=tableBox4.id WHERE
+
 			dish_order.reserve_type='店外点餐' AND tableBox4.type='桌子') AS tablebox2)
 		</if>
+
 		ORDER BY create_time desc
 		LIMIT
 		${(currentPageNo-1)*pageSize},${pageSize}

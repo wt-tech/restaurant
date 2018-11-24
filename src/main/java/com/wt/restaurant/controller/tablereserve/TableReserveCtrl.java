@@ -22,6 +22,10 @@ import com.wt.restaurant.service.tablereserve.ITableReserveService;
 import com.wt.restaurant.tool.Constants;
 import com.wt.restaurant.tool.MapUtils;
 import com.wt.restaurant.tool.PageUtil;
+import com.wt.restaurant.tool.SpringContextUtils;
+import com.wt.restaurant.websocket.ControllerHandlerBridge;
+import com.wt.restaurant.websocket.entity.Message;
+import com.wt.restaurant.websocket.entity.MessageType;
 
 @RestController("")
 @RequestMapping("/tablereserve")
@@ -52,7 +56,12 @@ public class TableReserveCtrl {
 		}
 
 		Map<String, Object> map = MapUtils.getHashMapInstance();
-		Integer pagesizes = PageUtil.getPageNum(newReserveNum);
+
+/*		if(tablereserveType != null && "请选择".equals(tablereserveType)) {
+			tablereserve.setType("包厢桌子");
+		} */
+		Integer pagesizes= PageUtil.getPageNum(newReserveNum);
+
 		// 总数量（表）
 		int totalCount = tablereserveservice.countTableReserve(tablereserve);
 		Integer currentPageNos = new PageUtil().Page(totalCount, currentPageNo, pagesizes);
@@ -60,7 +69,7 @@ public class TableReserveCtrl {
 				tablereserve);
 		map.put(Constants.STATUS, Constants.SUCCESS);
 		map.put("tablereserves", tablereserves);
-		map.put("totalCount", totalCount);
+		map.put("totalCount", tablereserves.size());
 		map.put("pageSize", pagesizes);
 		return map;
 	}
@@ -77,7 +86,11 @@ public class TableReserveCtrl {
 	public Map<String, Object> saveTableReserve(@RequestBody() TableReserve tablereserve) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		boolean flag = tablereserveservice.saveTableReserve(tablereserve);
-		resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);
+		resultMap.put(Constants.STATUS,Constants.FAIL);
+		if (flag) {
+			resultMap.put(Constants.STATUS, Constants.SUCCESS);
+			SpringContextUtils.getBeanByClass(ControllerHandlerBridge.class).notifyManager(new Message(MessageType.CODE_SCAN_ORDER));
+		}
 		return resultMap;
 	}
 

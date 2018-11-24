@@ -21,9 +21,19 @@ public class TableReserveServiceImpl implements ITableReserveService {
 	private ITableReserveMapper tablereservemapper;
 
 	@Override
-	public List<TableReserve> listTableReserve(Integer currentPageNo, Integer pageSize,TableReserve tablereserve) {
+	public List<TableReserve> listTableReserve(Integer currentPageNo, Integer pageSize, TableReserve tablereserve) {
 		// TODO Auto-generated method stub
-		return tablereservemapper.listTableReserve(currentPageNo, pageSize,tablereserve);
+		// 如果前台type值什么都不传，就是默认值包厢桌子
+		if (null != tablereserve) {
+			if (!"包厢".equals(tablereserve.getType()) && !"桌子".equals(tablereserve.getType())) {
+				tablereserve.setType("包厢桌子");
+			}
+		} else {
+			TableReserve tablereservee = new TableReserve();
+			tablereservee.setType("包厢桌子");
+			return tablereservemapper.listTableReserve(currentPageNo, pageSize, tablereservee);
+		}
+		return tablereservemapper.listTableReserve(currentPageNo, pageSize, tablereserve);
 	}
 
 	@Override
@@ -111,6 +121,16 @@ public class TableReserveServiceImpl implements ITableReserveService {
 	@Override
 	public Integer countTableReserve(TableReserve tablereserve) {
 		// TODO Auto-generated method stub
+		// 如果前台type值什么都不传，就是默认值包厢桌子
+		if (null != tablereserve) {
+			if (!"包厢".equals(tablereserve.getType()) && !"桌子".equals(tablereserve.getType())) {
+				tablereserve.setType("包厢桌子");
+			}
+		} else {
+			TableReserve tablereservee = new TableReserve();
+			tablereservee.setType("包厢桌子");
+			return tablereservemapper.countTableReserve(tablereservee);
+		}
 		return tablereservemapper.countTableReserve(tablereserve);
 	}
 

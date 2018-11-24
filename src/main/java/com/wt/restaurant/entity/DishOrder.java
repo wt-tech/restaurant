@@ -17,7 +17,7 @@ public class DishOrder {
 	private double totalAmount;// 总金额
 	private double discountAmount;// 优惠金额
 	private double totalPayAmount;// 实付总金额
-	private int orderStatus;// 订单状态
+	private Boolean orderStatus;// 订单状态
 	private String remark;//备注
 	private List<DishOrderLine> dishorderline;// 订单项
 	
@@ -25,6 +25,7 @@ public class DishOrder {
 	/************ 只用于后台管理的时间段筛选功能，方便mybatis使用 ************/
 	private String reserveStartTime;// 预订开始时间
 	private String reserveEndTime;// 预订结束时间
+	private String tableOrboxNum;// 包厢号or桌号
 
 	// 无参构造函数,初始化一个订单编号
 	public DishOrder() {
@@ -111,11 +112,12 @@ public class DishOrder {
 		this.totalPayAmount = totalPayAmount;
 	}
 
-	public int getOrderStatus() {
+
+	public Boolean getOrderStatus() {
 		return orderStatus;
 	}
 
-	public void setOrderStatus(int orderStatus) {
+	public void setOrderStatus(Boolean orderStatus) {
 		this.orderStatus = orderStatus;
 	}
 
@@ -149,6 +151,14 @@ public class DishOrder {
 
 	public void setReserveEndTime(String reserveEndTime) {
 		this.reserveEndTime = reserveEndTime;
+	}
+
+	public String getTableOrboxNum() {
+		return tableOrboxNum;
+	}
+
+	public void setTableOrboxNum(String tableOrboxNum) {
+		this.tableOrboxNum = tableOrboxNum;
 	}
 
 }

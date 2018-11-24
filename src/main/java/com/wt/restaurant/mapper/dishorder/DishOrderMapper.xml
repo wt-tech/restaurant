@@ -39,6 +39,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			create_time between #{dishorder.reserveStartTime} and
 			#{dishorder.reserveEndTime}
 		</if>
+		<if
+			test="dishorder !=null and dishorder.reserveStartTime !=null and dishorder.reserveEndTime ==null">
+			and
+			create_time >= #{dishorder.reserveStartTime}
+		</if>
+		<if
+			test="dishorder !=null and dishorder.reserveStartTime ==null and dishorder.reserveEndTime !=null">
+			and
+			#{dishorder.reserveEndTime} > create_time
+
+		</if>
 		<if test="dishorder !=null and dishorder.reserveType !=null">
 			and
 			reserve_type=#{dishorder.reserveType}
@@ -47,27 +58,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			and
 			order_status=#{dishorder.orderStatus}
 		</if>
-		<if test="dishorder !=null and dishorder.orderStatus !=null">
-			SELECT dish_order.id FROM dish_order
+		<if test="dishorder !=null and dishorder.tableOrboxNum !=null">
+			and dish_order.id in(SELECT dish_order.id FROM dish_order
 
-			LEFT JOIN reserve ON dish_order.reserve_id=reserve.id
+			LEFT JOIN
+			reserve ON dish_order.reserve_id=reserve.id
 
-			LEFT JOIN reserve_box ON reserve_box.reserve_id=reserve.id
+			LEFT JOIN
+			reserve_box ON
+			reserve_box.reserve_id=reserve.id
 
-			LEFT JOIN box ON reserve_box.box_id=box.id
+			LEFT JOIN box ON
+			reserve_box.box_id=box.id
 
-			WHERE dish_order.reserve_type='包厢预订' AND dish_order.order_status=0 AND
-			box.room_number='809'
+			WHERE dish_order.reserve_type='包厢预订' AND
+			dish_order.order_status=0 AND
+			box.room_number=#{dishorder.tableOrboxNum}
 
 
 			UNION ALL
 
-			SELECT tablebox1.id FROM(SELECT dish_order.id FROM dish_order
+			SELECT
+			tablebox1.id FROM(SELECT dish_order.id FROM dish_order
 
 			LEFT JOIN
 
 			(SELECT table_reserve.* FROM table_reserve LEFT JOIN box ON
-			table_reserve.table_box_id=box.id WHERE box.room_number='809') AS
+			table_reserve.table_box_id=box.id WHERE box.room_number=#{dishorder.tableOrboxNum}) AS
 			tableBox1
 
 			ON dish_order.reserve_id=tableBox1.id WHERE
@@ -79,8 +96,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 			LEFT JOIN
 
-			(SELECT table_reserve.* FROM table_reserve LEFT JOIN `table` ON
-			table_reserve.table_box_id=`table`.id WHERE `table`.number='809') AS
+			(SELECT table_reserve.*
+			FROM table_reserve LEFT JOIN `table` ON
+			table_reserve.table_box_id=`table`.id WHERE `table`.number=#{dishorder.tableOrboxNum}) AS
 			tableBox2
 
 			ON dish_order.reserve_id=tableBox2.id WHERE
@@ -91,12 +109,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
 
-			SELECT tablebox2.id FROM(SELECT dish_order.id FROM dish_order
+			SELECT tablebox2.id FROM(SELECT dish_order.id FROM
+			dish_order
 
 			LEFT JOIN
 
-			(SELECT table_reserve_home.* FROM table_reserve_home LEFT JOIN box ON
-			table_reserve_home.table_num=box.id WHERE box.room_number='809') AS
+			(SELECT table_reserve_home.* FROM
+			table_reserve_home LEFT JOIN box ON
+			table_reserve_home.table_num=box.id WHERE box.room_number=#{dishorder.tableOrboxNum}) AS
 			tableBox3
 
 			ON dish_order.reserve_id=tableBox3.id WHERE
@@ -108,16 +128,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 			LEFT JOIN
 
-			(SELECT table_reserve_home.* FROM table_reserve_home LEFT JOIN `table` ON
-			table_reserve_home.table_num=`table`.id WHERE `table`.number='809')
+			(SELECT
+			table_reserve_home.* FROM table_reserve_home LEFT JOIN `table` ON
+			table_reserve_home.table_num=`table`.id WHERE `table`.number=#{dishorder.tableOrboxNum})
 			AS tableBox4
 
 			ON dish_order.reserve_id=tableBox4.id WHERE
-			dish_order.reserve_type='店外点餐' AND tableBox4.type='桌子') AS tablebox2
-
-
-
-
+			dish_order.reserve_type='店外点餐' AND tableBox4.type='桌子') AS tablebox2)
 		</if>
 		ORDER BY create_time desc
 		LIMIT
@@ -155,6 +172,110 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="countDishOrder" resultType="Integer">
 		SELECT COUNT(*) FROM
 		dish_order
+		where 1=1
+		<if
+			test="dishorder !=null and dishorder.reserveStartTime !=null and dishorder.reserveEndTime !=null">
+			and
+			create_time between #{dishorder.reserveStartTime} and
+			#{dishorder.reserveEndTime}
+		</if>
+		<if
+			test="dishorder !=null and dishorder.reserveStartTime !=null and dishorder.reserveEndTime ==null">
+			and
+			create_time >= #{dishorder.reserveStartTime}
+		</if>
+		<if
+			test="dishorder !=null and dishorder.reserveStartTime ==null and dishorder.reserveEndTime !=null">
+			and
+			#{dishorder.reserveEndTime} > create_time
+
+		</if>
+		<if test="dishorder !=null and dishorder.reserveType !=null">
+			and
+			reserve_type=#{dishorder.reserveType}
+		</if>
+		<if test="dishorder !=null and dishorder.orderStatus !=null">
+			and
+			order_status=#{dishorder.orderStatus}
+		</if>
+		<if test="dishorder !=null and dishorder.tableOrboxNum !=null">
+			and dish_order.id in(SELECT dish_order.id FROM dish_order
+
+			LEFT JOIN
+			reserve ON dish_order.reserve_id=reserve.id
+
+			LEFT JOIN
+			reserve_box ON
+			reserve_box.reserve_id=reserve.id
+
+			LEFT JOIN box ON
+			reserve_box.box_id=box.id
+
+			WHERE dish_order.reserve_type='包厢预订' AND
+			dish_order.order_status=0 AND
+			box.room_number=#{dishorder.tableOrboxNum}
+
+
+			UNION ALL
+
+			SELECT
+			tablebox1.id FROM(SELECT dish_order.id FROM dish_order
+
+			LEFT JOIN
+
+			(SELECT table_reserve.* FROM table_reserve LEFT JOIN box ON
+			table_reserve.table_box_id=box.id WHERE box.room_number=#{dishorder.tableOrboxNum}) AS
+			tableBox1
+
+			ON dish_order.reserve_id=tableBox1.id WHERE
+			dish_order.reserve_type='扫码点餐' AND tableBox1.type='包厢'
+
+			UNION ALL
+
+			SELECT dish_order.id FROM dish_order
+
+			LEFT JOIN
+
+			(SELECT table_reserve.*
+			FROM table_reserve LEFT JOIN `table` ON
+			table_reserve.table_box_id=`table`.id WHERE `table`.number=#{dishorder.tableOrboxNum}) AS
+			tableBox2
+
+			ON dish_order.reserve_id=tableBox2.id WHERE
+			dish_order.reserve_type='扫码点餐' AND tableBox2.type='桌子') AS tablebox1
+
+
+			UNION ALL
+
+
+
+			SELECT tablebox2.id FROM(SELECT dish_order.id FROM
+			dish_order
+
+			LEFT JOIN
+
+			(SELECT table_reserve_home.* FROM
+			table_reserve_home LEFT JOIN box ON
+			table_reserve_home.table_num=box.id WHERE box.room_number=#{dishorder.tableOrboxNum}) AS
+			tableBox3
+
+			ON dish_order.reserve_id=tableBox3.id WHERE
+			dish_order.reserve_type='店外点餐' AND tableBox3.type='包厢'
+
+			UNION ALL
+
+			SELECT dish_order.id FROM dish_order
+
+			LEFT JOIN
+
+			(SELECT
+			table_reserve_home.* FROM table_reserve_home LEFT JOIN `table` ON
+			table_reserve_home.table_num=`table`.id WHERE `table`.number=#{dishorder.tableOrboxNum})
+			AS tableBox4
+
+			ON dish_order.reserve_id=tableBox4.id WHERE
+			dish_order.reserve_type='店外点餐' AND tableBox4.type='桌子') AS tablebox2)
+		</if>
 	</select>
 
 	<select id="listDishOrderBox" resultType="Box">

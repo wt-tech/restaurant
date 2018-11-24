@@ -3,9 +3,6 @@ package com.wt.restaurant.entity;
 import java.util.Date;
 import java.util.List;
 
-import com.wt.restaurant.service.sequence.ISequenceService;
-import com.wt.restaurant.tool.SpringContextUtils;
-
 public class DishOrder {
 	private Integer id;
 	private Reserve reserve;// 预定
@@ -28,8 +25,12 @@ public class DishOrder {
 	private String reserveEndTime;// 预订结束时间
 
 	// 无参构造函数,初始化一个订单编号
+	/**
+	 * 订单编号被放在对应的serivceImpl中初始化了.
+	 * @author Daryl 2018-11-22
+	 */
 	public DishOrder() {
-		this.setOrderNumber(SpringContextUtils.getBeanByClass(ISequenceService.class).updateAndGetNextSequence());
+		//this.setOrderNumber(SpringContextUtils.getBeanByClass(ISequenceService.class).updateAndGetNextSequence());
 	}
 
 	public Integer getId() {

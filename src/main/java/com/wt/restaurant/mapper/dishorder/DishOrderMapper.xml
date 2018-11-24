@@ -47,7 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			and
 			order_status=#{dishorder.orderStatus}
 		</if>
-		<if test="dishorder !=null and dishorder.orderStatus !=null">
+		<!-- <if test="dishorder !=null and dishorder.orderStatus !=null">
 			SELECT dish_order.id FROM dish_order
 
 			LEFT JOIN reserve ON dish_order.reserve_id=reserve.id
@@ -118,7 +118,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
 
-		</if>
+		</if> -->
 		ORDER BY create_time desc
 		LIMIT
 		${(currentPageNo-1)*pageSize},${pageSize}

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wt.restaurant.dao.reserve.IReserveMapper;
+import com.wt.restaurant.dao.sequence.ISequenceMapper;
 import com.wt.restaurant.entity.Box;
 import com.wt.restaurant.entity.Customer;
 import com.wt.restaurant.entity.DishOrder;
@@ -20,7 +21,9 @@ import com.wt.restaurant.service.reserve.IReserveService;
 public class ReserveServiceImpl implements IReserveService {
 	@Autowired
 	private IReserveMapper reservemapper;
-
+	@Autowired
+	private ISequenceMapper sequenceMapper;
+	
 	@Override
 	public List<Reserve> listReserve(Integer currentPageNo, Integer pageSize, Reserve reserve) {
 		// TODO Auto-generated method stub
@@ -79,19 +82,23 @@ public class ReserveServiceImpl implements IReserveService {
 			}
 			dishorder.setTotalAmount(sumPrice);
 		}
-		if (reservemapper.saveDishOrder(dishorder) > 0) {
-			DishOrderLine dishorderline = new DishOrderLine();
-			List<DishOrderLine> dishorderlinelist = new ArrayList<DishOrderLine>();
-			for (int i = 0; i < reserve.getMenu().size(); i++) {
-				dishorderline = new DishOrderLine();
-				dishorderline.setMenu(reserve.getMenu().get(i));
-				dishorderline.setDishorder(dishorder);
-				dishorderline.setDishCount(reserve.getMenu().get(i).getMenuCount());
-				dishorderline.setUnitPrice(reserve.getMenu().get(i).getChoosePrice());
-				dishorderline.setSpecifications(reserve.getMenu().get(i).getSpecifications());
-				dishorderlinelist.add(dishorderline);
+		
+		synchronized(ISequenceMapper.class){
+			dishorder.setOrderNumber(sequenceMapper.updateAndGetNextSequence());
+			if (reservemapper.saveDishOrder(dishorder) > 0) {
+				DishOrderLine dishorderline = new DishOrderLine();
+				List<DishOrderLine> dishorderlinelist = new ArrayList<DishOrderLine>();
+				for (int i = 0; i < reserve.getMenu().size(); i++) {
+					dishorderline = new DishOrderLine();
+					dishorderline.setMenu(reserve.getMenu().get(i));
+					dishorderline.setDishorder(dishorder);
+					dishorderline.setDishCount(reserve.getMenu().get(i).getMenuCount());
+					dishorderline.setUnitPrice(reserve.getMenu().get(i).getChoosePrice());
+					dishorderline.setSpecifications(reserve.getMenu().get(i).getSpecifications());
+					dishorderlinelist.add(dishorderline);
+				}
+				flag = reservemapper.saveDishOrderLine(dishorderlinelist) > 0;
 			}
-			flag = reservemapper.saveDishOrderLine(dishorderlinelist) > 0;
 		}
 		return flag;
 	}

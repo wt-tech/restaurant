@@ -16,8 +16,10 @@ public class SequenceServImpl implements ISequenceService{
 	 * 避免序列号重复,添加了synchronized修饰
 	 */
 	@Override
-	public synchronized String updateAndGetNextSequence() {
-		return mapper.updateAndGetNextSequence();
+	public String updateAndGetNextSequence() {
+		synchronized(ISequenceMapper.class) {
+			return mapper.updateAndGetNextSequence();
+		}
 	}
 
 }

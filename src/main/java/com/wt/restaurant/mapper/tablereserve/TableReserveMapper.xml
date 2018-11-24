@@ -9,7 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- 11111111111111111111111111桌子11111111111111111111111111 -->
 	<resultMap type="TableReserve" id="table">
-		<id column="reserve_id" property="id" />
+
 		<result column="reserve_time" property="reserveTime" />
 		<result column="type" property="type" />
 
@@ -44,7 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 222222222222222222222222222222包厢22222222222222222222222222222 -->
 
 	<resultMap type="TableReserve" id="box">
-		<id column="reserve_id" property="id" />
+		<!-- <id column="reserve_id" property="id" /> -->
 		<result column="reserve_time" property="reserveTime" />
 		<result column="type" property="type" />
 
@@ -77,6 +77,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- 3333333333333333333333333扫码点餐3333333333333333333333333333333 -->
 	<resultMap type="TableReserve" id="tablereserve">
+		<id column="reserve_id" property="id" />
 		<discriminator javaType="string" column="type">
 			<case value="包厢" resultMap="box"></case>
 			<case value="桌子" resultMap="table"></case>
@@ -109,9 +110,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		(SELECT
 		* FROM (
 		<choose>
-			<when test="tablereserve !=null">
+			<when test="tablereserve !=null and tablereserve.type != null">
 				<if
-					test='tablereserve.type !=null and tablereserve.type=="包厢" or tablereserve.type=="包厢桌子" '>
+					test='tablereserve.type=="包厢" or tablereserve.type=="包厢桌子"'>
 					SELECT
 					table_reserve.id,
 					table_reserve.customer_id,
@@ -134,17 +135,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					box.id=table_reserve.table_box_id
 					WHERE `type`='包厢'
 				</if>
-				<if test='tablereserve.type !=null and tablereserve.type=="包厢桌子"'>
+				<if test='tablereserve.type=="包厢桌子"'>
 					UNION ALL
 				</if>
 				<if
-					test='tablereserve.type !=null and tablereserve.type=="桌子" or tablereserve.type=="包厢桌子"'>
+					test='tablereserve.type=="桌子" or tablereserve.type=="包厢桌子"'>
 					SELECT
 					table_reserve.id,
 					table_reserve.customer_id,
 					reserve_time,
-					`table`.number,`table`.id AS
-					table_id,`table`.table_name,`type`
+					`table`.number AS room_number,
+					`table`.id AS box_id,`table`.table_name AS room_name,
+					`type`
 					FROM
 					(SELECT *
 					FROM table_reserve
@@ -163,7 +165,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					WHERE `type`='桌子'
 				</if>
 			</when>
-			<otherwise>table_reserve</otherwise>
+			<otherwise>
+				SELECT 
+					NULL AS 'id',
+					NULL AS 'customer_id',
+					NULL AS 'reserve_time',
+					NULL AS 'room_number',
+					NULL AS 'box_id',
+					NULL AS 'room_name',
+					NULL AS 'type' 
+				FROM table_reserve
+				WHERE 1 = 2
+			</otherwise>
 		</choose>
 		) AS s
 		ORDER BY

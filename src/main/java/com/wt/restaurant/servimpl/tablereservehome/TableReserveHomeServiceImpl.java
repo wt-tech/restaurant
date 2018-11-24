@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.wt.restaurant.dao.sequence.ISequenceMapper;
 import com.wt.restaurant.dao.tablereservehome.ITableReserveHomeMapper;
 import com.wt.restaurant.entity.Customer;
 import com.wt.restaurant.entity.DishOrder;
@@ -19,6 +20,8 @@ import com.wt.restaurant.service.tablereservehome.ITableReserveHomeService;
 public class TableReserveHomeServiceImpl implements ITableReserveHomeService {
 	@Autowired
 	private ITableReserveHomeMapper tablereservehomemapper;
+	@Autowired
+	private ISequenceMapper sequenceMapper;
 
 	@Override
 	public List<TableReserveHome> listTableReserveHome(Integer currentPageNo, Integer pageSize,TableReserveHome tablereservehome) {
@@ -72,19 +75,22 @@ public class TableReserveHomeServiceImpl implements ITableReserveHomeService {
 			}
 			dishorder.setTotalAmount(sumPrice);
 		}
-		if (tablereservehomemapper.saveDishOrder(dishorder) > 0) {
-			DishOrderLine dishorderline = new DishOrderLine();
-			List<DishOrderLine> dishorderlinelist = new ArrayList<DishOrderLine>();
-			for (int i = 0; i < tablereservehome.getMenu().size(); i++) {
-				dishorderline = new DishOrderLine();
-				dishorderline.setMenu(tablereservehome.getMenu().get(i));
-				dishorderline.setDishorder(dishorder);
-				dishorderline.setDishCount(tablereservehome.getMenu().get(i).getMenuCount());
-				dishorderline.setUnitPrice(tablereservehome.getMenu().get(i).getChoosePrice());
-				dishorderline.setSpecifications(tablereservehome.getMenu().get(i).getSpecifications());
-				dishorderlinelist.add(dishorderline);
+		synchronized(ISequenceMapper.class){
+			dishorder.setOrderNumber(sequenceMapper.updateAndGetNextSequence());
+			if (tablereservehomemapper.saveDishOrder(dishorder) > 0) {
+				DishOrderLine dishorderline = new DishOrderLine();
+				List<DishOrderLine> dishorderlinelist = new ArrayList<DishOrderLine>();
+				for (int i = 0; i < tablereservehome.getMenu().size(); i++) {
+					dishorderline = new DishOrderLine();
+					dishorderline.setMenu(tablereservehome.getMenu().get(i));
+					dishorderline.setDishorder(dishorder);
+					dishorderline.setDishCount(tablereservehome.getMenu().get(i).getMenuCount());
+					dishorderline.setUnitPrice(tablereservehome.getMenu().get(i).getChoosePrice());
+					dishorderline.setSpecifications(tablereservehome.getMenu().get(i).getSpecifications());
+					dishorderlinelist.add(dishorderline);
+				}
+				flag = tablereservehomemapper.saveDishOrderLine(dishorderlinelist) > 0;
 			}
-			flag = tablereservehomemapper.saveDishOrderLine(dishorderlinelist) > 0;
 		}
 		return flag;
 	}

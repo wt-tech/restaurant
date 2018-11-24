@@ -36,7 +36,6 @@ public class LoginCtrl {
 		boolean flag = loginService.login(login) ;
 		map.put(Constants.STATUS, flag? Constants.SUCCESS : Constants.FAIL);
 		if(flag) {//加入session
-			System.err.println(session.getId());
 			session.setAttribute(Constants.USER_SESSION, login);
 			String ip = ContextUtil.getClientIpAddress(request);
 			logger.info("用户: " + login.getUserCode() + ",IP : " + ip + " 登录成功");

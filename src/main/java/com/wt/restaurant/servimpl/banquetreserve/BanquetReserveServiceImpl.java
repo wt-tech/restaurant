@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wt.restaurant.dao.banquetreserve.IBanquetReserveMapper;
+import com.wt.restaurant.dao.sequence.ISequenceMapper;
 import com.wt.restaurant.entity.BanquetReserve;
 import com.wt.restaurant.entity.Customer;
 import com.wt.restaurant.entity.DishOrder;
@@ -16,6 +17,9 @@ import com.wt.restaurant.service.banquetreserve.IBanquetReserveService;
 public class BanquetReserveServiceImpl implements IBanquetReserveService {
 	@Autowired
 	private IBanquetReserveMapper banquetreservemapper;
+	
+	@Autowired
+	private ISequenceMapper sequenceMapper;
 
 	@Override
 	public List<BanquetReserve> listBanquetReserve(Integer currentPageNo, Integer pageSize,BanquetReserve banquetreserve) {
@@ -39,7 +43,6 @@ public class BanquetReserveServiceImpl implements IBanquetReserveService {
 
 	@Override
 	public boolean saveDishOrder(BanquetReserve banquetreserve) throws Exception {
-		// TODO Auto-generated method stub
 		DishOrder dishorder = new DishOrder();
 		Reserve reserve = new Reserve();
 		reserve.setId(banquetreserve.getId());
@@ -49,7 +52,10 @@ public class BanquetReserveServiceImpl implements IBanquetReserveService {
 		dishorder.setCustomer(customer);
 		dishorder.setReserveType("喜宴预订");
 		dishorder.setTotalAmount(banquetreserve.getCombo().getComboPrice() * banquetreserve.getReservationsNum());
-		return banquetreservemapper.saveDishOrder(dishorder) > 0;
+		synchronized(ISequenceMapper.class){
+			dishorder.setOrderNumber(sequenceMapper.updateAndGetNextSequence());
+			return banquetreservemapper.saveDishOrder(dishorder) > 0;
+		}
 	}
 
 	@Override

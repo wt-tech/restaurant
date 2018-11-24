@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.wt.restaurant.entity.Box;
 import com.wt.restaurant.entity.Reserve;
 import com.wt.restaurant.service.reserve.IReserveService;
-import com.wt.restaurant.service.sequence.ISequenceService;
 import com.wt.restaurant.tool.BusinessUtils;
 import com.wt.restaurant.tool.CompareBox;
 import com.wt.restaurant.tool.Constants;

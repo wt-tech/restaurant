@@ -4,7 +4,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- namespace指向mapper接口 -->
-<mapper namespace="com.wt.restaurant.dao.tablereservehome.ITableReserveHomeMapper">
+<mapper
+	namespace="com.wt.restaurant.dao.tablereservehome.ITableReserveHomeMapper">
 	<resultMap type="TableReserveHome" id="tablereservehome">
 		<id column="id" property="id" />
 		<result column="reservations_name" property="reservationsName" />
@@ -28,6 +29,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<result column="menu_count" property="menuCount" />
 			<result column="discount_price" property="discountPrice" />
 			<result column="discount" property="discount" />
+			<collection property="menuimage" ofType="MenuImage"
+				column="id">
+				<id column="menu_image_id" property="id" />
+				<result column="url" property="url" />
+			</collection>
 		</collection>
 	</resultMap>
 
@@ -48,20 +54,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		menu.id AS menu_id,menu.name AS
 		menu_name,large_price,medium_price,small_price,discount,discount_price
 		FROM
-		(SELECT * FROM table_reserve_home 
+		(SELECT * FROM table_reserve_home
 		where 1=1
-		<if test="tablereservehome !=null and tablereservehome.reservationsName !=null">
+		<if
+			test="tablereservehome !=null and tablereservehome.reservationsName !=null">
 			and
-			reservations_name like "%${tablereservehome.reservationsName}%"
+			reservations_name like
+			"%${tablereservehome.reservationsName}%"
 		</if>
-		<if test="tablereservehome !=null and tablereservehome.reservationsTel !=null">
+		<if
+			test="tablereservehome !=null and tablereservehome.reservationsTel !=null">
 			and
 			reservations_tel=#{tablereservehome.reservationsTel}
 		</if>
 		<if
 			test="tablereservehome !=null and tablereservehome.EatStartTime !=null and tablereservehome.EatEndTime !=null">
 			and
-			reservations_start_time between #{tablereservehome.EatStartTime} and
+			reservations_start_time between
+			#{tablereservehome.EatStartTime} and
 			#{tablereservehome.EatEndTime}
 		</if>
 		<if
@@ -91,18 +101,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			#{tablereservehome.reserveEndTime} > reserve_time
 
 		</if>
-		ORDER BY reserve_time DESC LIMIT ${(currentPageNo-1)*pageSize},${pageSize})
+		ORDER BY reserve_time DESC LIMIT
+		${(currentPageNo-1)*pageSize},${pageSize})
 		AS table_reserve_home
-		LEFT JOIN
-		table_reserve_home_menu
-		ON table_reserve_home.id=table_reserve_home_menu.reserve_id
 		LEFT
-		JOIN menu ON
+		JOIN
+		table_reserve_home_menu
+		ON
+		table_reserve_home.id=table_reserve_home_menu.reserve_id
+		LEFT
+		JOIN menu
+		ON
 		menu.id=table_reserve_home_menu.menu_id
 		ORDER BY reserve_time desc
 	</select>
 
-	<update id="updateTableReserveHome" parameterType="TableReserveHome">
+	<update id="updateTableReserveHome"
+		parameterType="TableReserveHome">
 		update menu
 		set
 		name=#{name},
@@ -116,8 +131,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where id=#{id};
 	</update>
 
-	<insert id="saveTableReserveHome" parameterType="TableReserveHome"
-		useGeneratedKeys="true" keyProperty="id">
+	<insert id="saveTableReserveHome"
+		parameterType="TableReserveHome" useGeneratedKeys="true"
+		keyProperty="id">
 		insert into table_reserve_home
 		(customer_id,
 		reservations_name,
@@ -159,7 +175,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 
 	<delete id="removeTableReserveHome" parameterType="Integer">
-		delete from table_reserve_home
+		delete from
+		table_reserve_home
 		where
 		id=#{id}
 	</delete>
@@ -183,15 +200,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM
 		table_reserve_home_menu
 		LEFT JOIN
-		table_reserve_home ON table_reserve_home.id=table_reserve_home_menu.reserve_id
+		table_reserve_home ON
+		table_reserve_home.id=table_reserve_home_menu.reserve_id
 		LEFT
-		JOIN menu ON
+		JOIN menu
+		ON
 		menu.id=table_reserve_home_menu.menu_id
 		WHERE
 		table_reserve_home.id=#{id}
 	</select>
 
-	<select id="listTableReserveHomeByCustomerId" resultMap="tablereservehome">
+	<select id="listTableReserveHomeByCustomerId"
+		resultMap="tablereservehome">
 		SELECT
 		table_reserve_home.id,
 		reservations_name,
@@ -210,10 +230,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM
 		table_reserve_home_menu
 		LEFT JOIN
-		table_reserve_home ON table_reserve_home.id=table_reserve_home_menu.reserve_id
+		table_reserve_home ON
+		table_reserve_home.id=table_reserve_home_menu.reserve_id
 		LEFT
-		JOIN menu ON
+		JOIN menu
+		ON
 		menu.id=table_reserve_home_menu.menu_id
+		LEFT JOIN menu_image ON
+		menu.id=menu_image.menu_id
 		WHERE
 		table_reserve_home.customer_id=#{customerId}
 	</select>
@@ -221,18 +245,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="countTableReserveHome" resultType="Integer">
 		SELECT COUNT(*) FROM table_reserve_home
 		where 1=1
-		<if test="tablereservehome !=null and tablereservehome.reservationsName !=null">
+		<if
+			test="tablereservehome !=null and tablereservehome.reservationsName !=null">
 			and
-			reservations_name like "%${tablereservehome.reservationsName}%"
+			reservations_name like
+			"%${tablereservehome.reservationsName}%"
 		</if>
-		<if test="tablereservehome !=null and tablereservehome.reservationsTel !=null">
+		<if
+			test="tablereservehome !=null and tablereservehome.reservationsTel !=null">
 			and
 			reservations_tel=#{tablereservehome.reservationsTel}
 		</if>
 		<if
 			test="tablereservehome !=null and tablereservehome.EatStartTime !=null and tablereservehome.EatEndTime !=null">
 			and
-			reservations_start_time between #{tablereservehome.EatStartTime} and
+			reservations_start_time between
+			#{tablereservehome.EatStartTime} and
 			#{tablereservehome.EatEndTime}
 		</if>
 		<if

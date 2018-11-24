@@ -26,6 +26,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<result column="combo_classification"
 				property="comboClassification" />
 			<result column="combo_sort" property="comboSort" />
+
+			<collection property="comboimage" ofType="ComboImage" column="id">
+				<id column="combo_image_id" property="id" />
+				<result column="url" property="url" />
+				<result column="url2" property="url2" />
+			</collection>
 		</collection>
 
 	</resultMap>
@@ -49,18 +55,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		combo ON
 		combo.id=banquet_reserve.combo_id
 		where 1=1
-		<if test="banquetreserve !=null and banquetreserve.reservationsName !=null">
+		<if
+			test="banquetreserve !=null and banquetreserve.reservationsName !=null">
 			and
 			reservations_name like "%${banquetreserve.reservationsName}%"
 		</if>
-		<if test="banquetreserve !=null and banquetreserve.reservationsTel !=null">
+		<if
+			test="banquetreserve !=null and banquetreserve.reservationsTel !=null">
 			and
 			reservations_tel=#{banquetreserve.reservationsTel}
 		</if>
 		<if
 			test="banquetreserve !=null and banquetreserve.EatStartTime !=null and banquetreserve.EatEndTime !=null">
 			and
-			reservations_start_time between #{banquetreserve.EatStartTime} and
+			reservations_start_time between
+			#{banquetreserve.EatStartTime} and
 			#{banquetreserve.EatEndTime}
 		</if>
 		<if
@@ -176,12 +185,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		remarks,
 		combo.id AS
 		combo_id,combo_name,combo_price,combo_introduction,
-		combo_classification,combo_sort
+		combo_classification,combo_sort,combo_image.url,combo_image.url2,combo_image.id AS combo_image_id
 		FROM
 		banquet_reserve
 		LEFT JOIN
 		combo ON
 		combo.id=banquet_reserve.combo_id
+		LEFT JOIN
+		combo_image ON
+		combo.id=combo_image.combo_id
 		WHERE
 		banquet_reserve.customer_id=#{customerId}
 	</select>
@@ -190,18 +202,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT COUNT(*) FROM
 		banquet_reserve
 		where 1=1
-		<if test="banquetreserve !=null and banquetreserve.reservationsName !=null">
+		<if
+			test="banquetreserve !=null and banquetreserve.reservationsName !=null">
 			and
 			reservations_name like "%${banquetreserve.reservationsName}%"
 		</if>
-		<if test="banquetreserve !=null and banquetreserve.reservationsTel !=null">
+		<if
+			test="banquetreserve !=null and banquetreserve.reservationsTel !=null">
 			and
 			reservations_tel=#{banquetreserve.reservationsTel}
 		</if>
 		<if
 			test="banquetreserve !=null and banquetreserve.EatStartTime !=null and banquetreserve.EatEndTime !=null">
 			and
-			reservations_start_time between #{banquetreserve.EatStartTime} and
+			reservations_start_time between
+			#{banquetreserve.EatStartTime} and
 			#{banquetreserve.EatEndTime}
 		</if>
 		<if

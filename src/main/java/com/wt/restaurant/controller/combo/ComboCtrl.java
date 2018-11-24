@@ -50,20 +50,22 @@ public class ComboCtrl {
 
 	@RequestMapping(value = { "/back/updatecombo" }, method = RequestMethod.POST)
 	public Map<String, Object> updatecombo(HttpServletRequest request, Combo combo,
-			@RequestParam(value = "comboImg", required = false) MultipartFile file) throws Exception {
+			@RequestParam(value = "comboImg", required = false) MultipartFile file,
+			@RequestParam(value = "comboImg2", required = false) MultipartFile file2) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		String staticsPath = ContextUtil.getStaticResourceAbsolutePath(request);
-		boolean flag = comboservice.updateCombo(combo, file, staticsPath);
+		boolean flag = comboservice.updateCombo(combo, file,file2, staticsPath);
 		resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);
 		return resultMap;
 	}
 
 	@RequestMapping(value = { "/back/savecombo" }, method = RequestMethod.POST)
 	public Map<String, Object> savecombo(HttpServletRequest request, Combo combo,
-			@RequestParam(value = "comboImg", required = false) MultipartFile file) throws Exception {
+			@RequestParam(value = "comboImg", required = false) MultipartFile file,
+			@RequestParam(value = "comboImg2", required = false) MultipartFile file2) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		String staticsPath = ContextUtil.getStaticResourceAbsolutePath(request);
-		boolean flag = comboservice.saveCombo(combo, file, staticsPath);
+		boolean flag = comboservice.saveCombo(combo, file, file2, staticsPath);
 		resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);
 		return resultMap;
 	}

@@ -38,6 +38,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<result column="menu_count" property="menuCount" />
 			<result column="discount_price" property="discountPrice" />
 			<result column="discount" property="discount" />
+			<collection property="menuimage" ofType="MenuImage"
+				column="id">
+				<id column="menu_image_id" property="id" />
+				<result column="url" property="url" />
+			</collection>
 		</collection>
 	</resultMap>
 
@@ -72,6 +77,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<result column="menu_count" property="menuCount" />
 			<result column="discount_price" property="discountPrice" />
 			<result column="discount" property="discount" />
+			<collection property="menuimage" ofType="MenuImage"
+				column="id">
+				<id column="menu_image_id" property="id" />
+				<result column="url" property="url" />
+			</collection>
 		</collection>
 	</resultMap>
 
@@ -94,6 +104,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		menu.id AS menu_id,
 		menu.name
 		AS menu_name,
+
 		large_price,
 		medium_price,
 		small_price,
@@ -225,10 +236,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		menu.id =
 		table_reserve_menu.menu_id
 		where 1=1
-		<if test="tablereserve !=null and tablereserve.customer !=null and tablereserve.customer.nickname !=null">
+		<if
+			test="tablereserve !=null and tablereserve.customer !=null and tablereserve.customer.nickname !=null">
 			and
 			tr.customer_id in(select id from customer where
-			nickname like "%${tablereserve.customer.nickname}%")
+			nickname like
+			"%${tablereserve.customer.nickname}%")
 		</if>
 		ORDER BY tr.reserve_time desc
 	</select>
@@ -374,6 +387,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		large_price,
 		medium_price,
 		small_price,
+		menu_image.id AS menu_image_id,
+		menu_image.url,
 		discount,
 		discount_price,
 		specifications,
@@ -419,9 +434,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		table_reserve_menu
 		ON tr.id =
 		table_reserve_menu.table_reserve_id
+		LEFT JOIN menu_image ON
+		menu_image.menu_id=table_reserve_menu.menu_id
 		LEFT
 		JOIN customer
-		ON customer.id =
+		ON
+		customer.id =
 		tr.customer_id
 		LEFT JOIN menu
 		ON menu.id =

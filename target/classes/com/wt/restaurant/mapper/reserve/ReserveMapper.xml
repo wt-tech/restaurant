@@ -36,6 +36,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<result column="menu_count" property="menuCount" />
 			<result column="discount_price" property="discountPrice" />
 			<result column="discount" property="discount" />
+			<collection property="menuimage" ofType="MenuImage"
+				column="id">
+				<id column="menu_image_id" property="id" />
+				<result column="url" property="url" />
+			</collection>
 		</collection>
 	</resultMap>
 
@@ -257,7 +262,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		box_id,room_number,room_size,room_name,
 		menu.id AS
 		menu_id,menu.name AS
-		menu_name,large_price,medium_price,small_price,discount,discount_price
+		menu_name,menu_image.url,menu_image.id AS
+		menu_image_id,large_price,medium_price,small_price,discount,discount_price
 		FROM
 		reserve
 		LEFT JOIN
@@ -269,6 +275,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		reserve.id=reserve_menu.reserve_id
 		LEFT JOIN menu ON
 		menu.id=reserve_menu.menu_id
+		LEFT JOIN menu_image ON
+		menu.id=menu_image.menu_id
 		WHERE
 		reserve.customer_id=#{customerId}
 	</select>

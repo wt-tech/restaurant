@@ -32,27 +32,33 @@ public class ComboServiceImpl implements IComboService {
 	}
 
 	@Override
-	public boolean updateCombo(Combo combo, MultipartFile file, String staticsPath) throws Exception {
+	public boolean updateCombo(Combo combo, MultipartFile file, MultipartFile file2, String staticsPath)
+			throws Exception {
 		// TODO Auto-generated method stub
 		boolean flag = false;
 		flag = combomapper.updateCombo(combo) > 0;
 		if (flag)
-			return saveupdateImage(combo, file, staticsPath);
+			return saveupdateImage(combo, file, file2, staticsPath);
 		return flag;
 	}
 
-	public boolean saveupdateImage(Combo combo, MultipartFile attach, String staticsPath) throws Exception {
+	public boolean saveupdateImage(Combo combo, MultipartFile attach, MultipartFile attach2, String staticsPath)
+			throws Exception {
 		// TODO Auto-generated method stub
 		boolean flag = true;
-		if (null != attach && !attach.isEmpty()) {
+		if ((null != attach && !attach.isEmpty()) && (null != attach2 && !attach2.isEmpty())) {
 			int id = (int) new Date().getTime();
+			int id2 = (int) new Date().getTime();
 			// 获取文件名
 			String suffix = ImageUtils.getImageTypeWithDot(attach);
+			String suffix2 = ImageUtils.getImageTypeWithDot(attach2);
 			// 根据传递的公共路径（前半部分）+表名+id+文件名生成存储路径
 			String absolutePath = ImageUtils.generateAbsoluteImgPath(staticsPath, Constants.COMBO_IMG, id, suffix);
+			String absolutePath2 = ImageUtils.generateAbsoluteImgPath(staticsPath, Constants.COMBO_IMG, id2, suffix2);
 			flag = false;
 			// 上传图片
 			flag = ImageUtils.saveImage(attach, absolutePath);
+			flag = ImageUtils.saveImage(attach2, absolutePath2);
 			// 生成网络访问的路径
 			String url = ImageUtils.genrateVirtualImgPath(Constants.COMBO_IMG, id, suffix);
 			if (flag) {
@@ -68,12 +74,13 @@ public class ComboServiceImpl implements IComboService {
 	}
 
 	@Override
-	public boolean saveCombo(Combo combo, MultipartFile file, String staticsPath) throws Exception {
+	public boolean saveCombo(Combo combo, MultipartFile file, MultipartFile file2, String staticsPath)
+			throws Exception {
 		// TODO Auto-generated method stub
 		boolean flag = false;
 		flag = combomapper.saveCombo(combo) > 0;
 		if (flag)
-			return saveupdateImage(combo, file, staticsPath);
+			return saveupdateImage(combo, file, file2, staticsPath);
 		return flag;
 	}
 

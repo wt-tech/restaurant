@@ -100,7 +100,11 @@ public class TableReserveHomeCtrl {
 	@RequestMapping(value = { "/back/updatetablenum" }, method = RequestMethod.POST)
 	public Map<String, Object> updateTableNum(TableReserveHome tablereservehome) throws Exception {
 		Map<String, Object> map = MapUtils.getHashMapInstance();
-		boolean flag = tablereservehomeservice.updateTableNum(tablereservehome.getId(), tablereservehome.getTableNum());
+		String type = tablereservehome.getType();
+		if (type != null && type.length() > 0) {
+			tablereservehome.setType(URLDecoder.decode(type, "UTF-8"));
+		}
+		boolean flag = tablereservehomeservice.updateTableNum(tablereservehome.getId(), tablereservehome.getTableNum(),tablereservehome.getType());
 		map.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);
 		return map;
 	}

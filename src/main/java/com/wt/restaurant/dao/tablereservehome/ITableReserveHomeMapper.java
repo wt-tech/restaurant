@@ -105,6 +105,6 @@ public interface ITableReserveHomeMapper {
 	 * @return
 	 * @throws Exception
 	 */
-	@Update("update table_reserve_home set table_num=#{tableNum} where id=#{id}")
-	Integer updateTableNum(@Param("id") Integer id, @Param("tableNum") String tableNum) throws Exception;
+	@Update("update table_reserve_home set table_num=#{tableNum},type=#{type} where id=#{id}")
+	Integer updateTableNum(@Param("id") Integer id, @Param("tableNum") String tableNum, @Param("type") String type) throws Exception;
 }

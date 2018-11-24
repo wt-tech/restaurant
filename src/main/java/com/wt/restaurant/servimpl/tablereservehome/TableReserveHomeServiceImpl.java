@@ -120,9 +120,9 @@ public class TableReserveHomeServiceImpl implements ITableReserveHomeService {
 	}
 
 	@Override
-	public boolean updateTableNum(Integer id, String tableNum) throws Exception {
+	public boolean updateTableNum(Integer id, String tableNum,String type) throws Exception {
 		// TODO Auto-generated method stub
-		return tablereservehomemapper.updateTableNum(id, tableNum)>0;
+		return tablereservehomemapper.updateTableNum(id, tableNum,type)>0;
 	}
 
 }

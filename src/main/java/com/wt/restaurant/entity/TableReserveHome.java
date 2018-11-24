@@ -17,6 +17,7 @@ public class TableReserveHome {
 	private Date reserveTime;// 预订时间
 	private String remarks;// 备注
 	private String tableNum;//桌号或者包厢号
+	private String type;//类型
 	private List<Menu> menu;// 菜品
 	
 	
@@ -96,6 +97,14 @@ public class TableReserveHome {
 
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public List<Menu> getMenu() {

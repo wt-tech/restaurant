@@ -9,7 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- 11111111111111111111111111桌子11111111111111111111111111 -->
 	<resultMap type="TableReserve" id="table">
-
+		<id column="reserve_id" property="id" />
 		<result column="reserve_time" property="reserveTime" />
 		<result column="type" property="type" />
 
@@ -38,13 +38,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<result column="menu_count" property="menuCount" />
 			<result column="discount_price" property="discountPrice" />
 			<result column="discount" property="discount" />
+			<collection property="menuimage" ofType="MenuImage"
+				column="id">
+				<id column="menu_image_id" property="id" />
+				<result column="url" property="url" />
+			</collection>
 		</collection>
 	</resultMap>
 
 	<!-- 222222222222222222222222222222包厢22222222222222222222222222222 -->
 
 	<resultMap type="TableReserve" id="box">
-		<!-- <id column="reserve_id" property="id" /> -->
+		<id column="reserve_id" property="id" />
 		<result column="reserve_time" property="reserveTime" />
 		<result column="type" property="type" />
 
@@ -72,16 +77,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<result column="menu_count" property="menuCount" />
 			<result column="discount_price" property="discountPrice" />
 			<result column="discount" property="discount" />
+			<collection property="menuimage" ofType="MenuImage"
+				column="id">
+				<id column="menu_image_id" property="id" />
+				<result column="url" property="url" />
+			</collection>
 		</collection>
 	</resultMap>
 
 	<!-- 3333333333333333333333333扫码点餐3333333333333333333333333333333 -->
 	<resultMap type="TableReserve" id="tablereserve">
-<<<<<<< HEAD
-		<id column="reserve_id" property="id" />
-=======
-		<!-- <id column="reserve_id" property="id" /> -->
->>>>>>> cbe6f807c046c8b60b9222398eeffa1e21a9e940
+
 		<discriminator javaType="string" column="type">
 			<case value="包厢" resultMap="box"></case>
 			<case value="桌子" resultMap="table"></case>
@@ -98,6 +104,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		menu.id AS menu_id,
 		menu.name
 		AS menu_name,
+
 		large_price,
 		medium_price,
 		small_price,
@@ -114,54 +121,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		(SELECT
 		* FROM (
 		<choose>
-<<<<<<< HEAD
-			<when test="tablereserve !=null and tablereserve.type != null">
-				<if
-					test='tablereserve.type=="包厢" or tablereserve.type=="包厢桌子"'>
-					SELECT
-					table_reserve.id,
-					table_reserve.customer_id,
-					reserve_time,
-					box.room_number,box.id AS box_id,box.room_name ,`type`
-					FROM (SELECT *
-					FROM table_reserve
-					where 1=1
-					<if
-						test="tablereserve.reserveStartTime !=null and tablereserve.reserveEndTime !=null">
-						and
-						reserve_time between #{tablereserve.reserveStartTime} and
-						#{tablereserve.reserveEndTime}
-					</if>
-					ORDER BY reserve_time DESC) AS
-					table_reserve
-					LEFT
-					JOIN box
-					ON
-					box.id=table_reserve.table_box_id
-					WHERE `type`='包厢'
-				</if>
-				<if test='tablereserve.type=="包厢桌子"'>
-					UNION ALL
-				</if>
-				<if
-					test='tablereserve.type=="桌子" or tablereserve.type=="包厢桌子"'>
-					SELECT
-					table_reserve.id,
-					table_reserve.customer_id,
-					reserve_time,
-					`table`.number AS room_number,
-					`table`.id AS box_id,`table`.table_name AS room_name,
-					`type`
-					FROM
-					(SELECT *
-					FROM table_reserve
-					where 1=1
-					<if
-						test="tablereserve.reserveStartTime !=null and tablereserve.reserveEndTime !=null">
-						and
-						reserve_time between #{tablereserve.reserveStartTime} and
-						#{tablereserve.reserveEndTime}
-=======
 			<when test="tablereserve !=null">
 				<if test="tablereserve.type != null">
 					<if test='tablereserve.type=="包厢" or tablereserve.type=="包厢桌子"'>
@@ -238,21 +197,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 						ON
 						`table`.id=table_reserve.table_box_id
 						WHERE `type`='桌子'
->>>>>>> cbe6f807c046c8b60b9222398eeffa1e21a9e940
 					</if>
 				</if>
 			</when>
 			<otherwise>
-<<<<<<< HEAD
-				SELECT 
-					NULL AS 'id',
-					NULL AS 'customer_id',
-					NULL AS 'reserve_time',
-					NULL AS 'room_number',
-					NULL AS 'box_id',
-					NULL AS 'room_name',
-					NULL AS 'type' 
-=======
+
 				SELECT
 				NULL AS 'id',
 				NULL AS 'customer_id',
@@ -263,7 +212,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				NULL AS
 				'room_name',
 				NULL AS 'type'
->>>>>>> cbe6f807c046c8b60b9222398eeffa1e21a9e940
 				FROM table_reserve
 				WHERE 1 = 2
 			</otherwise>
@@ -288,10 +236,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		menu.id =
 		table_reserve_menu.menu_id
 		where 1=1
-		<if test="tablereserve !=null and tablereserve.customer !=null and tablereserve.customer.nickname !=null">
+		<if
+			test="tablereserve !=null and tablereserve.customer !=null and tablereserve.customer.nickname !=null">
 			and
 			tr.customer_id in(select id from customer where
-			nickname like "%${tablereserve.customer.nickname}%")
+			nickname like
+			"%${tablereserve.customer.nickname}%")
 		</if>
 		ORDER BY tr.reserve_time desc
 	</select>
@@ -437,6 +387,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		large_price,
 		medium_price,
 		small_price,
+		menu_image.id AS menu_image_id,
+		menu_image.url,
 		discount,
 		discount_price,
 		specifications,
@@ -482,9 +434,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		table_reserve_menu
 		ON tr.id =
 		table_reserve_menu.table_reserve_id
+		LEFT JOIN menu_image ON
+		menu_image.menu_id=table_reserve_menu.menu_id
 		LEFT
 		JOIN customer
-		ON customer.id =
+		ON
+		customer.id =
 		tr.customer_id
 		LEFT JOIN menu
 		ON menu.id =

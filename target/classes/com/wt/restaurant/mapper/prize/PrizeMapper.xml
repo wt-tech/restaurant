@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace指向mapper接口 -->
+<mapper namespace="com.wt.restaurant.dao.prize.IPrizeMapper">
+	<select id="listPrize" resultType="Prize" >
+		SELECT 
+			* 
+		FROM 
+			prize
+		ORDER BY id; 
+	</select>
+
+	<select id="getPrize" parameterType="Integer"
+		resultType="Prize">
+		SELECT
+			* 
+		FROM 
+			prize
+		where id=#{id};
+	</select>
+
+	<update id="updatePrize" parameterType="Prize">
+		UPDATE prize
+		SET
+			url = #{prize.url},
+			description = #{prize.description}
+		WHERE 
+			id = #{prize.id};
+	</update>
+
+	<insert id="savePrize" parameterType="Prize" useGeneratedKeys="true" keyProperty="id">
+		insert into prize
+		(url,description)
+		values(#{prize.url},#{prize.description});
+	</insert>
+
+	<delete id="removePrize" parameterType="Integer">
+		delete from prize where id=#{prize.id};
+	</delete>
+	
+</mapper>

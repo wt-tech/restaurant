@@ -227,7 +227,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		choose_price,
 		menu_count,
 		menu.id AS menu_id,menu.name AS
-		menu_name,large_price,medium_price,small_price,discount,discount_price
+		menu_name,large_price,medium_price,small_price,discount,discount_price,
+		menu_image.url
 		FROM
 		table_reserve_home_menu
 		LEFT JOIN

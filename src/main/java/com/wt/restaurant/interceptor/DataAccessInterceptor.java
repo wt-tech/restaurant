@@ -21,12 +21,12 @@ public class DataAccessInterceptor extends HandlerInterceptorAdapter {
 			throws Exception {
 		HttpSession session = request.getSession();
 		Login user = (Login) session.getAttribute(Constants.USER_SESSION);
-		if (null == user) {//用户未登录 , 跳转到首页
-			response.sendRedirect(request.getContextPath() + "/authorization");
-			String ip = ContextUtil.getClientIpAddress(request);
-			logger.warn("用户: " + ip + " 尝试非法访问接口,URI : " + request.getRequestURI());
-			return false;
-		}
+//		if (null == user) {//用户未登录 , 跳转到首页
+//			response.sendRedirect(request.getContextPath() + "/authorization");
+//			String ip = ContextUtil.getClientIpAddress(request);
+//			logger.warn("用户: " + ip + " 尝试非法访问接口,URI : " + request.getRequestURI());
+//			return false;
+//		}
 		return true;
 	}
 }

@@ -24,9 +24,10 @@ public class TableReserveHomeServiceImpl implements ITableReserveHomeService {
 	private ISequenceMapper sequenceMapper;
 
 	@Override
-	public List<TableReserveHome> listTableReserveHome(Integer currentPageNo, Integer pageSize,TableReserveHome tablereservehome) {
+	public List<TableReserveHome> listTableReserveHome(Integer currentPageNo, Integer pageSize,
+			TableReserveHome tablereservehome) {
 		// TODO Auto-generated method stub
-		return tablereservehomemapper.listTableReserveHome(currentPageNo, pageSize,tablereservehome);
+		return tablereservehomemapper.listTableReserveHome(currentPageNo, pageSize, tablereservehome);
 	}
 
 	@Override
@@ -59,6 +60,7 @@ public class TableReserveHomeServiceImpl implements ITableReserveHomeService {
 		// TODO Auto-generated method stub
 		boolean flag = false;
 		int sumPrice = 0;
+		int sumCount = 0;
 		DishOrder dishorder = new DishOrder();
 		Reserve reserve = new Reserve();
 		reserve.setId(tablereservehome.getId());
@@ -68,14 +70,19 @@ public class TableReserveHomeServiceImpl implements ITableReserveHomeService {
 		dishorder.setCustomer(customer);
 		dishorder.setReserveType("店外点餐");
 		if (null != tablereservehome.getMenu() && tablereservehome.getMenu().size() > 0) {
-			dishorder.setTotalCount(tablereservehome.getMenu().size());
 			for (int i = 0; i < tablereservehome.getMenu().size(); i++) {
-				sumPrice += tablereservehome.getMenu().get(i).getChoosePrice()
-						* tablereservehome.getMenu().get(i).getMenuCount();
+				sumCount += tablereservehome.getMenu().get(i).getMenuCount();// 总数量
+				if ("可预订".equals(tablereservehome.getMenu().get(i).getChoosePrice())
+						|| "时价".equals(tablereservehome.getMenu().get(i).getChoosePrice())) {
+					continue;
+				}
+				sumPrice += Double.parseDouble(tablereservehome.getMenu().get(i).getChoosePrice())
+						* tablereservehome.getMenu().get(i).getMenuCount();// 总价格
 			}
 			dishorder.setTotalAmount(sumPrice);
+			dishorder.setTotalCount(sumCount);
 		}
-		synchronized(ISequenceMapper.class){
+		synchronized (ISequenceMapper.class) {
 			dishorder.setOrderNumber(sequenceMapper.updateAndGetNextSequence());
 			if (tablereservehomemapper.saveDishOrder(dishorder) > 0) {
 				DishOrderLine dishorderline = new DishOrderLine();
@@ -120,9 +127,9 @@ public class TableReserveHomeServiceImpl implements ITableReserveHomeService {
 	}
 
 	@Override
-	public boolean updateTableNum(Integer id, String tableNum,String type) throws Exception {
+	public boolean updateTableNum(Integer id, String tableNum, String type) throws Exception {
 		// TODO Auto-generated method stub
-		return tablereservehomemapper.updateTableNum(id, tableNum,type)>0;
+		return tablereservehomemapper.updateTableNum(id, tableNum, type) > 0;
 	}
 
 }

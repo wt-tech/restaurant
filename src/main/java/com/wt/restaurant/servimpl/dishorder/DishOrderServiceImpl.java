@@ -1,5 +1,6 @@
 package com.wt.restaurant.servimpl.dishorder;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,10 +63,11 @@ public class DishOrderServiceImpl implements IDishOrderService {
 	public List<Box> listDishOrderBox(Integer dishorderId) {
 		// TODO Auto-generated method stub
 		List<Box> boxList = dishordermapper.listDishOrderBox(dishorderId);
-		for (Box box : boxList) {
-			if (null == box.getId()) {
-				boxList.remove(box);
-			}
+		Iterator<Box> iterator = boxList.iterator();
+		while(iterator.hasNext()){
+			Box box = iterator.next();
+			if(null == box.getId())
+				iterator.remove(); 
 		}
 		return boxList;
 	}

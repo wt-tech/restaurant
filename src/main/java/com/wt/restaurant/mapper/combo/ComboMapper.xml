@@ -17,6 +17,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			column="id">
 			<id column="comboimage_id" property="id" />
 			<result column="url" property="url" />
+			<result column="url2" property="url2" />
 			<result column="name" property="name" />
 		</collection>
 
@@ -31,7 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		combo_classification,
 		combo_sort,
 		combo_image.id AS comboimage_id,
-		url,
+		url,url2,
 		combo_image.name
 		FROM combo
 		LEFT JOIN
@@ -70,6 +71,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="url != null">
 				url=#{url}
 			</if>
+			<if test="url2 != null">
+				url2=#{url2}
+			</if>
 		</set>
 		where id=#{id};
 	</update>
@@ -90,8 +94,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<insert id="saveComboImage">
 		insert into combo_image
-		(combo_id,name,url)
-		values(#{combo.id},#{name},#{url});
+		(combo_id,name,url,url2)
+		values(#{combo.id},#{name},#{url},#{url2});
 	</insert>
 
 	<delete id="removeCombo" parameterType="Integer">
@@ -109,7 +113,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		combo_classification,
 		combo_sort,
 		combo_image.id AS comboimage_id,
-		url,
+		url,url2,
 		combo_image.name
 		FROM combo
 		LEFT JOIN

@@ -69,7 +69,7 @@ public class TableReserveCtrl {
 				tablereserve);
 		map.put(Constants.STATUS, Constants.SUCCESS);
 		map.put("tablereserves", tablereserves);
-		map.put("totalCount", tablereserves.size());
+		map.put("totalCount", totalCount);
 		map.put("pageSize", pagesizes);
 		return map;
 	}

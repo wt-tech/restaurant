@@ -23,7 +23,7 @@ public class ReserveServiceImpl implements IReserveService {
 	private IReserveMapper reservemapper;
 	@Autowired
 	private ISequenceMapper sequenceMapper;
-	
+
 	@Override
 	public List<Reserve> listReserve(Integer currentPageNo, Integer pageSize, Reserve reserve) {
 		// TODO Auto-generated method stub
@@ -69,6 +69,7 @@ public class ReserveServiceImpl implements IReserveService {
 		// TODO Auto-generated method stub
 		boolean flag = false;
 		int sumPrice = 0;
+		int sumCount = 0;
 		DishOrder dishorder = new DishOrder();
 		dishorder.setReserve(reserve);
 		Customer customer = new Customer();
@@ -76,14 +77,20 @@ public class ReserveServiceImpl implements IReserveService {
 		dishorder.setCustomer(customer);
 		dishorder.setReserveType("包厢预订");
 		if (null != reserve.getMenu() && reserve.getMenu().size() > 0) {
-			dishorder.setTotalCount(reserve.getMenu().size());
 			for (int i = 0; i < reserve.getMenu().size(); i++) {
-				sumPrice += reserve.getMenu().get(i).getChoosePrice() * reserve.getMenu().get(i).getMenuCount();
+				sumCount += reserve.getMenu().get(i).getMenuCount();// 总数量
+				if ("可预订".equals(reserve.getMenu().get(i).getChoosePrice())
+						|| "时价".equals(reserve.getMenu().get(i).getChoosePrice())) {
+					continue;
+				}
+				sumPrice += Double.parseDouble(reserve.getMenu().get(i).getChoosePrice())
+						* reserve.getMenu().get(i).getMenuCount();// 总价格
 			}
 			dishorder.setTotalAmount(sumPrice);
+			dishorder.setTotalCount(sumCount);
 		}
-		
-		synchronized(ISequenceMapper.class){
+
+		synchronized (ISequenceMapper.class) {
 			dishorder.setOrderNumber(sequenceMapper.updateAndGetNextSequence());
 			if (reservemapper.saveDishOrder(dishorder) > 0) {
 				DishOrderLine dishorderline = new DishOrderLine();

@@ -10,12 +10,14 @@ public class Menu {
 	private double largePrice;// 大份价格
 	private double mediumPrice;// 中份价格
 	private double smallPrice;// 小份价格
+	private String uncertainPrice;//不确定的价格
+	private String unit;//单位
 	private int salesVolume;// 销量
 	private double discount;// 折扣
 	private double discountPrice;// 折扣价
 	private String introduction;// 菜品介绍
 	private String specifications;//选中的菜品规格
-	private double choosePrice;//选中的菜品价格
+	private String choosePrice;//选中的菜品价格
 	private int menuCount;//菜品的数量
 	private int sort;// 排序
 	private List<MenuImage> menuimage;// 菜品图片
@@ -116,11 +118,11 @@ public class Menu {
 		this.specifications = specifications;
 	}
 
-	public double getChoosePrice() {
+	public String getChoosePrice() {
 		return choosePrice;
 	}
 
-	public void setChoosePrice(double choosePrice) {
+	public void setChoosePrice(String choosePrice) {
 		this.choosePrice = choosePrice;
 	}
 
@@ -146,6 +148,22 @@ public class Menu {
 
 	public void setMenuimage(List<MenuImage> menuimage) {
 		this.menuimage = menuimage;
+	}
+
+	public String getUncertainPrice() {
+		return uncertainPrice;
+	}
+
+	public void setUncertainPrice(String uncertainPrice) {
+		this.uncertainPrice = uncertainPrice;
+	}
+
+	public String getUnit() {
+		return unit;
+	}
+
+	public void setUnit(String unit) {
+		this.unit = unit;
 	}
 
 }

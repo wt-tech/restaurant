@@ -5,7 +5,7 @@ public class DishOrderLine {
 	private DishOrder dishorder;// 订单
 	private Menu menu;// 菜品
 	private int dishCount;// 菜品数量
-	private double unitPrice;// 单价
+	private String unitPrice;// 单价
 	private String specifications;// 规格
 
 	public DishOrderLine() {
@@ -43,11 +43,11 @@ public class DishOrderLine {
 		this.dishCount = dishCount;
 	}
 
-	public double getUnitPrice() {
+	public String getUnitPrice() {
 		return unitPrice;
 	}
 
-	public void setUnitPrice(double unitPrice) {
+	public void setUnitPrice(String unitPrice) {
 		this.unitPrice = unitPrice;
 	}
 

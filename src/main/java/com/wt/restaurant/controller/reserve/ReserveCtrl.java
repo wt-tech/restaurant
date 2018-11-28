@@ -30,9 +30,10 @@ import com.wt.restaurant.websocket.entity.MessageType;
 
 @RestController("")
 @RequestMapping("/reserve")
-public class ReserveCtrl{
+public class ReserveCtrl {
 	@Autowired
 	private IReserveService reserveservice;
+	
 	private Logger logger = LogManager.getLogger();
 
 	@RequestMapping(value = { "/back/listreserve" }, method = RequestMethod.GET)
@@ -96,7 +97,7 @@ public class ReserveCtrl{
 		return resultMap;
 	}
 
-	@RequestMapping(value = { "/savereserve","/back/savereserve" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/savereserve", "/back/savereserve" }, method = RequestMethod.POST)
 	public Map<String, Object> saveReserve(@RequestBody() Reserve reserve) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		resultMap.put(Constants.STATUS, Constants.FAIL);
@@ -108,7 +109,8 @@ public class ReserveCtrl{
 		// resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);
 		if (flag) {
 			resultMap.put(Constants.STATUS, Constants.SUCCESS);
-			SpringContextUtils.getBeanByClass(ControllerHandlerBridge.class).notifyManager(new Message(MessageType.BOX_RESERVE));
+			SpringContextUtils.getBeanByClass(ControllerHandlerBridge.class)
+					.notifyManager(new Message(MessageType.BOX_RESERVE));
 		}
 		return resultMap;
 	}

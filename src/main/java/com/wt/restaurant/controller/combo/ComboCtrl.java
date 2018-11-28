@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -70,8 +71,8 @@ public class ComboCtrl {
 		return resultMap;
 	}
 
-	@RequestMapping(value = { "/back/removecombo" }, method = RequestMethod.DELETE)
-	public Map<String, Object> removecombo(@RequestParam("id") int id) throws Exception {
+	@RequestMapping(value = { "/back/removecombo/{id}" }, method = RequestMethod.DELETE)
+	public Map<String, Object> removecombo(@PathVariable("id") int id) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
 		boolean flag = comboservice.removeCombo(id);
 		resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);

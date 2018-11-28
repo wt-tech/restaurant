@@ -61,12 +61,14 @@ public class ComboServiceImpl implements IComboService {
 			flag = ImageUtils.saveImage(attach2, absolutePath2);
 			// 生成网络访问的路径
 			String url = ImageUtils.genrateVirtualImgPath(Constants.COMBO_IMG, id, suffix);
+			String url2 = ImageUtils.genrateVirtualImgPath(Constants.COMBO_IMG, id2, suffix2);
 			if (flag) {
 				ComboImage comboimage = new ComboImage();
 				comboimage.setCombo(combo);
 				String imgName = combo.getComboName();
 				comboimage.setName(imgName);
 				comboimage.setUrl(url);
+				comboimage.setUrl2(url2);
 				flag = combomapper.saveComboImage(comboimage) > 0;
 			}
 		}

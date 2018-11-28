@@ -223,6 +223,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		remarks,
 		table_num,
 		specifications,
+		menu_image.url,
 		choose_price,
 		menu_count,
 		menu.id AS menu_id,menu.name AS

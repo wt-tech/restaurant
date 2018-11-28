@@ -1,6 +1,8 @@
-package com.wt.restaurant.entity;
+package com.wt.restaurant.entity.wechat;
 
 import java.util.Date;
+
+import com.alibaba.fastjson.JSON;
 
 public class AccessToken {
 	
@@ -9,7 +11,7 @@ public class AccessToken {
 	private Date timeBeginTakeEffect;//开始生效的时间.
 	
 	public AccessToken() {
-		
+		this.setTimeBeginTakeEffect(new Date());
 	}
 	
 	public String getAccess_token() {
@@ -27,7 +29,7 @@ public class AccessToken {
 	public Date getTimeBeginTakeEffect() {
 		return timeBeginTakeEffect;
 	}
-	public void setTimeBeginTakeEffect(Date timeBeginTakeEffect) {
+	private void setTimeBeginTakeEffect(Date timeBeginTakeEffect) {
 		this.timeBeginTakeEffect = timeBeginTakeEffect;
 	}
 	
@@ -38,6 +40,15 @@ public class AccessToken {
 	public boolean isValid() {
 		return this.getExpires_in() > ((new Date().getTime() - this.getTimeBeginTakeEffect().getTime())/1000);
 	}
+
+	@Override
+	public String toString() {
+		return "AccessToken [access_token=" + access_token + ", expires_in=" + expires_in + ", timeBeginTakeEffect="
+				+ timeBeginTakeEffect + "]";
+	}
 	
+	public String toJSONString() {
+		return JSON.toJSONString(this);
+	}
 	
 }

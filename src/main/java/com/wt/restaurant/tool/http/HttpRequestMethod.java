@@ -2,7 +2,7 @@ package com.wt.restaurant.tool.http;
 
 public enum HttpRequestMethod {
 	
-	GET("GET"),PSOT("POST");
+	GET("GET"),POST("POST");
 	
 	private final String value;
 	

@@ -1,11 +1,10 @@
 package com.wt.restaurant.tool.wechat;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
-import com.wt.restaurant.entity.AccessToken;
+import com.wt.restaurant.entity.wechat.AccessToken;
 import com.wt.restaurant.tool.http.HttpRequest;
 
 public class AccessTokenManager {
@@ -54,9 +53,8 @@ public class AccessTokenManager {
 			httpReq = new HttpRequest(WeChatXCX.ACCESS_TOKEN_URL);
 		httpReq.connectAndFetchResult();
 		String resString  = (String) httpReq.getResponseContent();
-		AccessToken accessToken = (AccessToken) JSON.parse(resString);
+		AccessToken accessToken = JSON.parseObject(resString, AccessToken.class);
 		accessToken.setExpires_in(WeChatFWH.ACCESS_TOKEN_EXPIRES_SECONDS);
-		accessToken.setTimeBeginTakeEffect(new Date());
 		return accessToken;
 	}
 
@@ -66,5 +64,13 @@ public class AccessTokenManager {
 		ACCESS_TOKEN_MAP.put(FWH_TOKEN, accessToken);
 	}
 
-	
+	public static void main(String[] args) {
+		
+		System.err.println(ACCESS_TOKEN_MAP);
+		System.out.println(fetchFWHAccessToken());
+		System.err.println(ACCESS_TOKEN_MAP);
+		System.out.println(fetchFWHAccessToken().toJSONString());
+		System.err.println(ACCESS_TOKEN_MAP);
+		
+	}
 }

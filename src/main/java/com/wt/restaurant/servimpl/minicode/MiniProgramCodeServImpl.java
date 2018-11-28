@@ -24,10 +24,10 @@ public class MiniProgramCodeServImpl implements IMiniProgramCodeServ {
 	@Override
 	public String fetchAccessToken() {
 		
+		
 		HttpRequest httpReq = new HttpRequest(Constants.ACCESS_TOKEN_URL);
 		httpReq.connectAndFetchResult();
 		String resString  = (String) httpReq.getResponseContent();
-		System.err.println(resString);
 		return resString;
 		
 	}

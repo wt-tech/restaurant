@@ -82,7 +82,7 @@ public class Constants {
 	public static final String ContextPath = "restaurant";
 	
 	//等部署到服务器上后,再修改
-	public static final String imgServerDomain = "https://www.qghls.com/statics/";
+	  public static final String imgServerDomain = "https://www.qghls.com/statics/";
 //    public static final String imgServerDomain = "http://192.168.0.109:8080/statics/";
 //    public static final String imgServerDomain = "http://192.168.0.177:8888/statics/";
 

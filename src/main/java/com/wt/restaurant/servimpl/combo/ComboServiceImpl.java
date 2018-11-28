@@ -48,7 +48,7 @@ public class ComboServiceImpl implements IComboService {
 		boolean flag = true;
 		if ((null != attach && !attach.isEmpty()) && (null != attach2 && !attach2.isEmpty())) {
 			int id = (int) new Date().getTime();
-			int id2 = (int) new Date().getTime();
+			int id2 = ((int) new Date().getTime())+1;
 			// 获取文件名
 			String suffix = ImageUtils.getImageTypeWithDot(attach);
 			String suffix2 = ImageUtils.getImageTypeWithDot(attach2);

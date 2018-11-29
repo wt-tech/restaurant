@@ -33,15 +33,6 @@ public interface IBanquetReserveService {
 	boolean saveBanquetReserve(BanquetReserve banquetreserve) throws Exception;
 
 	/**
-	 * 保存订单
-	 * 
-	 * @param reserve
-	 * @return
-	 * @throws Exception
-	 */
-	boolean saveDishOrder(BanquetReserve banquetreserve) throws Exception;
-
-	/**
 	 * 删除预订信息
 	 * 
 	 * @param id

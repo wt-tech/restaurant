@@ -121,8 +121,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where id=#{id};
 	</update>
 
-	<insert id="saveBanquetReserve" parameterType="BanquetReserve"
-		useGeneratedKeys="true" keyProperty="id">
+	<insert id="saveBanquetReserve" parameterType="BanquetReserve">
 		insert into
 		banquet_reserve
 		(customer_id,combo_id,
@@ -135,12 +134,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		values(#{customer.id},#{combo.id},#{reservationsName},
 		#{reservationsSex},#{reservationsTel},#{reservationsNum},#{reservationsStartTime},
 		NOW(),#{remarks});
-	</insert>
-
-	<insert id="saveDishOrder" parameterType="DishOrder">
-		insert into dish_order
-		(customer_id,reserve_id,reserve_type,order_number,create_time,total_count,total_amount,discount_amount,total_pay_amount)
-		values(#{customer.id},#{reserve.id},#{reserveType},#{orderNumber},NOW(),#{totalCount},#{totalAmount},#{discountAmount},#{totalPayAmount});
 	</insert>
 
 	<delete id="removeBanquetReserve" parameterType="Integer">

@@ -92,6 +92,6 @@ public class Constants {
 	//小程序端拥有商家入口权限的用户id集合.
 	public static final Set<Integer> managerList = new HashSet<Integer>();
 	static {
-		managerList.add(new Integer(188));
+		managerList.add(new Integer(193));
 	}
 }

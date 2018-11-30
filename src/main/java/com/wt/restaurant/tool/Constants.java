@@ -74,7 +74,10 @@ public class Constants {
 	//存放小程序码的路径
 	public static final String MINIQRCODE = "mini-program-code";
 	public static final String MINIQRCODESUFFIX = ".jpeg";
-
+	public static final String MINIQRCODPAGE = "tab-menu-menu";
+	public static final String TAB_CODE_PREFIX = "TAB--";
+	public static final String BOX_CODE_PREFIX = "BOX--";
+	
 	
 	//DOCBASEPATH指Tomcat的server.xml配置文件中host下的context的docBase属性
 	public static final String IMGBASEPATH = "statics";

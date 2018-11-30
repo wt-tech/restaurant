@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.wt.restaurant.entity.Box;
 import com.wt.restaurant.entity.MiniProgramCodeParam;
+import com.wt.restaurant.entity.Table;
 import com.wt.restaurant.service.minicode.IMiniProgramCodeServ;
 import com.wt.restaurant.tool.BusinessUtils;
 import com.wt.restaurant.tool.Constants;
@@ -88,5 +90,32 @@ public class MiniProgramCodeServImpl implements IMiniProgramCodeServ {
 		String absolutePath = absoluteDirectory + ImageUtils.getMiniQRAbsoluteURI(param);
 		File file = new File(absolutePath);
 		return file.exists();
+	}
+	
+	private void removeMiniProgramCode(MiniProgramCodeParam param,String absoluteDirectory) {
+		String absolutePath = absoluteDirectory + ImageUtils.getMiniQRAbsoluteURI(param);
+		File file = new File(absolutePath);
+		if(!file.exists()) 
+			BusinessUtils.throwNewBusinessException("文件不存在");
+		else if(!file.canWrite())
+			BusinessUtils.throwNewBusinessException("文件不可写");
+		else
+			file.delete();
+	}
+
+	@Override
+	public void removeTableMiniProgramCode(Table table,String absoluteDirectory) {
+		MiniProgramCodeParam param = new MiniProgramCodeParam();
+		param.setPage(Constants.MINIQRCODPAGE);
+		param.setImgName(Constants.TAB_CODE_PREFIX + table.getNumber());
+		this.removeMiniProgramCode(param,absoluteDirectory);
+	}
+	
+	@Override
+	public void removeBoxMiniProgramCode(Box box,String absoluteDirectory) {
+		MiniProgramCodeParam param = new MiniProgramCodeParam();
+		param.setPage(Constants.MINIQRCODPAGE);
+		param.setImgName(Constants.BOX_CODE_PREFIX + box.getRoomNumber());
+		this.removeMiniProgramCode(param,absoluteDirectory);
 	}
 }

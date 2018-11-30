@@ -23,7 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.wt.restaurant.entity.Box;
 import com.wt.restaurant.entity.Reserve;
+import com.wt.restaurant.entity.Table;
 import com.wt.restaurant.service.box.IBoxService;
+import com.wt.restaurant.service.minicode.IMiniProgramCodeServ;
 import com.wt.restaurant.service.reserve.IReserveService;
 import com.wt.restaurant.tool.CompareBox;
 import com.wt.restaurant.tool.Constants;
@@ -38,6 +40,8 @@ public class BoxCtrl {
 	private IBoxService boxservice;
 	@Autowired
 	private IReserveService reserveservice;
+	@Autowired
+	private IMiniProgramCodeServ codeService;
 
 	@RequestMapping(value = { "/listnullbox" }, method = RequestMethod.GET)
 	public Map<String, Object> listNullBox(
@@ -127,10 +131,14 @@ public class BoxCtrl {
 	}
 
 	@RequestMapping(value = { "/back/removebox/{id}" }, method = RequestMethod.DELETE)
-	public Map<String, Object> removeBox(@PathVariable("id") Integer id) throws Exception {
+	public Map<String, Object> removeBox(@PathVariable("id") Integer id,HttpServletRequest request) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
+		Box box = boxservice.getBox(id);
 		boolean flag = boxservice.removeBox(id);
 		resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);
+		String absoluteDirectory = ContextUtil.getStaticResourceAbsolutePath(request);
+		if(flag)
+			codeService.removeBoxMiniProgramCode(box,absoluteDirectory);
 		return resultMap;
 	}
 

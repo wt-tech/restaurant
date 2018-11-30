@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wt.restaurant.entity.Table;
+import com.wt.restaurant.service.minicode.IMiniProgramCodeServ;
 import com.wt.restaurant.service.table.ITableService;
 import com.wt.restaurant.tool.Constants;
+import com.wt.restaurant.tool.ContextUtil;
 import com.wt.restaurant.tool.MapUtils;
 import com.wt.restaurant.tool.PageUtil;
 
@@ -25,6 +27,8 @@ import com.wt.restaurant.tool.PageUtil;
 public class TableCtrl {
 	@Autowired
 	private ITableService tableservice;
+	@Autowired
+	private IMiniProgramCodeServ codeService;
 
 	@RequestMapping(value = { "/listtable", "/back/listtable" }, method = RequestMethod.GET)
 	public Map<String, Object> listTable(@RequestParam(value = "currentPageNo", required = false) Integer currentPageNo,
@@ -69,10 +73,15 @@ public class TableCtrl {
 	}
 
 	@RequestMapping(value = { "/back/removetable/{id}" }, method = RequestMethod.DELETE)
-	public Map<String, Object> removeTable(@PathVariable("id") Integer id) throws Exception {
+	public Map<String, Object> removeTable(@PathVariable("id") Integer id,HttpServletRequest request) throws Exception {
 		Map<String, Object> resultMap = MapUtils.getHashMapInstance();
+		Table table = tableservice.getTable(id);
+		String absoluteDirectory = ContextUtil.getStaticResourceAbsolutePath(request);
 		boolean flag = tableservice.removeTable(id);
 		resultMap.put(Constants.STATUS, flag ? Constants.SUCCESS : Constants.FAIL);
+		if(flag)
+			codeService.removeTableMiniProgramCode(table,absoluteDirectory);
+			
 		return resultMap;
 	}
 

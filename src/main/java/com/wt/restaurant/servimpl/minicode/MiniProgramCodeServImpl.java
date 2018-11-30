@@ -44,6 +44,7 @@ public class MiniProgramCodeServImpl implements IMiniProgramCodeServ {
 		httpReq.setResponseHandler(new BinaryDataResponseHandler());
 		httpReq.connectAndFetchResult();
 		Object content = httpReq.getResponseContent();
+		//System.err.println(content);
 		//获取成功后,将二进制流小程序码生成图片保存在服务器上
 		return this.saveBytes2Image((byte[])content,absoluteDirectory + ImageUtils.getMiniQRAbsoluteURI(param));
 	}

@@ -26,7 +26,7 @@ public class BinaryDataResponseHandler extends ResponseHanlder{
 
 			this.setContent(outStream.toByteArray());
 			
-			System.out.println(this.getContentType());
+//			System.out.println(this.getContentType());
 //			System.out.println(new String(outStream.toByteArray()));
 		} catch (IOException e) {
 			BusinessUtils.throwNewBusinessException("获取响应主体内容失败" + e.getMessage());

@@ -117,7 +117,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 			(SELECT table_reserve_home.* FROM
 			table_reserve_home LEFT JOIN box ON
-			table_reserve_home.table_num=box.id WHERE box.room_number=#{dishorder.tableOrboxNum}) AS
+			table_reserve_home.table_num=box.room_number WHERE box.room_number=#{dishorder.tableOrboxNum}) AS
 			tableBox3
 
 			ON dish_order.reserve_id=tableBox3.id WHERE
@@ -131,7 +131,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 			(SELECT
 			table_reserve_home.* FROM table_reserve_home LEFT JOIN `table` ON
-			table_reserve_home.table_num=`table`.id WHERE `table`.number=#{dishorder.tableOrboxNum})
+			table_reserve_home.table_num=`table`.number WHERE `table`.number=#{dishorder.tableOrboxNum})
 			AS tableBox4
 
 			ON dish_order.reserve_id=tableBox4.id WHERE
@@ -259,7 +259,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 			(SELECT table_reserve_home.* FROM
 			table_reserve_home LEFT JOIN box ON
-			table_reserve_home.table_num=box.id WHERE box.room_number=#{dishorder.tableOrboxNum}) AS
+			table_reserve_home.table_num=box.room_number WHERE box.room_number=#{dishorder.tableOrboxNum}) AS
 			tableBox3
 
 			ON dish_order.reserve_id=tableBox3.id WHERE
@@ -273,7 +273,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 			(SELECT
 			table_reserve_home.* FROM table_reserve_home LEFT JOIN `table` ON
-			table_reserve_home.table_num=`table`.id WHERE `table`.number=#{dishorder.tableOrboxNum})
+			table_reserve_home.table_num=`table`.number WHERE `table`.number=#{dishorder.tableOrboxNum})
 			AS tableBox4
 
 			ON dish_order.reserve_id=tableBox4.id WHERE
@@ -348,7 +348,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		(SELECT table_reserve_home.id,box.id AS
 		box_id,room_number,room_name FROM
 		table_reserve_home LEFT JOIN box ON
-		table_reserve_home.table_num=box.id WHERE
+		table_reserve_home.table_num=box.room_number WHERE
 		table_reserve_home.type='包厢') AS tableBox3
 
 		ON
@@ -366,7 +366,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		(SELECT table_reserve_home.id,table.id AS
 		table_id,number,table_name FROM
 		table_reserve_home LEFT JOIN `table` ON
-		table_reserve_home.table_num=`table`.id WHERE
+		table_reserve_home.table_num=`table`.number WHERE
 		table_reserve_home.type='桌子') AS tableBox4
 
 		ON

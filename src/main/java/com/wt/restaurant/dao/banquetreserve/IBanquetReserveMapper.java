@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.wt.restaurant.entity.BanquetReserve;
-import com.wt.restaurant.entity.DishOrder;
 
 public interface IBanquetReserveMapper {
 	/**
@@ -35,15 +34,6 @@ public interface IBanquetReserveMapper {
 	 * @throws Exception
 	 */
 	Integer saveBanquetReserve(BanquetReserve banquetreserve) throws Exception;
-
-	/**
-	 * 保存订单
-	 * 
-	 * @param dishorder
-	 * @return
-	 * @throws Exception
-	 */
-	Integer saveDishOrder(DishOrder dishorder) throws Exception;
 
 	/**
 	 * 删除预订信息

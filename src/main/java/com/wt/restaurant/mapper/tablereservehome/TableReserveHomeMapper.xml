@@ -160,8 +160,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="saveDishOrder" parameterType="DishOrder"
 		useGeneratedKeys="true" keyProperty="id">
 		insert into dish_order
-		(customer_id,reserve_id,reserve_type,order_number,create_time,total_count,total_amount,discount_amount,total_pay_amount)
-		values(#{customer.id},#{reserve.id},#{reserveType},#{orderNumber},NOW(),#{totalCount},#{totalAmount},#{discountAmount},#{totalPayAmount});
+		(customer_id,reserve_id,reserve_type,order_number,create_time,total_count,total_amount,discount_amount,total_pay_amount,remark)
+		values(#{customer.id},#{reserve.id},#{reserveType},#{orderNumber},NOW(),#{totalCount},#{totalAmount},#{discountAmount},#{totalPayAmount},#{reserve.remarks});
 	</insert>
 
 	<insert id="saveDishOrderLine">

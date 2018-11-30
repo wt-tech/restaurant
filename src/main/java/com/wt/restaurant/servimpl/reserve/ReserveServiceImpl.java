@@ -76,6 +76,7 @@ public class ReserveServiceImpl implements IReserveService {
 		customer.setId(reserve.getCustomer().getId());
 		dishorder.setCustomer(customer);
 		dishorder.setReserveType("包厢预订");
+		dishorder.setRemark(reserve.getRemarks());
 		if (null != reserve.getMenu() && reserve.getMenu().size() > 0) {
 			for (int i = 0; i < reserve.getMenu().size(); i++) {
 				sumCount += reserve.getMenu().get(i).getMenuCount();// 总数量

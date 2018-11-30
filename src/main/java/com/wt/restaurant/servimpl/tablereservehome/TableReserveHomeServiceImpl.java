@@ -64,6 +64,7 @@ public class TableReserveHomeServiceImpl implements ITableReserveHomeService {
 		DishOrder dishorder = new DishOrder();
 		Reserve reserve = new Reserve();
 		reserve.setId(tablereservehome.getId());
+		reserve.setRemarks(tablereservehome.getRemarks());
 		dishorder.setReserve(reserve);
 		Customer customer = new Customer();
 		customer.setId(tablereservehome.getCustomer().getId());
